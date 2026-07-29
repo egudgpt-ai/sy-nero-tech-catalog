@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>SYNERO — נציג וואטסאפ אוטומטי</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eceaf4;
+    --wa:#128C7E;
+    --wa-light:#25D366;
+    --wa-dark:#075E54;
+    --wa-bubble:#DCF8C6;
+    --wa-panel:#F0F0F0;
+    --ink:#111b21;
+    --muted:#667781;
+    --line:#e9edef;
+    --app:#fff;
+    --soft:#f7f8fa;
+    --accent:#00f5d4;
+    --purple:#7f77dd;
+    --amber:#e0912b;
+    --red:#e05656;
+    --teal:#1d9e75;
+    --teal-soft:#e9f6f1;
+    --shadow:0 40px 80px -40px rgba(40,30,90,.4);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Heebo',sans-serif;
+    background:radial-gradient(120% 100% at 100% 0%,#e5e2f4,transparent 60%),
+               radial-gradient(120% 100% at 0% 100%,#d4ede7,transparent 60%),var(--bg);
+    color:var(--ink);min-height:100vh;
+    padding:clamp(10px,2vw,28px);
+    display:flex;flex-direction:column;align-items:center;gap:14px;
+  }
+
+  /* ── Top bar ── */
+  .bar{width:100%;max-width:1100px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .bar .title{font-weight:800;letter-spacing:.04em;color:var(--muted);font-size:.88rem;}
+  .scenarios{display:inline-flex;background:var(--app);border:1px solid var(--line);border-radius:999px;padding:4px;gap:4px;box-shadow:0 6px 18px -12px rgba(0,0,0,.25);}
+  .scenarios button{
+    border:0;cursor:pointer;font-family:inherit;font-weight:700;font-size:.82rem;
+    padding:7px 16px;border-radius:999px;color:var(--muted);background:transparent;transition:.2s;
+  }
+  .scenarios button.on{background:var(--wa);color:#fff;}
+
+  /* ── Frame ── */
+  .frame{
+    width:100%;max-width:1100px;height:min(68vh,640px);
+    background:var(--app);border:1px solid var(--line);border-radius:20px;
+    box-shadow:var(--shadow);overflow:hidden;display:flex;
+  }
+
+  /* ── Sidebar ── */
+  .side{
+    width:210px;flex:none;border-inline-start:1px solid var(--line);
+    display:flex;flex-direction:column;background:#fff;
+  }
+  .side .brand{
+    height:66px;display:flex;align-items:center;gap:10px;
+    padding:0 16px;border-bottom:1px solid var(--line);
+    background:var(--wa-dark);
+  }
+  .side .brand img{height:26px;opacity:.95;}
+  .side .brand .brand-tag{font-size:.75rem;font-weight:800;letter-spacing:.04em;color:rgba(255,255,255,.7);}
+  .nav{padding:10px;display:flex;flex-direction:column;gap:2px;overflow:auto;flex:1;}
+  .nav a{
+    display:flex;align-items:center;gap:9px;padding:10px 11px;
+    border-radius:11px;font-size:.83rem;font-weight:600;color:#55536a;
+    text-decoration:none;cursor:pointer;transition:.15s;
+  }
+  .nav a .ic{width:14px;height:14px;border-radius:3px;background:#cbc9da;flex:none;transition:.15s;}
+  .nav a.active{background:#e8f5e9;color:#1b5e20;}
+  .nav a.active .ic{background:var(--wa);}
+  .nav-tag{font-size:.6rem;font-weight:800;letter-spacing:.1em;color:var(--muted);padding:12px 11px 5px;text-transform:uppercase;}
+
+  /* lead count badge */
+  .nbadge{
+    margin-inline-start:auto;font-size:.65rem;font-weight:800;
+    background:var(--wa);color:#fff;border-radius:999px;
+    padding:1px 7px;
+  }
+
+  /* ── Main ── */
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;background:#e5ddd5;}
+
+  /* WhatsApp chat header */
+  .wa-header{
+    background:var(--wa-dark);color:#fff;
+    display:flex;align-items:center;gap:12px;
+    padding:10px 16px;flex:none;
+  }
+  .wa-avatar{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--wa);display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;flex:none;
+  }
+  .wa-info{flex:1;}
+  .wa-name{font-weight:700;font-size:.95rem;}
+  .wa-status{font-size:.72rem;opacity:.75;margin-top:1px;}
+  .wa-actions{display:flex;gap:14px;opacity:.8;}
+  .wa-actions span{font-size:1.1rem;cursor:pointer;}
+
+  /* Chat area */
+  .chat{
+    flex:1;overflow-y:auto;padding:14px 16px;
+    display:flex;flex-direction:column;gap:6px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cg fill='%23b2dfdb' fill-opacity='0.06'%3E%3Ccircle cx='20' cy='20' r='3'/%3E%3Ccircle cx='70' cy='60' r='3'/%3E%3Ccircle cx='50' cy='90' r='2'/%3E%3C/g%3E%3C/svg%3E");
+    scrollbar-width:none;
+  }
+  .chat::-webkit-scrollbar{display:none;}
+
+  /* Day divider */
+  .day-div{
+    text-align:center;font-size:.71rem;font-weight:600;
+    color:var(--muted);background:rgba(255,255,255,.7);
+    padding:4px 12px;border-radius:999px;align-self:center;
+    margin:4px 0;
+  }
+
+  /* Message bubbles */
+  .msg{max-width:75%;display:flex;flex-direction:column;gap:2px;}
+  .msg.bot{align-self:flex-start;}
+  .msg.user{align-self:flex-end;}
+  .bubble{
+    padding:8px 12px;border-radius:10px;
+    font-size:.85rem;line-height:1.55;
+    position:relative;
+  }
+  .msg.bot .bubble{
+    background:#fff;border-top-right-radius:0;
+    box-shadow:0 1px 2px rgba(0,0,0,.12);
+  }
+  .msg.user .bubble{
+    background:var(--wa-bubble);border-top-left-radius:0;
+    box-shadow:0 1px 2px rgba(0,0,0,.1);
+  }
+  .bubble .time{
+    font-size:.67rem;color:var(--muted);
+    float:left;margin-top:2px;margin-inline-start:8px;display:flex;align-items:center;gap:3px;
+  }
+  .msg.user .bubble .time{color:#7dbb95;}
+  .tick{color:#53bdeb;font-size:.8rem;}
+
+  /* Quick-reply buttons */
+  .qr-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;align-self:flex-start;}
+  .qr-btn{
+    background:#fff;border:1px solid rgba(0,150,136,.4);
+    color:var(--wa-dark);font-family:inherit;font-size:.8rem;font-weight:600;
+    padding:7px 14px;border-radius:999px;cursor:pointer;
+    transition:.15s;
+  }
+  .qr-btn:hover{background:var(--wa);color:#fff;border-color:var(--wa);}
+
+  /* Typing indicator */
+  .typing{
+    align-self:flex-start;background:#fff;
+    padding:10px 14px;border-radius:10px;border-top-right-radius:0;
+    box-shadow:0 1px 2px rgba(0,0,0,.12);
+    display:none;align-items:center;gap:5px;
+  }
+  .typing span{
+    width:7px;height:7px;border-radius:50%;background:#aaa;
+    animation:typingDot 1.2s ease-in-out infinite;
+  }
+  .typing span:nth-child(2){animation-delay:.15s;}
+  .typing span:nth-child(3){animation-delay:.3s;}
+  @keyframes typingDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+  /* Input bar */
+  .wa-input{
+    background:#f0f0f0;border-top:1px solid var(--line);
+    display:flex;align-items:center;gap:10px;padding:8px 14px;flex:none;
+  }
+  .wa-input .inp{
+    flex:1;background:#fff;border:none;border-radius:999px;
+    padding:9px 16px;font-family:inherit;font-size:.85rem;color:var(--ink);
+    outline:none;direction:rtl;
+  }
+  .wa-input .send-btn{
+    width:40px;height:40px;border-radius:50%;background:var(--wa);
+    border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    font-size:1rem;color:#fff;flex:none;
+  }
+
+  /* ── Admin panel (right side) ── */
+  .admin{
+    width:260px;flex:none;border-inline-end:1px solid var(--line);
+    display:flex;flex-direction:column;background:#fff;overflow:hidden;
+  }
+  .admin-header{
+    padding:14px 16px;border-bottom:1px solid var(--line);
+    font-size:.78rem;font-weight:800;color:var(--ink);
+    background:var(--soft);
+  }
+  .admin-header span{color:var(--muted);font-weight:400;}
+  .admin-body{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;scrollbar-width:none;}
+  .admin-body::-webkit-scrollbar{display:none;}
+
+  .lead-card{
+    border:1px solid var(--line);border-radius:12px;padding:12px;
+    background:var(--app);transition:.2s;
+  }
+  .lead-card.new{border-color:var(--wa);box-shadow:0 0 0 2px rgba(18,140,126,.12);}
+  .lead-card .lc-name{font-weight:800;font-size:.85rem;margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+  .lead-card .lc-phone{font-size:.75rem;color:var(--muted);margin-bottom:6px;}
+  .lead-card .lc-need{font-size:.75rem;color:var(--ink);line-height:1.45;}
+  .lead-card .lc-time{font-size:.68rem;color:var(--muted);margin-top:6px;}
+  .green-dot{width:7px;height:7px;border-radius:50%;background:var(--wa-light);flex:none;}
+  .lc-status{
+    margin-top:8px;padding-top:8px;border-top:1px solid var(--line);
+    display:flex;gap:6px;
+  }
+  .lc-btn{
+    flex:1;border:none;border-radius:8px;padding:6px;font-size:.72rem;font-weight:700;
+    cursor:pointer;font-family:inherit;
+  }
+  .lc-btn.g{background:var(--teal-soft);color:var(--teal);}
+  .lc-btn.p{background:#efeefb;color:#574fc0;}
+
+  /* notification toast */
+  .toast{
+    position:absolute;top:16px;left:50%;transform:translateX(-50%) translateY(-80px);
+    background:#1b5e20;color:#fff;border-radius:12px;padding:10px 18px;
+    font-size:.82rem;font-weight:700;display:flex;align-items:center;gap:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.3);transition:transform .4s ease, opacity .4s ease;
+    opacity:0;z-index:10;white-space:nowrap;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+  /* hidden */
+  .msg.hidden,.qr-wrap.hidden,.typing.hidden-t{display:none;}
+
+  /* caption */
+  .caption{width:100%;max-width:1100px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font-size:.8rem;}
+  .dots{display:flex;gap:6px;}
+  .dots i{width:7px;height:7px;border-radius:50%;background:#cdcbdb;transition:.3s;}
+  .dots i.on{background:var(--wa);width:20px;border-radius:999px;}
+
+  @media(max-width:720px){
+    .side{width:60px;}.side .brand .brand-tag,.nav a span,.nav-tag{display:none;}
+    .admin{display:none;}.frame{height:78vh;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <span class="title">SYNERO — נציג וואטסאפ אוטומטי</span>
+  <div class="scenarios" id="scenarioBar">
+    <button class="on" data-sc="0">לקוח חדש</button>
+    <button data-sc="1">שאלות נפוצות</button>
+    <button data-sc="2">העברה לנציג</button>
+  </div>
+</div>
+
+<div class="frame">
+
+  <!-- Sidebar -->
+  <div class="side">
+    <div class="brand">
+      <img src="https://egud.org.il/wp-content/uploads/2026/06/%D7%9C%D7%95%D7%92%D7%95-%D7%A1%D7%99%D7%A0%D7%A8%D7%95-%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94-%D7%9C%D7%91%D7%9F.png" alt="SYNERO">
+    </div>
+    <div class="nav">
+      <div class="nav-tag">WhatsApp Bot</div>
+      <a class="active"><span class="ic"></span><span>שיחות פעילות</span><span class="nbadge" id="chatCount">3</span></a>
+      <a><span class="ic"></span><span>לידים שנאספו</span></a>
+      <a><span class="ic"></span><span>הודעות שנשלחו</span></a>
+      <div class="nav-tag">ניהול</div>
+      <a><span class="ic"></span><span>תסריט השיחה</span></a>
+      <a><span class="ic"></span><span>תגובות אוטומטיות</span></a>
+      <a><span class="ic"></span><span>סטטיסטיקות</span></a>
+    </div>
+  </div>
+
+  <!-- Chat -->
+  <div class="main">
+    <div class="wa-header">
+      <div class="wa-avatar">🤖</div>
+      <div class="wa-info">
+        <div class="wa-name">SYNERO Bot</div>
+        <div class="wa-status" id="waStatus">מקוון · עונה תוך שניות</div>
+      </div>
+      <div class="wa-actions"><span>🔍</span><span>⋮</span></div>
+    </div>
+
+    <div class="chat" id="chat">
+      <div class="day-div">היום</div>
+    </div>
+
+    <div class="typing" id="typing">
+      <span></span><span></span><span></span>
+    </div>
+
+    <div class="toast" id="toast">🔔 ליד חדש התקבל!</div>
+
+    <div class="wa-input">
+      <span style="font-size:1.3rem;cursor:pointer;">😊</span>
+      <input class="inp" placeholder="הקלד הודעה..." readonly>
+      <button class="send-btn">➤</button>
+    </div>
+  </div>
+
+  <!-- Admin panel -->
+  <div class="admin">
+    <div class="admin-header">לידים שהתקבלו <span id="leadCount">(0)</span></div>
+    <div class="admin-body" id="leadList">
+      <div style="text-align:center;color:var(--muted);font-size:.8rem;padding:24px 12px;">
+        הבוט יתחיל לאסוף לידים בזמן אמת...
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="caption">
+  <span>לחצו על תרחיש כדי לראות שיחה שונה</span>
+  <div class="dots" id="dots">
+    <i class="on"></i><i></i><i></i>
+  </div>
+</div>
+
+<script>
+const chat = document.getElementById('chat');
+const typing = document.getElementById('typing');
+const toast = document.getElementById('toast');
+const leadList = document.getElementById('leadList');
+const leadCount = document.getElementById('leadCount');
+const waStatus = document.getElementById('waStatus');
+const dots = document.getElementById('dots').querySelectorAll('i');
+let leadTotal = 0;
+let running = false;
+
+const scenarios = [
+  // 0 — new lead flow
+  [
+    {from:'user', text:'שלום, ראיתי אתכם באינסטגרם ורציתי לשאול על המחירים'},
+    {from:'bot',  text:'שלום! 👋 ברוכים הבאים ל-SYNERO TECH.\nאני הנציג האוטומטי שלנו ואשמח לעזור.\n\nמה הייתם רוצים לדעת?', qr:['מחירים ותנאים','תיאור השירות','לדבר עם נציג']},
+    {from:'user', text:'מחירים ותנאים'},
+    {from:'bot',  text:'מעולה! 💡 השירותים שלנו מתחילים מ-500 ₪ להקמה ועד לפתרונות מלאים.\n\nכדי לתת לכם הצעה מדויקת — איך קוראים לכם?'},
+    {from:'user', text:'דנה לוי'},
+    {from:'bot',  text:'נעים מאוד, דנה! 😊\n\nמה מספר הטלפון שלכם? (להעברה לנציג שלנו)'},
+    {from:'user', text:'054-7781234'},
+    {from:'bot',  text:'תודה, דנה! ✅\n\nשמרתי את הפרטים שלכם. נציג מ-SYNERO יצור איתכם קשר בהקדם.\n\nעד אז — יש עוד שאלות?', qr:['עוד שאלות','תודה, להתראות']},
+    {lead:{name:'דנה לוי', phone:'054-7781234', need:'שאלה על מחירים ותנאים'}},
+  ],
+  // 1 — FAQ flow
+  [
+    {from:'user', text:'כמה זמן לוקח להקים מערכת?'},
+    {from:'bot',  text:'שאלה מעולה! ⚡\n\nזמן ההקמה תלוי בסוג השירות:\n• בוט וואטסאפ — 5-7 ימי עסקים\n• CRM מלא — 10-14 ימי עסקים\n• אוטומציות — 3-5 ימים\n\nהאם יש שירות ספציפי שמעניין אתכם?', qr:['בוט וואטסאפ','CRM','אוטומציות']},
+    {from:'user', text:'בוט וואטסאפ'},
+    {from:'bot',  text:'נהדר! 🤖 בוט הוואטסאפ שלנו:\n\n✅ מגיב 24/7 ללא מגבלה\n✅ שואל את הלקוח מה הוא צריך\n✅ אוסף שם, טלפון ובקשה\n✅ מעביר לנציג כשצריך\n\nרוצים לקבל הצעת מחיר אישית?', qr:['כן, שלחו לי הצעה','לא תודה']},
+    {from:'user', text:'כן, שלחו לי הצעה'},
+    {from:'bot',  text:'מצוין! 🎉 כדי לשלוח הצעה מותאמת — מה שמכם?'},
+    {from:'user', text:'יוסי כהן'},
+    {from:'bot',  text:'נעים מאוד יוסי! מה מספר הטלפון שלכם?'},
+    {from:'user', text:'052-3344556'},
+    {from:'bot',  text:'תודה! ✅ הפרטים נשמרו. נציג שלנו ישלח לכם הצעה אישית תוך 24 שעות!', qr:['תודה!']},
+    {lead:{name:'יוסי כהן', phone:'052-3344556', need:'מעוניין בהצעה לבוט וואטסאפ'}},
+  ],
+  // 2 — handoff flow
+  [
+    {from:'user', text:'אני צריך עזרה דחופה, יש לי בעיה עם המערכת שלי'},
+    {from:'bot',  text:'מצטערים לשמוע! 🙏 אני כאן כדי לעזור.\n\nאפשר לספר לי מה הבעיה?', qr:['הבוט לא עונה','שגיאה בחיבור','אחר']},
+    {from:'user', text:'הבוט לא עונה'},
+    {from:'bot',  text:'הבנתי. 🔍 כמה שאלות מהירות:\n\nמתי זה התחיל לקרות?'},
+    {from:'user', text:'מאמש בערב'},
+    {from:'bot',  text:'תודה. בעיה זו דורשת טיפול של נציג טכני.\n\n⚡ אני מחבר אתכם עכשיו לנציג שלנו.\n\nמה שמכם?'},
+    {from:'user', text:'מיכל דוד'},
+    {from:'bot',  text:'מיכל, 📞 שלחתי כבר התראה לנציג הטכני שלנו!\n\nהוא יצור איתכם קשר תוך מספר דקות.\n\nמספר פנייה: #TKT-2847', qr:['תודה רבה']},
+    {handoff:{name:'מיכל דוד', issue:'בוט לא עונה מאמש', ticket:'#TKT-2847'}},
+  ]
+];
+
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+function addMsg(from, text, animate=true){
+  const div = document.createElement('div');
+  div.className = `msg ${from}`;
+  const now = new Date();
+  const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const tick = from==='user' ? `<span class="tick">✓✓</span>` : '';
+  div.innerHTML = `<div class="bubble">${text.replace(/\n/g,'<br>')}<span class="time">${timeStr} ${tick}</span></div>`;
+  if(animate) div.style.opacity = '0';
+  chat.appendChild(div);
+  if(animate){
+    requestAnimationFrame(()=>{ div.style.transition='opacity .3s'; div.style.opacity='1'; });
+  }
+  chat.scrollTop = chat.scrollHeight;
+  return div;
+}
+
+function addQR(options){
+  const wrap = document.createElement('div');
+  wrap.className = 'qr-wrap';
+  options.forEach(opt=>{
+    const btn = document.createElement('button');
+    btn.className='qr-btn';
+    btn.textContent=opt;
+    wrap.appendChild(btn);
+  });
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+  return wrap;
+}
+
+function showTyping(){
+  typing.style.display='flex';
+  chat.scrollTop = chat.scrollHeight;
+}
+function hideTyping(){ typing.style.display='none'; }
+
+function addLead(data){
+  leadTotal++;
+  const isEmpty = leadList.querySelector('[style*="text-align"]');
+  if(isEmpty) isEmpty.remove();
+
+  leadCount.textContent = `(${leadTotal})`;
+  document.getElementById('chatCount').textContent = leadTotal + 2;
+
+  const card = document.createElement('div');
+  card.className = 'lead-card new';
+  const isHandoff = !!data.issue;
+  card.innerHTML = `
+    <div class="lc-name"><span class="green-dot"></span>${data.name}</div>
+    <div class="lc-phone">${data.phone || '⚡ דחוף'}</div>
+    <div class="lc-need">${data.need || data.issue}</div>
+    ${data.ticket ? `<div class="lc-time">כרטיס ${data.ticket}</div>` : ''}
+    <div class="lc-time">עכשיו</div>
+    <div class="lc-status">
+      <button class="lc-btn g">✓ טופל</button>
+      <button class="lc-btn p">📞 התקשר</button>
+    </div>
+  `;
+  leadList.prepend(card);
+
+  // toast
+  toast.textContent = isHandoff ? `⚡ פנייה דחופה — ${data.name}!` : `🔔 ליד חדש — ${data.name}!`;
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'), 3500);
+}
+
+async function runScenario(sc){
+  if(running) return;
+  running = true;
+
+  // clear chat
+  chat.innerHTML = '<div class="day-div">היום</div>';
+  leadList.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:.8rem;padding:24px 12px;">הבוט יאסוף לידים בזמן אמת...</div>';
+  leadTotal = 0;
+  leadCount.textContent = '(0)';
+  document.getElementById('chatCount').textContent = '3';
+  waStatus.textContent = 'מקוון · עונה תוך שניות';
+  hideTyping();
+
+  const steps = scenarios[sc];
+
+  for(const step of steps){
+    if(step.from === 'user'){
+      await sleep(800);
+      addMsg('user', step.text);
+      await sleep(400);
+    } else if(step.from === 'bot'){
+      showTyping();
+      const delay = Math.min(600 + step.text.length * 18, 2200);
+      await sleep(delay);
+      hideTyping();
+      addMsg('bot', step.text);
+      if(step.qr){
+        await sleep(200);
+        addQR(step.qr);
+      }
+      await sleep(300);
+    } else if(step.lead){
+      await sleep(400);
+      addLead(step.lead);
+    } else if(step.handoff){
+      await sleep(400);
+      waStatus.textContent = '⚡ מחובר לנציג טכני';
+      addLead(step.handoff);
+    }
+  }
+
+  running = false;
+}
+
+// Scenario buttons
+document.getElementById('scenarioBar').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-sc]');
+  if(!btn || running) return;
+  document.querySelectorAll('#scenarioBar button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const sc = parseInt(btn.dataset.sc);
+  dots.forEach((d,i)=>d.classList.toggle('on',i===sc));
+  runScenario(sc);
+});
+
+// start
+runScenario(0);
+</script>
+</body>
+</html>
