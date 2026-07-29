@@ -105,9 +105,9 @@
     .hero-bg{
       position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;
     }
-    .hero-bg img{
+    .hero-bg video{
       width:100%; height:100%; object-fit:cover; object-position:center;
-      opacity:.72;
+      opacity:.55;
     }
     /* animated grid bg */
     .hero-grid{
@@ -132,8 +132,8 @@
     .hero-veil{
       position:absolute; inset:0; z-index:3; pointer-events:none;
       background:
-        linear-gradient(to bottom, rgba(6,9,19,.18) 0%, rgba(6,9,19,.38) 45%, rgba(6,9,19,.72) 100%),
-        radial-gradient(120% 100% at 50% 40%, rgba(6,9,19,.08) 0%, rgba(6,9,19,.5) 72%, #060913 100%);
+        linear-gradient(to bottom, rgba(6,9,19,.10) 0%, rgba(6,9,19,.25) 50%, rgba(6,9,19,.70) 100%),
+        radial-gradient(120% 100% at 50% 40%, rgba(6,9,19,.05) 0%, rgba(6,9,19,.35) 72%, #060913 100%);
     }
     /* accent glow corners */
     .hero-glow-r{
@@ -251,18 +251,6 @@
 
     /* ── Section globals ── */
     section.pad{ padding:120px 0; }
-
-    /* ── Photo backgrounds ── */
-    #about{
-      background:
-        linear-gradient(rgba(6,9,19,.82), rgba(6,9,19,.82)),
-        url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80') center/cover no-repeat;
-    }
-    #products{
-      background:
-        linear-gradient(rgba(6,9,19,.88), rgba(6,9,19,.88)),
-        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80') center/cover fixed no-repeat;
-    }
 
     /* ── Image divider between sections ── */
     .img-divider{
@@ -831,7 +819,10 @@
   <!-- Hero -->
   <section class="hero">
     <div class="hero-bg" aria-hidden="true">
-      <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=85" alt="">
+      <video autoplay muted loop playsinline preload="auto">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-network-connection-43958-large.mp4" type="video/mp4">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-computer-technology-background-34871-large.mp4" type="video/mp4">
+      </video>
     </div>
     <div class="hero-grid"></div>
     <div class="hero-scan"></div>
