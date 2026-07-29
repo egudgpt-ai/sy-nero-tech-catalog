@@ -1281,10 +1281,13 @@
         ${hasImg
           ? `<div class="card-media"><img src="${cover}" alt="${escapeHtml(p.name)}"></div>`
           : p.demo
-            ? `<div class="card-media card-demo-preview" data-open="${p.id}">
-                <div class="demo-badge">▶ סיור מוצר אינטראקטיבי</div>
-                <div class="demo-dots"><span></span><span></span><span></span></div>
-                <div class="demo-lines"><span></span><span></span><span></span><span></span></div>
+            ? `<div class="card-media card-demo-preview" style="position:relative;overflow:hidden;padding:0;background:var(--panel);">
+                <iframe src="${escapeHtml(p.demo)}"
+                  style="position:absolute;top:0;left:0;width:1300px;height:560px;border:0;
+                         transform:scale(0.27);transform-origin:top left;pointer-events:none;"
+                  loading="lazy" tabindex="-1"></iframe>
+                <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(6,9,19,.55));pointer-events:none;z-index:2;"></div>
+                <div class="demo-badge" style="position:absolute;bottom:9px;right:10px;z-index:3;pointer-events:none;">▶ סיור מוצר אינטראקטיבי</div>
               </div>`
             : `<div class="card-media"><div class="card-icon-wrap">${p.icon}</div></div>`
         }
