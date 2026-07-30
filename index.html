@@ -21,7 +21,7 @@
       --line-s:  #161b35;
       --fog:     #666666;
       --mute:    #999999;
-      --silver:  #cccccc;
+      --silver:  #e8e8e8;
       --white:   #ffffff;
       --accent:  #00f5d4;
       --ease:    cubic-bezier(.22,.61,.36,1);
@@ -175,7 +175,7 @@
     .hero-h1 .thin{ font-weight:200; letter-spacing:-1.5px; }
     .hero-h1 .accent{ color:var(--accent); }
     .hero-sub{
-      font-size:clamp(15px,1.7vw,18px); font-weight:300;
+      font-size:clamp(15px,1.7vw,18px); font-weight:400;
       color:var(--silver); max-width:600px; margin:0 auto 40px;
       line-height:1.8;
       opacity:0; transform:translateY(20px);
@@ -247,7 +247,7 @@
       color:var(--white); line-height:1;
     }
     .stat-n .acc{ color:var(--accent); }
-    .stat-l{ font-size:12px; font-weight:300; color:var(--fog); letter-spacing:.5px; }
+    .stat-l{ font-size:12px; font-weight:400; color:var(--fog); letter-spacing:.5px; }
 
     /* ── Section globals ── */
     section.pad{ padding:120px 0; }
@@ -291,10 +291,10 @@
     .h2 .acc{ color:var(--accent); }
     .lead{
       font-size:clamp(15px,1.6vw,17px); color:var(--silver);
-      font-weight:300; max-width:600px; line-height:1.85;
+      font-weight:400; max-width:600px; line-height:1.85;
     }
     .about-copy .lead{ color:var(--silver); }
-    .value-desc{ font-size:14px; color:var(--mute); font-weight:300; line-height:1.65; }
+    .value-desc{ font-size:14px; color:var(--mute); font-weight:400; line-height:1.65; }
     .stat-l{ font-size:12px; font-weight:400; color:var(--mute); letter-spacing:.3px; }
 
     /* ── About ── */
@@ -315,7 +315,7 @@
       font-size:12px; font-weight:600; letter-spacing:1.4px; text-transform:uppercase;
       color:var(--accent); margin:0 0 18px; display:block;
     }
-    .quote-text{ font-size:14px; color:var(--silver); font-weight:300; line-height:1.9; font-style:italic; }
+    .quote-text{ font-size:14px; color:var(--silver); font-weight:400; line-height:1.9; font-style:italic; }
 
     .values-list{ margin-top:0; border-top:1px solid var(--line); }
     .value-row{
@@ -333,7 +333,7 @@
     }
     .value-ic svg{ width:20px; height:20px; stroke:var(--mute); fill:none; stroke-width:1.4; transition:stroke .3s; }
     .value-title{ font-size:16px; font-weight:700; margin-bottom:4px; }
-    .value-desc{ font-size:13px; color:var(--fog); font-weight:300; line-height:1.6; }
+    .value-desc{ font-size:13px; color:var(--fog); font-weight:400; line-height:1.6; }
 
     /* ── Products ── */
     .products-head{ margin-bottom:64px; }
@@ -426,7 +426,7 @@
     }
     .card-desc{
       font-size:14px; color:var(--mute); line-height:1.75;
-      margin:0 0 20px; font-weight:300; flex:1;
+      margin:0 0 20px; font-weight:400; flex:1;
     }
     .tags-row{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:24px; }
     .tag{
@@ -435,7 +435,7 @@
       color:var(--fog); font-weight:400; letter-spacing:.3px;
     }
     .card-price{
-      font-size:13px; color:var(--fog); font-weight:300;
+      font-size:13px; color:var(--fog); font-weight:400;
       letter-spacing:.3px; margin-bottom:20px;
     }
     .card-bottom{ padding-top:16px; border-top:1px solid var(--line-s); }
@@ -537,14 +537,14 @@
     }
     .modal-description{
       white-space:pre-line; margin:0;
-      color:var(--silver); font-size:15px; line-height:1.9; font-weight:300;
+      color:var(--silver); font-size:15px; line-height:1.9; font-weight:400;
     }
 
     /* includes list with checkmarks */
     .includes-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
     .includes-list li{
       display:flex; align-items:flex-start; gap:12px;
-      font-size:13.5px; color:var(--silver); font-weight:300; line-height:1.6;
+      font-size:13.5px; color:var(--silver); font-weight:400; line-height:1.6;
     }
     .includes-list li::before{
       content:''; flex-shrink:0;
@@ -631,10 +631,10 @@
       letter-spacing:2px; text-transform:uppercase; color:var(--accent);
     }
     .modal-fit, .modal-roi{
-      font-size:13.5px; color:var(--silver); font-weight:300; line-height:1.8; margin:0;
+      font-size:13.5px; color:var(--silver); font-weight:400; line-height:1.8; margin:0;
     }
     .modal-roi{ color:var(--accent); font-weight:500; }
-    .modal-includes{ color:var(--mute); font-size:13px; font-weight:300; }
+    .modal-includes{ color:var(--mute); font-size:13px; font-weight:400; }
     .modal-includes ul{ margin:8px 0 0; padding:0 20px 0 0; }
     .modal-includes li{ margin:8px 0; }
     .image-panel{ position:sticky; top:0; }
@@ -712,14 +712,14 @@
       box-shadow:0 40px 100px rgba(0,0,0,.8);
     }
     .contact-modal h4{ margin:0 0 6px; font-size:24px; font-weight:800; color:var(--white); letter-spacing:-.5px; }
-    .contact-modal p.hint{ margin:0 0 28px; color:var(--fog); font-size:13px; font-weight:300; }
+    .contact-modal p.hint{ margin:0 0 28px; color:var(--fog); font-size:13px; font-weight:400; }
     .form-row{ display:flex; gap:12px; margin-bottom:12px; }
     .form-row .field{ flex:1; display:flex; flex-direction:column; gap:8px; }
     .form-row .field label{ font-size:12px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:var(--fog); }
     input.input, textarea.input{
       background:var(--black); border:0; border-bottom:1px solid var(--line);
       color:var(--white); padding:10px 0; font-family:inherit; font-size:14px;
-      transition:border-color .2s; outline:none; font-weight:300;
+      transition:border-color .2s; outline:none; font-weight:400;
     }
     input.input::placeholder, textarea.input::placeholder{ color:var(--fog); }
     input.input:focus, textarea.input:focus{ border-color:var(--accent); }
@@ -745,7 +745,7 @@
       box-shadow:0 30px 80px rgba(0,0,0,.8);
     }
     .interest-modal h5{ margin:0 0 6px; font-size:18px; font-weight:800; color:var(--white); letter-spacing:-.3px; }
-    .interest-modal p.small{ margin:0 0 18px; color:var(--fog); font-size:13px; font-weight:300; }
+    .interest-modal p.small{ margin:0 0 18px; color:var(--fog); font-size:13px; font-weight:400; }
     .interest-row{ display:flex; gap:10px; }
     .interest-row input{ flex:1; }
 
@@ -774,7 +774,7 @@
     .foot-links a:hover{ color:var(--white); }
     .foot-copy{
       margin-top:36px; padding-top:24px; border-top:1px solid var(--line-s);
-      text-align:center; font-size:12px; color:var(--fog); font-weight:300; letter-spacing:.4px;
+      text-align:center; font-size:12px; color:var(--fog); font-weight:400; letter-spacing:.4px;
     }
 
     /* ── Responsive ── */
@@ -833,7 +833,7 @@
         src="/assets/logo.png"
         alt="SYNERO TECH">
       <h1 class="hero-h1">
-        הטכנולוגיה שעובדת<br>
+        טכנולוגיה שעובדת<br>
         <span class="thin">בשבילך,</span> <span class="accent">לא להפך</span>
       </h1>
       <br>
@@ -879,7 +879,7 @@
           <p class="kicker"><span class="acc">/</span> אודות SYNERO TECH</p>
           <h2 class="h2">הטכנולוגיה<br><span class="thin">שעובדת בשבילך</span></h2>
           <p class="lead">אנחנו גורמים לעסק שלך לעבוד בשבילך - לא להפך.</p>
-          <h5 style="font-size:15px; font-weight:300; color:var(--silver); line-height:1.8;">המטרה שלנו פשוטה:<br>כל דקה שהצוות שלך מבלה על הקלדות חוזרות, תיאומים ידניים ומעקב בוואטסאפ - היא דקה שנגנבה מהצמיחה של העסק. אנחנו לוקחים את כל זה מהידיים שלכם ומגדירים אותו מחדש כתהליך שעובד לבד, ברקע, באופן אוטומטי ומושלם.</h5>
+          <h5 style="font-size:15px; font-weight:400; color:var(--silver); line-height:1.8;">המטרה שלנו פשוטה:<br>כל דקה שהצוות שלך מבלה על הקלדות חוזרות, תיאומים ידניים ומעקב בוואטסאפ - היא דקה שנגנבה מהצמיחה של העסק. אנחנו לוקחים את כל זה מהידיים שלכם ומגדירים אותו מחדש כתהליך שעובד לבד, ברקע, באופן אוטומטי ומושלם.</h5>
 
           <div class="values-list stagger" style="margin-top:48px;">
             <div class="value-row item">
