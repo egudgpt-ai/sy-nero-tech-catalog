@@ -333,45 +333,6 @@
       color:var(--accent); margin:0 0 18px; display:block;
     }
     .quote-text{ font-size:14px; color:#555; font-weight:400; line-height:1.9; font-style:italic; }
-    /* ── Section transitions: fade edges between dark↔light ── */
-    /* dark→light: top of light section fades from dark */
-    #about::before,
-    #products::before {
-      content:'';
-      display:block;
-      height:60px;
-      margin-bottom:-60px;
-      background:linear-gradient(to bottom, #060913, #f5f4f1);
-      pointer-events:none;
-    }
-    /* light→dark: bottom of light section fades to dark */
-    #about::after {
-      content:'';
-      display:block;
-      height:60px;
-      margin-top:-60px;
-      background:linear-gradient(to bottom, #f5f4f1, #060913);
-      pointer-events:none;
-    }
-    /* light→dark strip */
-    #products::after {
-      content:'';
-      display:block;
-      height:60px;
-      margin-top:-60px;
-      background:linear-gradient(to bottom, #f5f4f1, #111);
-      pointer-events:none;
-    }
-    /* dark strip → light blog */
-    .dark-strip::after {
-      content:'';
-      display:block;
-      height:60px;
-      margin-top:-60px;
-      background:linear-gradient(to bottom, #111, #f5f4f1);
-      pointer-events:none;
-    }
-
     /* ── Dark strip between products and blog ── */
     .dark-strip{
       background:#111; color:#fff;
