@@ -297,25 +297,53 @@
     .value-desc{ font-size:14px; color:var(--mute); font-weight:400; line-height:1.65; }
     .stat-l{ font-size:12px; font-weight:400; color:var(--mute); letter-spacing:.3px; }
 
+    /* ── About section light ── */
+    #about{
+      background:#f5f4f1; color:#1a1a1a;
+    }
+    #about .kicker{ color:#888; }
+    #about .kicker .acc{ color:#00c4a8; }
+    #about .h2{ color:#111; }
+    #about .lead{ color:#444 !important; }
+    #about .about-copy p { color:#333; }
+
     /* ── About ── */
     .about-grid{ display:grid; grid-template-columns:1.2fr .8fr; gap:80px; align-items:start; }
     .about-copy .lead{ margin-top:20px; }
     .quote-block{
-      border-right:2px solid var(--accent);
+      border-right:2px solid #00c4a8;
       padding:24px 28px;
-      background:var(--ink);
+      background:#fff;
       position:relative;
+      box-shadow:0 2px 12px rgba(0,0,0,.06);
     }
     .quote-block::before{
       content:'"'; position:absolute; top:-8px; right:20px;
-      font-size:60px; font-weight:900; color:var(--accent); opacity:.15; line-height:1;
+      font-size:60px; font-weight:900; color:#00c4a8; opacity:.15; line-height:1;
     }
-    .quote-name{ font-size:14px; font-weight:700; color:var(--white); margin:0 0 4px; }
+    .quote-name{ font-size:14px; font-weight:700; color:#111; margin:0 0 4px; }
     .quote-role{
       font-size:12px; font-weight:600; letter-spacing:1.4px; text-transform:uppercase;
       color:var(--accent); margin:0 0 18px; display:block;
     }
-    .quote-text{ font-size:14px; color:var(--silver); font-weight:400; line-height:1.9; font-style:italic; }
+    .quote-text{ font-size:14px; color:#555; font-weight:400; line-height:1.9; font-style:italic; }
+    /* ── Dark strip between products and blog ── */
+    .dark-strip{
+      background:#111; color:#fff;
+      padding:72px 0;
+      text-align:center;
+    }
+    .dark-strip .ds-label{
+      font-size:12px; letter-spacing:3px; text-transform:uppercase; color:#666; margin-bottom:20px;
+    }
+    .dark-strip .ds-headline{
+      font-size:clamp(28px,4vw,52px); font-weight:800; letter-spacing:-1px; line-height:1.1;
+      color:#fff; max-width:700px; margin:0 auto 24px;
+    }
+    .dark-strip .ds-headline .acc{ color:#00f5d4; }
+    .dark-strip .ds-sub{
+      font-size:16px; color:#888; max-width:560px; margin:0 auto; line-height:1.75;
+    }
 
     .values-list{ margin-top:0; border-top:1px solid var(--line); }
     .value-row{
@@ -1127,6 +1155,15 @@
       <img id="lbImg" src="" alt="תמונה מוגדלת">
     </div>
     <div class="lightbox-counter" id="lbCounter"></div>
+  </div>
+
+  <!-- Dark strip between products and blog -->
+  <div class="dark-strip">
+    <div class="wrap">
+      <div class="ds-label">תובנות ומחקר</div>
+      <h2 class="ds-headline">מה שהנתונים אומרים על <span class="acc">אוטומציה עסקית</span></h2>
+      <p class="ds-sub">מחקרים מובילים מ-McKinsey, Forrester וגארטנר מצביעים על מגמה אחת ברורה: העסקים שמטמיעים אוטומציה חכמה צומחים מהר יותר.</p>
+    </div>
   </div>
 
   <!-- ══ BLOG SECTION ══ -->
