@@ -794,51 +794,68 @@
       *{ animation:none!important; transition:none!important; }
     }
     /* ── Blog ── */
-    .blog-grid{
-      display:grid; grid-template-columns:repeat(2,1fr);
-      gap:2px; background:var(--line);
-      border:1px solid var(--line);
-    }
-    @media(max-width:800px){ .blog-grid{ grid-template-columns:1fr; } }
+    .blog-grid{ display:flex; flex-direction:column; gap:0; }
     .blog-card{
-      background:var(--black); padding:40px 36px;
-      display:flex; flex-direction:column; gap:18px;
+      display:grid; grid-template-columns:80px 1fr;
+      gap:0; border-bottom:1px solid var(--line);
       transition:background .3s;
     }
     .blog-card:hover{ background:var(--ink); }
-    .blog-meta{
-      display:flex; align-items:center; gap:14px;
+    .blog-card:first-child{ border-top:1px solid var(--line); }
+
+    .blog-num{
+      padding:44px 0 44px 0;
+      display:flex; align-items:flex-start; justify-content:center;
+      padding-top:48px;
+      border-left:1px solid var(--line);
     }
+    .blog-num span{
+      font-size:12px; font-weight:700; letter-spacing:2px;
+      color:var(--line); writing-mode:vertical-rl;
+      transform:rotate(180deg);
+    }
+
+    .blog-inner{
+      padding:44px 48px 48px 0;
+      display:flex; flex-direction:column; gap:20px;
+    }
+    .blog-meta{ display:flex; align-items:center; gap:16px; }
     .blog-cat{
-      font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+      font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;
       color:var(--accent);
     }
-    .blog-date{
-      font-size:12px; color:var(--fog); font-weight:400;
-    }
+    .blog-date{ font-size:12px; color:var(--fog); }
+    .blog-read{ font-size:12px; color:var(--fog); }
+
     .blog-title{
-      font-size:20px; font-weight:800; color:var(--white);
-      line-height:1.3; letter-spacing:-.3px; margin:0;
+      font-size:clamp(22px,2.5vw,30px); font-weight:800; color:var(--white);
+      line-height:1.2; letter-spacing:-.5px; margin:0;
     }
     .blog-body{
-      font-size:15px; color:var(--silver); line-height:1.9;
-      font-weight:400; margin:0;
+      font-size:16px; color:var(--silver); line-height:1.95;
+      font-weight:400; margin:0; max-width:780px;
     }
     .blog-body strong{ color:var(--white); font-weight:700; }
     .blog-body em{ font-style:italic; color:var(--mute); }
     .blog-quote{
       border-right:3px solid var(--accent);
-      padding:16px 20px;
-      background:var(--panel);
-      margin:0;
+      padding:20px 24px; background:var(--panel); margin:0;
+      max-width:700px;
     }
     .blog-quote p{
-      font-size:14px; font-style:italic; color:var(--silver);
-      line-height:1.85; margin:0 0 10px; font-weight:400;
+      font-size:15px; font-style:italic; color:var(--silver);
+      line-height:1.9; margin:0 0 12px; font-weight:400;
     }
     .blog-quote cite{
       font-size:12px; font-weight:700; color:var(--accent);
       letter-spacing:.5px; font-style:normal;
+    }
+    .blog-footer-row{
+      display:flex; align-items:center; gap:12px; padding-top:4px;
+    }
+    .blog-tag{
+      font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+      color:var(--fog); border:1px solid var(--line); padding:4px 10px;
     }
 
     /* also fix footer link color */
@@ -904,8 +921,8 @@
   <div class="stats-bar">
     <div class="stats-inner">
       <div class="stat-box reveal">
-        <div class="stat-n">500<span class="acc">+</span></div>
-        <div class="stat-l">שעות חודשיות שהוחזרו לצוות - במקום עבודה שחורה</div>
+        <div class="stat-n">3<span class="acc">x</span></div>
+        <div class="stat-l">תשואה ממוצעת על ההשקעה אצל לקוחותינו תוך 90 יום</div>
       </div>
       <div class="stat-box reveal">
         <div class="stat-n"><span class="acc">0</span> %</div>
@@ -1126,77 +1143,114 @@
 
         <!-- Article 1 -->
         <article class="blog-card reveal">
-          <div class="blog-meta">
-            <span class="blog-cat">מדידה ו-ROI</span>
-            <span class="blog-date">יולי 2026</span>
+          <div class="blog-num"><span>01 — יולי 2026</span></div>
+          <div class="blog-inner">
+            <div class="blog-meta">
+              <span class="blog-cat">מדידה ו-ROI</span>
+              <span class="blog-read">5 דק' קריאה</span>
+            </div>
+            <h3 class="blog-title">50% מתקציב הפרסום הולך לפח - ולא יודעים איזה 50%</h3>
+            <p class="blog-body">כבר ב-1885 אמר ג'ון ונמייקר, מגדולי הקמעונאים האמריקאים, את המשפט שמלווה את עולם השיווק עד היום: <em>"Half the money I spend on advertising is wasted; the trouble is I don't know which half."</em> יותר ממאה שנה לאחר מכן, מחקר של <strong>McKinsey &amp; Company</strong> מ-2024 מצא שרק 26% מהמשווקים יכולים לאמוד את ה-ROI של קמפיין בתוך 24 שעות מסיומו. השאר מחכים שבועות - ועד אז כבר לא ניתן לתקן כלום.</p>
+            <blockquote class="blog-quote">
+              <p>"Measurement is the first step that leads to control and eventually to improvement. If you can't measure something, you can't understand it. If you can't understand it, you can't control it."</p>
+              <cite>— ג'יימס הרינגטון, לשעבר מנהל איכות ב-IBM</cite>
+            </blockquote>
+            <p class="blog-body">פלטפורמות כמו Google ו-Meta מציעות כלי מדידה חינמיים, אך הם מיועדים לשרת את האינטרסים שלהן - לא שלכם. מדידה עצמאית, שנשלטת על ידי בעל העסק, היא ההבדל בין להיות לקוח של הפלטפורמה לבין להיות הבעלים של הנתונים.</p>
+            <div class="blog-footer-row">
+              <span class="blog-tag">McKinsey 2024</span>
+              <span class="blog-tag">ROI</span>
+            </div>
           </div>
-          <h3 class="blog-title">50% מתקציב הפרסום הולך לפח - ולא יודעים איזה 50%</h3>
-          <p class="blog-body">כבר ב-1885 אמר ג'ון ונמייקר, מגדולי הקמעונאים האמריקאים, את המשפט שמלווה את עולם השיווק עד היום: <em>"Half the money I spend on advertising is wasted; the trouble is I don't know which half."</em> יותר ממאה שנה לאחר מכן, מחקר של <strong>McKinsey &amp; Company</strong> מ-2024 מצא שרק 26% מהמשווקים יכולים לאמוד את ה-ROI של קמפיין בתוך 24 שעות מסיומו. השאר מחכים שבועות - ועד אז כבר לא ניתן לתקן כלום.</p>
-          <blockquote class="blog-quote">
-            <p>"Measurement is the first step that leads to control and eventually to improvement. If you can't measure something, you can't understand it. If you can't understand it, you can't control it."</p>
-            <cite>— ג'יימס הרינגטון, לשעבר מנהל איכות ב-IBM</cite>
-          </blockquote>
-          <p class="blog-body">פלטפורמות כמו Google ו-Meta מציעות כלי מדידה חינמיים, אך הם מיועדים לשרת את האינטרסים שלהן - לא שלכם. מדידה עצמאית, שנשלטת על ידי בעל העסק, היא ההבדל בין להיות לקוח של הפלטפורמה לבין להיות הבעלים של הנתונים.</p>
         </article>
 
         <!-- Article 2 -->
         <article class="blog-card reveal">
-          <div class="blog-meta">
-            <span class="blog-cat">טרנד גלובלי</span>
-            <span class="blog-date">יוני 2026</span>
+          <div class="blog-num"><span>02 — יוני 2026</span></div>
+          <div class="blog-inner">
+            <div class="blog-meta">
+              <span class="blog-cat">טרנד גלובלי</span>
+              <span class="blog-read">4 דק' קריאה</span>
+            </div>
+            <h3 class="blog-title">סוכנויות שיווק שנותנות שקיפות מלאה ללקוחות - גדלות פי שניים מהממוצע</h3>
+            <p class="blog-body">דו"ח שפרסם <strong>Forrester Research</strong> ב-2025 חשף נתון מפתיע: סוכנויות שיווק שמעניקות ללקוחותיהן גישה ישירה לנתוני הקמפיינים בזמן אמת מציגות שיעור שימור לקוחות של 89%, לעומת 61% בממוצע הענפי. הסיבה פשוטה: שקיפות יוצרת אמון, ואמון הוא המוצר האמיתי של כל סוכנות.</p>
+            <blockquote class="blog-quote">
+              <p>"The companies that will thrive in the next decade are those that turn data transparency from a threat into a competitive advantage. Your clients don't want to be managed - they want to be partnered."</p>
+              <cite>— מרי מיקר, שותפה ב-Bond Capital ולשעבר אנליסטית מובילה ב-Morgan Stanley</cite>
+            </blockquote>
+            <p class="blog-body">הפתרון המעשי: פורטל לקוח ייעודי, שבו כל אחד רואה את הנתונים שלו בלבד, ומקבל דאשבורד תובנות שמדבר בשפה שלו - לא בז'רגון של מנהל מדיה. הפרדיגמה עוברת מ"אנחנו נדאג לכם" ל-"בואו נראה ביחד מה עובד".</p>
+            <div class="blog-footer-row">
+              <span class="blog-tag">Forrester 2025</span>
+              <span class="blog-tag">שימור לקוחות</span>
+            </div>
           </div>
-          <h3 class="blog-title">סוכנויות שיווק שנותנות שקיפות מלאה ללקוחות - גדלות פי שניים מהממוצע</h3>
-          <p class="blog-body">דו"ח שפרסם <strong>Forrester Research</strong> ב-2025 חשף נתון מפתיע: סוכנויות שיווק שמעניקות ללקוחותיהן גישה ישירה לנתוני הקמפיינים בזמן אמת מציגות שיעור שימור לקוחות של 89%, לעומת 61% בממוצע הענפי. הסיבה פשוטה: שקיפות יוצרת אמון, ואמון הוא המוצר האמיתי של כל סוכנות.</p>
-          <blockquote class="blog-quote">
-            <p>"The companies that will thrive in the next decade are those that turn data transparency from a threat into a competitive advantage. Your clients don't want to be managed - they want to be partnered."</p>
-            <cite>— מרי מיקר, שותפה ב-Bond Capital ולשעבר אנליסטית מוביל ב-Morgan Stanley</cite>
-          </blockquote>
-          <p class="blog-body">הפתרון המעשי: פורטל לקוח ייעודי, שבו כל אחד רואה את הנתונים שלו בלבד, ומקבל דאשבורד תובנות שמדבר בשפה שלו - לא בז'רגון של מנהל מדיה. הפרדיגמה עוברת מ"אנחנו נדאג לכם" ל-"בואו נראה ביחד מה עובד".</p>
         </article>
 
         <!-- Article 3 -->
         <article class="blog-card reveal">
-          <div class="blog-meta">
-            <span class="blog-cat">אוטומציה ו-AI</span>
-            <span class="blog-date">מאי 2026</span>
+          <div class="blog-num"><span>03 — מאי 2026</span></div>
+          <div class="blog-inner">
+            <div class="blog-meta">
+              <span class="blog-cat">אוטומציה ו-AI</span>
+              <span class="blog-read">6 דק' קריאה</span>
+            </div>
+            <h3 class="blog-title">Google Analytics 4 שינה את החוקים - ומרבית העסקים עדיין לא הסתגלו</h3>
+            <p class="blog-body">המעבר מ-Universal Analytics ל-GA4 ב-2023 לא היה רק שינוי טכני - זו הייתה הצהרת כוונות של Google: עולם ה-cookies מסתיים, ומי שלא בונה מדידה עצמאית יאבד את יכולת הניתוח שלו. לפי <strong>Gartner</strong>, ב-2025 יותר מ-70% מהמשווקים מדווחים על קשיים מהותיים במדידת ה-ROI בסביבה ללא cookies.</p>
+            <blockquote class="blog-quote">
+              <p>"AI will not replace marketers, but marketers who use AI will replace those who don't. The data infrastructure you build today is your competitive moat tomorrow."</p>
+              <cite>— סונדר פיצ'אי, מנכ"ל Google ו-Alphabet, Google Marketing Live 2024</cite>
+            </blockquote>
+            <p class="blog-body">חיבור ישיר בין מערכת ניהול הקמפיינים לבין GA4 - שליפה אוטומטית של נתוני צפיות, כניסות והמרות - הוא לא עוד "פיצ'ר נחמד". הוא ההגנה היחידה מפני עיוורון נתונים בעידן הפוסט-cookie.</p>
+            <div class="blog-footer-row">
+              <span class="blog-tag">Gartner 2025</span>
+              <span class="blog-tag">GA4</span>
+              <span class="blog-tag">Post-Cookie</span>
+            </div>
           </div>
-          <h3 class="blog-title">Google Analytics 4 שינה את החוקים - ומרבית העסקים עדיין לא הסתגלו</h3>
-          <p class="blog-body">המעבר מ-Universal Analytics ל-GA4 ב-2023 לא היה רק שינוי טכני - זו הייתה הצהרת כוונות של Google: עולם ה-cookies מסתיים, ומי שלא בונה מדידה עצמונית יאבד את יכולת הניתוח שלו. לפי <strong>Gartner</strong>, ב-2025 יותר מ-70% מהמשווקים מדווחים על קשיים מהותיים במדידת ה-ROI בסביבה ללא cookies.</p>
-          <blockquote class="blog-quote">
-            <p>"AI will not replace marketers, but marketers who use AI will replace those who don't. The data infrastructure you build today is your competitive moat tomorrow."</p>
-            <cite>— סונדר פיצ'אי, מנכ"ל Google ו-Alphabet, הרצאה ב-Google Marketing Live 2024</cite>
-          </blockquote>
-          <p class="blog-body">חיבור ישיר בין מערכת ניהול הקמפיינים לבין GA4 - שליפה אוטומטית של נתוני צפיות, כניסות והמרות - הוא לא עוד "פיצ'ר נחמד". הוא ההגנה היחידה מפני עיוורון נתונים בעידן הפוסט-cookie.</p>
         </article>
 
         <!-- Article 4 -->
         <article class="blog-card reveal">
-          <div class="blog-meta">
-            <span class="blog-cat">אסטרטגיה עסקית</span>
-            <span class="blog-date">אפריל 2026</span>
+          <div class="blog-num"><span>04 — אפריל 2026</span></div>
+          <div class="blog-inner">
+            <div class="blog-meta">
+              <span class="blog-cat">אסטרטגיה עסקית</span>
+              <span class="blog-read">4 דק' קריאה</span>
+            </div>
+            <h3 class="blog-title">White-label: הדרך שבה סוכנויות קטנות מתחרות בגדולות - ומנצחות</h3>
+            <p class="blog-body">בעשור האחרון גדל שוק ה-white-label SaaS ב-340% לפי <strong>Statista</strong>. הסיבה: עסקים קטנים ובינוניים הבינו שהם לא צריכים לפתח תשתית טכנולוגית משלהם כדי להציע ללקוחותיהם פלטפורמה ממותגת מקצועית. הם קונים את הטכנולוגיה, ממתגים אותה, ומוכרים ערך.</p>
+            <blockquote class="blog-quote">
+              <p>"The best businesses are built on borrowed infrastructure and proprietary relationships. Technology is a commodity; trust is not."</p>
+              <cite>— מארק בניוף, מנכ"ל Salesforce, מתוך ספרו "Trailblazer" (2019)</cite>
+            </blockquote>
+            <p class="blog-body">סוכנות שיווק שמציעה ללקוחותיה פלטפורמה ממותגת בשמה - עם לוגו, שם ודאשבורד מותאם - הופכת ממספקת שירות לשותפה אסטרטגית. ההבדל בין 1,000 ₪ לחודש ל-5,000 ₪ לחודש הוא לעתים קרובות רק הפרספקטיבה של הלקוח.</p>
+            <div class="blog-footer-row">
+              <span class="blog-tag">Statista 2024</span>
+              <span class="blog-tag">White-Label</span>
+            </div>
           </div>
-          <h3 class="blog-title">White-label: הדרך שבה סוכנויות קטנות מתחרות בגדולות - ומנצחות</h3>
-          <p class="blog-body">בעשור האחרון גדל שוק ה-white-label SaaS ב-340% לפי <strong>Statista</strong>. הסיבה: עסקים קטנים ובינוניים הבינו שהם לא צריכים לפתח תשתית טכנולוגית משלהם כדי להציע ללקוחותיהם פלטפורמה ממותגת מקצועית. הם קונים את הטכנולוגיה, ממתגים אותה, ומוכרים ערך.</p>
-          <blockquote class="blog-quote">
-            <p>"The best businesses are built on borrowed infrastructure and proprietary relationships. Technology is a commodity; trust is not."</p>
-            <cite>— מארק בניוף, מנכ"ל Salesforce, מתוך ספרו "Trailblazer" (2019)</cite>
-          </blockquote>
-          <p class="blog-body">סוכנות שיווק שמציעה ללקוחותיה פלטפורמה ממותגת בשמה - עם לוגו, שם ודאשבורד מותאם - הופכת ממספקת שירות לשותפה אסטרטגית. ההבדל בין 1,000 ₪ לחודש ל-5,000 ₪ לחודש הוא לעתים קרובות רק הפרספקטיבה של הלקוח.</p>
         </article>
 
         <!-- Article 5 -->
         <article class="blog-card reveal">
-          <div class="blog-meta">
-            <span class="blog-cat">נתוני שוק</span>
-            <span class="blog-date">מרץ 2026</span>
+          <div class="blog-num"><span>05 — מרץ 2026</span></div>
+          <div class="blog-inner">
+            <div class="blog-meta">
+              <span class="blog-cat">נתוני שוק</span>
+              <span class="blog-read">5 דק' קריאה</span>
+            </div>
+            <h3 class="blog-title">ROAS ממוצע לפי ערוץ ב-2025: מה עובד, מה לא, ולמה רוב העסקים מפספסים</h3>
+            <p class="blog-body">מחקר של <strong>Nielsen</strong> מ-2025, שכלל ניתוח של למעלה מ-50,000 קמפיינים בצפון אמריקה ואירופה, מצא את ה-ROAS הממוצע לפי ערוץ: גוגל סרץ' - 4.6x, מטא - 3.8x, טיקטוק - 2.9x, מייל מרקטינג - 8.1x. הממצא המפתיע: עסקים שעקבו אחר הנתונים בצורה שיטתית השיגו ROAS גבוה ב-34% בממוצע מאלו שלא - עם אותו תקציב בדיוק.</p>
+            <blockquote class="blog-quote">
+              <p>"In God we trust. All others must bring data."</p>
+              <cite>— וו. אדוארדס דמינג, פיזיקאי ומהנדס ניהול, מאבות מהפכת האיכות ביפן</cite>
+            </blockquote>
+            <p class="blog-body">הנתונים קיימים - בגוגל אנליטיקס, בלוחות הקמפיינים, בגיליונות האקסל המפוזרים. השאלה היא רק אם יש מערכת אחת שמרכזת אותם, מחשבת את ה-ROAS בזמן אמת, ומפיקה מסקנות ישימות. בלי מרכוז, הנתונים הם רק רעש.</p>
+            <div class="blog-footer-row">
+              <span class="blog-tag">Nielsen 2025</span>
+              <span class="blog-tag">ROAS</span>
+              <span class="blog-tag">ביצועי ערוצים</span>
+            </div>
           </div>
-          <h3 class="blog-title">ROAS ממוצע לפי ערוץ ב-2025: מה עובד, מה לא, ולמה רוב העסקים מפספסים</h3>
-          <p class="blog-body">מחקר של <strong>Nielsen</strong> מ-2025, שכלל ניתוח של למעלה מ-50,000 קמפיינים בצפון אמריקה ואירופה, מצא את ה-ROAS הממוצע לפי ערוץ: גוגל סרץ' - 4.6x, מטא (פייסבוק+אינסטגרם) - 3.8x, טיקטוק - 2.9x, מייל מרקטינג - 8.1x. הממצא המפתיע: עסקים שעקבו אחר הנתונים בצורה שיטתית השיגו ROAS גבוה ב-34% בממוצע מאלו שלא - עם אותו תקציב בדיוק.</p>
-          <blockquote class="blog-quote">
-            <p>"In God we trust. All others must bring data."</p>
-            <cite>— וו. אדוארדס דמינג, פיזיקאי ומהנדס ניהול, מאבות מהפכת האיכות ביפן</cite>
-          </blockquote>
-          <p class="blog-body">הנתונים קיימים - בגוגל אנליטיקס, בלוחות הקמפיינים, בגיליונות האקסל המפוזרים. השאלה היא רק אם יש מערכת אחת שמרכזת אותם, מחשבת את ה-ROAS בזמן אמת, ומפיקה מסקנות ישימות. בלי מרכוז, הנתונים הם רק רעש.</p>
         </article>
 
       </div><!-- /blog-grid -->
