@@ -304,8 +304,14 @@
     #about .kicker{ color:#888; }
     #about .kicker .acc{ color:#00c4a8; }
     #about .h2{ color:#111; }
+    #about .h2 .thin{ color:#333; }
     #about .lead{ color:#444 !important; }
-    #about .about-copy p { color:#333; }
+    #about .about-copy p { color:#333 !important; }
+    #about h5 { color:#444 !important; }
+    #about .value-title{ color:#111 !important; }
+    #about .value-desc{ color:#555 !important; }
+    #about .value-ic svg{ stroke:#333; }
+    #about .value-row{ border-color:#ddd; }
 
     /* ── About ── */
     .about-grid{ display:grid; grid-template-columns:1.2fr .8fr; gap:80px; align-items:start; }
@@ -327,6 +333,45 @@
       color:var(--accent); margin:0 0 18px; display:block;
     }
     .quote-text{ font-size:14px; color:#555; font-weight:400; line-height:1.9; font-style:italic; }
+    /* ── Section transitions: fade edges between dark↔light ── */
+    /* dark→light: top of light section fades from dark */
+    #about::before,
+    #products::before {
+      content:'';
+      display:block;
+      height:60px;
+      margin-bottom:-60px;
+      background:linear-gradient(to bottom, #060913, #f5f4f1);
+      pointer-events:none;
+    }
+    /* light→dark: bottom of light section fades to dark */
+    #about::after {
+      content:'';
+      display:block;
+      height:60px;
+      margin-top:-60px;
+      background:linear-gradient(to bottom, #f5f4f1, #060913);
+      pointer-events:none;
+    }
+    /* light→dark strip */
+    #products::after {
+      content:'';
+      display:block;
+      height:60px;
+      margin-top:-60px;
+      background:linear-gradient(to bottom, #f5f4f1, #111);
+      pointer-events:none;
+    }
+    /* dark strip → light blog */
+    .dark-strip::after {
+      content:'';
+      display:block;
+      height:60px;
+      margin-top:-60px;
+      background:linear-gradient(to bottom, #111, #f5f4f1);
+      pointer-events:none;
+    }
+
     /* ── Dark strip between products and blog ── */
     .dark-strip{
       background:#111; color:#fff;
