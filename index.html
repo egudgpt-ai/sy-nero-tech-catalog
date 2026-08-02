@@ -1041,6 +1041,231 @@
 
     /* also fix footer link color */
     .foot-links a{ font-size:14px; color:var(--mute); transition:color .3s; }
+
+  /* ══ DIAGNOSIS CALCULATOR ══ */
+  #diagnosis{
+    background:var(--ink);
+    padding:100px 0 120px;
+    position:relative;
+    overflow:hidden;
+  }
+  #diagnosis::before{
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse 60% 50% at 20% 50%, rgba(0,245,212,.06) 0%, transparent 70%),
+               radial-gradient(ellipse 50% 60% at 80% 30%, rgba(0,245,212,.04) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .diag-wrap{
+    max-width:820px; margin:0 auto; padding:0 24px;
+  }
+  .diag-eyebrow{
+    font-size:11px; font-weight:700; letter-spacing:4px;
+    color:var(--accent); text-transform:uppercase; text-align:center;
+    margin-bottom:16px;
+  }
+  .diag-title{
+    font-size:clamp(1.6rem,3vw,2.4rem); font-weight:800;
+    color:var(--silver); text-align:center; line-height:1.25;
+    letter-spacing:-.02em; margin:0 0 12px;
+  }
+  .diag-sub{
+    text-align:center; color:var(--fog); font-size:.95rem;
+    max-width:560px; margin:0 auto 52px; line-height:1.65;
+  }
+  /* progress bar */
+  .diag-progress{
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:40px; direction:rtl;
+  }
+  .diag-step-dot{
+    width:28px; height:28px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:700; flex-shrink:0;
+    background:var(--panel); border:1px solid var(--line);
+    color:var(--fog); transition:all .3s;
+  }
+  .diag-step-dot.active{
+    background:var(--accent); color:#060913; border-color:var(--accent);
+    box-shadow:0 0 14px rgba(0,245,212,.4);
+  }
+  .diag-step-dot.done{
+    background:rgba(0,245,212,.15); color:var(--accent); border-color:rgba(0,245,212,.3);
+  }
+  .diag-step-line{
+    flex:1; height:1px; background:var(--line);
+    position:relative; overflow:hidden;
+  }
+  .diag-step-line::after{
+    content:''; position:absolute; inset:0;
+    background:var(--accent); transform:scaleX(0);
+    transform-origin:right; transition:transform .4s ease;
+  }
+  .diag-step-line.done::after{ transform:scaleX(1); }
+
+  /* card */
+  .diag-card{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:16px; padding:36px 40px 40px;
+    display:none;
+  }
+  .diag-card.active{ display:block; animation:fadeSlide .35s ease; }
+  @keyframes fadeSlide{
+    from{ opacity:0; transform:translateY(14px); }
+    to  { opacity:1; transform:translateY(0); }
+  }
+  .diag-q{
+    font-size:1.15rem; font-weight:700; color:var(--silver);
+    margin:0 0 8px; line-height:1.4;
+  }
+  .diag-hint{
+    font-size:.82rem; color:var(--fog); margin:0 0 28px;
+  }
+  /* option grid */
+  .diag-options{
+    display:grid; gap:10px;
+  }
+  .diag-options.cols2{ grid-template-columns:1fr 1fr; }
+  .diag-opt{
+    display:flex; align-items:flex-start; gap:12px;
+    background:var(--ink); border:1.5px solid var(--line);
+    border-radius:10px; padding:14px 16px; cursor:pointer;
+    transition:all .2s; text-align:right;
+  }
+  .diag-opt:hover{ border-color:rgba(0,245,212,.4); background:rgba(0,245,212,.05); }
+  .diag-opt.selected{
+    border-color:var(--accent); background:rgba(0,245,212,.08);
+    box-shadow:0 0 0 1px rgba(0,245,212,.2);
+  }
+  .diag-opt-icon{
+    font-size:1.3rem; flex-shrink:0; margin-top:1px;
+  }
+  .diag-opt-label{
+    font-size:.9rem; font-weight:600; color:var(--silver); margin-bottom:2px;
+  }
+  .diag-opt-desc{
+    font-size:.78rem; color:var(--fog); line-height:1.45;
+  }
+  /* nav buttons */
+  .diag-nav{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:28px; direction:rtl;
+  }
+  .diag-btn{
+    padding:11px 28px; border-radius:8px; font-size:.88rem;
+    font-weight:700; cursor:pointer; transition:all .2s; border:none;
+    font-family:inherit;
+  }
+  .diag-btn-next{
+    background:var(--accent); color:#060913;
+  }
+  .diag-btn-next:hover{ filter:brightness(1.1); }
+  .diag-btn-back{
+    background:transparent; color:var(--fog);
+    border:1px solid var(--line);
+  }
+  .diag-btn-back:hover{ color:var(--silver); border-color:var(--fog); }
+  .diag-q-counter{ font-size:.8rem; color:var(--fog); }
+
+  /* ── results ── */
+  #diag-results{ display:none; }
+  #diag-results.active{ display:block; animation:fadeSlide .5s ease; }
+  .diag-results-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:20px;
+  }
+  .res-panel{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:16px; padding:28px;
+  }
+  .res-panel.full{ grid-column:1/-1; }
+  .res-label{
+    font-size:10px; font-weight:700; letter-spacing:3px;
+    color:var(--accent); text-transform:uppercase; margin-bottom:16px;
+  }
+  /* score gauge */
+  .gauge-wrap{
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .gauge-svg{ width:180px; height:100px; overflow:visible; }
+  .gauge-track{ fill:none; stroke:var(--line); stroke-width:14; }
+  .gauge-fill{
+    fill:none; stroke:var(--accent); stroke-width:14;
+    stroke-linecap:round;
+    stroke-dasharray:283; stroke-dashoffset:283;
+    transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.3,1);
+  }
+  .gauge-score{
+    font-size:2.6rem; font-weight:900; color:var(--silver);
+    letter-spacing:-.04em; line-height:1;
+  }
+  .gauge-tag{
+    font-size:.78rem; font-weight:600; color:var(--accent);
+    background:rgba(0,245,212,.12); padding:3px 10px; border-radius:20px;
+  }
+  /* category bars */
+  .cat-list{ display:flex; flex-direction:column; gap:14px; }
+  .cat-row{ display:flex; flex-direction:column; gap:5px; }
+  .cat-row-head{
+    display:flex; justify-content:space-between;
+    font-size:.82rem; color:var(--fog);
+  }
+  .cat-row-head strong{ color:var(--silver); }
+  .cat-bar-bg{
+    height:7px; background:var(--ink); border-radius:4px; overflow:hidden;
+  }
+  .cat-bar-fill{
+    height:100%; border-radius:4px;
+    background:linear-gradient(to left, var(--accent), rgba(0,245,212,.5));
+    width:0%; transition:width 1.2s cubic-bezier(.2,.8,.3,1);
+  }
+  /* savings */
+  .savings-row{
+    display:flex; gap:20px; justify-content:center; flex-wrap:wrap;
+  }
+  .saving-item{
+    text-align:center; flex:1; min-width:120px;
+  }
+  .saving-num{
+    font-size:2rem; font-weight:900; color:var(--accent);
+    letter-spacing:-.03em; line-height:1.1;
+  }
+  .saving-label{ font-size:.78rem; color:var(--fog); margin-top:4px; }
+  /* recommendations */
+  .rec-list{ display:flex; flex-direction:column; gap:12px; }
+  .rec-item{
+    display:flex; gap:14px; align-items:flex-start;
+    padding:14px 16px; background:var(--ink);
+    border-radius:10px; border:1px solid var(--line);
+  }
+  .rec-icon{
+    font-size:1.3rem; flex-shrink:0;
+  }
+  .rec-title{ font-size:.88rem; font-weight:700; color:var(--silver); margin-bottom:3px; }
+  .rec-desc{ font-size:.78rem; color:var(--fog); line-height:1.5; }
+  /* CTA */
+  .diag-cta{
+    margin-top:28px; text-align:center;
+  }
+  .diag-cta-btn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--accent); color:#060913;
+    padding:16px 36px; border-radius:10px;
+    font-size:1rem; font-weight:800; cursor:pointer;
+    border:none; font-family:inherit;
+    transition:all .2s; box-shadow:0 0 24px rgba(0,245,212,.25);
+  }
+  .diag-cta-btn:hover{ filter:brightness(1.08); transform:translateY(-2px); box-shadow:0 6px 30px rgba(0,245,212,.35); }
+  .diag-cta-sub{ font-size:.8rem; color:var(--fog); margin-top:10px; }
+  .diag-restart{
+    background:transparent; border:none; color:var(--fog);
+    font-size:.8rem; cursor:pointer; margin-top:8px;
+    text-decoration:underline; font-family:inherit;
+  }
+  @media(max-width:640px){
+    .diag-results-grid{ grid-template-columns:1fr; }
+    .diag-options.cols2{ grid-template-columns:1fr; }
+    .diag-card{ padding:24px 20px; }
+  }
   </style>
 </head>
 
@@ -1058,6 +1283,7 @@
       <nav class="nav-links">
         <a href="#about">אודות</a>
         <a href="#products">שירותים</a>
+        <a href="#diagnosis">אבחון</a>
         <a href="#blog">מאמרים</a>
         <a href="https://sy-nero.com/" target="_blank">האתר הראשי</a>
       </nav>
@@ -1353,6 +1579,432 @@
     </div>
     <div class="lightbox-counter" id="lbCounter"></div>
   </div>
+
+  <!-- ══ DIAGNOSIS CALCULATOR ══ -->
+  <section id="diagnosis">
+    <div class="diag-wrap">
+      <div class="diag-eyebrow">אבחון טכנולוגי חינמי</div>
+      <h2 class="diag-title">איפה העסק שלך <span class="acc">תקוע</span> טכנולוגית?</h2>
+      <p class="diag-sub">6 שאלות קצרות - וקבל תמונה מלאה של כמה זמן וכסף אתה מפסיד, ואיפה אוטומציה תשנה הכל.</p>
+
+      <!-- progress -->
+      <div class="diag-progress" id="diagProgress">
+        <div class="diag-step-dot active" id="dot0">1</div>
+        <div class="diag-step-line" id="line0"></div>
+        <div class="diag-step-dot" id="dot1">2</div>
+        <div class="diag-step-line" id="line1"></div>
+        <div class="diag-step-dot" id="dot2">3</div>
+        <div class="diag-step-line" id="line2"></div>
+        <div class="diag-step-dot" id="dot3">4</div>
+        <div class="diag-step-line" id="line3"></div>
+        <div class="diag-step-dot" id="dot4">5</div>
+        <div class="diag-step-line" id="line4"></div>
+        <div class="diag-step-dot" id="dot5">6</div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="diag-card active" id="dq0">
+        <div class="diag-q">כמה אנשים בצוות שלך?</div>
+        <div class="diag-hint">עוזר לנו לכייל את ההמלצות לפי הגודל</div>
+        <div class="diag-options cols2">
+          <div class="diag-opt" data-q="0" data-val="40" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">👤</span>
+            <div><div class="diag-opt-label">רק אני</div><div class="diag-opt-desc">סולו / פרילנסר</div></div>
+          </div>
+          <div class="diag-opt" data-q="0" data-val="60" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">👥</span>
+            <div><div class="diag-opt-label">2-5 עובדים</div><div class="diag-opt-desc">צוות קטן</div></div>
+          </div>
+          <div class="diag-opt" data-q="0" data-val="80" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">🏢</span>
+            <div><div class="diag-opt-label">6-20 עובדים</div><div class="diag-opt-desc">עסק בצמיחה</div></div>
+          </div>
+          <div class="diag-opt" data-q="0" data-val="100" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">🏭</span>
+            <div><div class="diag-opt-label">20+ עובדים</div><div class="diag-opt-desc">ארגון מבוסס</div></div>
+          </div>
+        </div>
+        <div class="diag-nav">
+          <button class="diag-btn diag-btn-next" onclick="nextStep()">הבא ←</button>
+          <span class="diag-q-counter">1 מתוך 6</span>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="diag-card" id="dq1">
+        <div class="diag-q">איך אתה מנהל לידים ולקוחות פוטנציאליים?</div>
+        <div class="diag-hint">ניהול לידים = כסף על הרצפה אם לא עושים את זה נכון</div>
+        <div class="diag-options">
+          <div class="diag-opt" data-q="1" data-val="10" data-cat="crm" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">📋</span>
+            <div><div class="diag-opt-label">אקסל / גיליון</div><div class="diag-opt-desc">רושם ידנית, מחפש בין שורות</div></div>
+          </div>
+          <div class="diag-opt" data-q="1" data-val="35" data-cat="crm" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">📱</span>
+            <div><div class="diag-opt-label">WhatsApp / פתקים</div><div class="diag-opt-desc">הכל בצ'אטים, לא מרוכז</div></div>
+          </div>
+          <div class="diag-opt" data-q="1" data-val="65" data-cat="crm" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">💼</span>
+            <div><div class="diag-opt-label">CRM בסיסי</div><div class="diag-opt-desc">מערכת יש, אבל מזינים ידנית</div></div>
+          </div>
+          <div class="diag-opt" data-q="1" data-val="95" data-cat="crm" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">⚡</span>
+            <div><div class="diag-opt-label">CRM אוטומטי</div><div class="diag-opt-desc">ליד נכנס - נשמר לבד, מסווג לבד</div></div>
+          </div>
+        </div>
+        <div class="diag-nav">
+          <button class="diag-btn diag-btn-next" onclick="nextStep()">הבא ←</button>
+          <button class="diag-btn diag-btn-back" onclick="prevStep()">→ חזור</button>
+          <span class="diag-q-counter">2 מתוך 6</span>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="diag-card" id="dq2">
+        <div class="diag-q">מה קורה אחרי שליד או לקוח מתעניין?</div>
+        <div class="diag-hint">פולואפ מהיר = פי 3 יותר סגירות</div>
+        <div class="diag-options">
+          <div class="diag-opt" data-q="2" data-val="10" data-cat="followup" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">😅</span>
+            <div><div class="diag-opt-label">זוכר לחזור... לפעמים</div><div class="diag-opt-desc">תלוי בזיכרון ובעומס</div></div>
+          </div>
+          <div class="diag-opt" data-q="2" data-val="40" data-cat="followup" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">📅</span>
+            <div><div class="diag-opt-label">תזכורות ידניות ביומן</div><div class="diag-opt-desc">מוסיף תזכורת לכל ליד</div></div>
+          </div>
+          <div class="diag-opt" data-q="2" data-val="70" data-cat="followup" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">📧</span>
+            <div><div class="diag-opt-label">תבניות מוכנות</div><div class="diag-opt-desc">שולח ידנית אבל עם תבניות</div></div>
+          </div>
+          <div class="diag-opt" data-q="2" data-val="98" data-cat="followup" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">🤖</span>
+            <div><div class="diag-opt-label">אוטומציה מלאה</div><div class="diag-opt-desc">סדרת מיילים/וואצאפ יוצאת לבד</div></div>
+          </div>
+        </div>
+        <div class="diag-nav">
+          <button class="diag-btn diag-btn-next" onclick="nextStep()">הבא ←</button>
+          <button class="diag-btn diag-btn-back" onclick="prevStep()">→ חזור</button>
+          <span class="diag-q-counter">3 מתוך 6</span>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="diag-card" id="dq3">
+        <div class="diag-q">כמה זמן שבועי הולך על דוחות ועדכוני נתונים?</div>
+        <div class="diag-hint">זמן שאפשר להחזיר לעסק</div>
+        <div class="diag-options cols2">
+          <div class="diag-opt" data-q="3" data-val="95" data-cat="reports" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">✅</span>
+            <div><div class="diag-opt-label">אפס - הכל אוטומטי</div><div class="diag-opt-desc">דוחות יוצאים לבד</div></div>
+          </div>
+          <div class="diag-opt" data-q="3" data-val="65" data-cat="reports" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">⏱️</span>
+            <div><div class="diag-opt-label">שעה-שתיים</div><div class="diag-opt-desc">מעדכן, מסכם, שולח</div></div>
+          </div>
+          <div class="diag-opt" data-q="3" data-val="30" data-cat="reports" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">⏰</span>
+            <div><div class="diag-opt-label">3-6 שעות</div><div class="diag-opt-desc">הרבה עבודה ידנית</div></div>
+          </div>
+          <div class="diag-opt" data-q="3" data-val="5" data-cat="reports" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">🔥</span>
+            <div><div class="diag-opt-label">יום שלם+</div><div class="diag-opt-desc">בלוע בגיליונות</div></div>
+          </div>
+        </div>
+        <div class="diag-nav">
+          <button class="diag-btn diag-btn-next" onclick="nextStep()">הבא ←</button>
+          <button class="diag-btn diag-btn-back" onclick="prevStep()">→ חזור</button>
+          <span class="diag-q-counter">4 מתוך 6</span>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="diag-card" id="dq4">
+        <div class="diag-q">כמה מהר לקוחות מקבלים מענה לפנייה?</div>
+        <div class="diag-hint">74% מהלקוחות קונים מהמתחרה אם לא עונים תוך שעה</div>
+        <div class="diag-options">
+          <div class="diag-opt" data-q="4" data-val="98" data-cat="support" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">⚡</span>
+            <div><div class="diag-opt-label">תוך שניות - בוט</div><div class="diag-opt-desc">מענה אוטומטי 24/7</div></div>
+          </div>
+          <div class="diag-opt" data-q="4" data-val="70" data-cat="support" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">🕐</span>
+            <div><div class="diag-opt-label">תוך שעה</div><div class="diag-opt-desc">עונים מהר כשאנחנו זמינים</div></div>
+          </div>
+          <div class="diag-opt" data-q="4" data-val="35" data-cat="support" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">🕐</span>
+            <div><div class="diag-opt-label">כמה שעות עד יום</div><div class="diag-opt-desc">עמוס, לא תמיד אנחנו זמינים</div></div>
+          </div>
+          <div class="diag-opt" data-q="4" data-val="10" data-cat="support" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">😬</span>
+            <div><div class="diag-opt-label">יום+ / לא עקבי</div><div class="diag-opt-desc">לקוחות ממתינים הרבה</div></div>
+          </div>
+        </div>
+        <div class="diag-nav">
+          <button class="diag-btn diag-btn-next" onclick="nextStep()">הבא ←</button>
+          <button class="diag-btn diag-btn-back" onclick="prevStep()">→ חזור</button>
+          <span class="diag-q-counter">5 מתוך 6</span>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="diag-card" id="dq5">
+        <div class="diag-q">איך מתואמות פגישות וחשבוניות אצלך?</div>
+        <div class="diag-hint">תהליכים אלה לוקחים בממוצע 5 שעות בשבוע</div>
+        <div class="diag-options">
+          <div class="diag-opt" data-q="5" data-val="10" data-cat="ops" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">📞</span>
+            <div><div class="diag-opt-label">טלפון + ידני</div><div class="diag-opt-desc">הכל בהתכתבות, חשבוניות בוורד</div></div>
+          </div>
+          <div class="diag-opt" data-q="5" data-val="40" data-cat="ops" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">📊</span>
+            <div><div class="diag-opt-label">מערכת חשבוניות</div><div class="diag-opt-desc">מנפיקים דיגיטלית, פגישות - ידני</div></div>
+          </div>
+          <div class="diag-opt" data-q="5" data-val="72" data-cat="ops" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">📆</span>
+            <div><div class="diag-opt-label">לינק לקביעת פגישה</div><div class="diag-opt-desc">Calendly/דומה, חשבוניות ידני</div></div>
+          </div>
+          <div class="diag-opt" data-q="5" data-val="97" data-cat="ops" onclick="selectOpt(this)">
+            <span class="diag-opt-icon">🤖</span>
+            <div><div class="diag-opt-label">הכל אוטומטי</div><div class="diag-opt-desc">פגישה נקבעת + חשבונית יוצאת לבד</div></div>
+          </div>
+        </div>
+        <div class="diag-nav">
+          <button class="diag-btn diag-btn-next" onclick="showResults()">לתוצאות שלי ←</button>
+          <button class="diag-btn diag-btn-back" onclick="prevStep()">→ חזור</button>
+          <span class="diag-q-counter">6 מתוך 6</span>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div id="diag-results">
+        <div class="diag-results-grid">
+          <!-- Score gauge -->
+          <div class="res-panel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+            <div class="res-label">ציון טכנולוגי כולל</div>
+            <div class="gauge-wrap">
+              <svg class="gauge-svg" viewBox="0 0 200 110">
+                <path class="gauge-track" d="M20,100 A80,80 0 0,1 180,100" />
+                <path class="gauge-fill" id="gaugeFill" d="M20,100 A80,80 0 0,1 180,100" />
+              </svg>
+              <div class="gauge-score" id="gaugeNum">0</div>
+              <div class="gauge-tag" id="gaugeTag">מחשב...</div>
+            </div>
+          </div>
+
+          <!-- Category bars -->
+          <div class="res-panel">
+            <div class="res-label">ציון לפי תחום</div>
+            <div class="cat-list">
+              <div class="cat-row">
+                <div class="cat-row-head"><strong>ניהול לידים / CRM</strong><span id="sc-crm">0%</span></div>
+                <div class="cat-bar-bg"><div class="cat-bar-fill" id="bar-crm"></div></div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-row-head"><strong>פולואפ ותקשורת</strong><span id="sc-followup">0%</span></div>
+                <div class="cat-bar-bg"><div class="cat-bar-fill" id="bar-followup"></div></div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-row-head"><strong>דוחות ואנליטיקס</strong><span id="sc-reports">0%</span></div>
+                <div class="cat-bar-bg"><div class="cat-bar-fill" id="bar-reports"></div></div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-row-head"><strong>שירות לקוחות</strong><span id="sc-support">0%</span></div>
+                <div class="cat-bar-bg"><div class="cat-bar-fill" id="bar-support"></div></div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-row-head"><strong>תפעול ופגישות</strong><span id="sc-ops">0%</span></div>
+                <div class="cat-bar-bg"><div class="cat-bar-fill" id="bar-ops"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Savings -->
+          <div class="res-panel full">
+            <div class="res-label">מה אוטומציה תשנה אצלך</div>
+            <div class="savings-row">
+              <div class="saving-item">
+                <div class="saving-num" id="save-hours">0</div>
+                <div class="saving-label">שעות מוחזרות בשבוע</div>
+              </div>
+              <div class="saving-item">
+                <div class="saving-num" id="save-money">₪0</div>
+                <div class="saving-label">ערך חודשי מוחזר</div>
+              </div>
+              <div class="saving-item">
+                <div class="saving-num" id="save-leads">0%</div>
+                <div class="saving-label">שיפור צפוי בסגירת לידים</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recommendations -->
+          <div class="res-panel full">
+            <div class="res-label">ההמלצות שלנו עבורך</div>
+            <div class="rec-list" id="recList"></div>
+          </div>
+        </div>
+
+        <div class="diag-cta">
+          <button class="diag-cta-btn" id="diagCtaBtn">
+            📅 קביעת פגישת אפיון חינמית
+          </button>
+          <div class="diag-cta-sub">30 דקות - נבנה לך תוכנית אוטומציה מותאמת אישית</div>
+          <br>
+          <button class="diag-restart" onclick="restartDiag()">← התחל אבחון מחדש</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+  // ── Diagnosis Calculator Logic ──
+  const answers = {};
+  let currentStep = 0;
+  const totalSteps = 6;
+
+  function selectOpt(el){
+    const q = el.dataset.q;
+    document.querySelectorAll(`.diag-opt[data-q="${q}"]`).forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    answers[q] = { val: parseInt(el.dataset.val), cat: el.dataset.cat };
+  }
+
+  function nextStep(){
+    if(!answers[currentStep]) return;
+    const card = document.getElementById('dq'+currentStep);
+    card.classList.remove('active');
+    document.getElementById('dot'+currentStep).classList.remove('active');
+    document.getElementById('dot'+currentStep).classList.add('done');
+    if(currentStep < totalSteps-1) document.getElementById('line'+currentStep).classList.add('done');
+    currentStep++;
+    document.getElementById('dq'+currentStep).classList.add('active');
+    document.getElementById('dot'+currentStep).classList.add('active');
+  }
+
+  function prevStep(){
+    const card = document.getElementById('dq'+currentStep);
+    card.classList.remove('active');
+    document.getElementById('dot'+currentStep).classList.remove('active');
+    currentStep--;
+    document.getElementById('dq'+currentStep).classList.add('active');
+    document.getElementById('dot'+currentStep).classList.remove('done');
+    document.getElementById('dot'+currentStep).classList.add('active');
+    if(document.getElementById('line'+currentStep)) document.getElementById('line'+currentStep).classList.remove('done');
+  }
+
+  function showResults(){
+    if(!answers[5]) return;
+    // hide last card
+    document.getElementById('dq5').classList.remove('active');
+    document.getElementById('dot5').classList.remove('active');
+    document.getElementById('dot5').classList.add('done');
+    document.getElementById('line4').classList.add('done');
+    document.getElementById('diagProgress').style.display='none';
+
+    const cats = { crm: answers[1]?.val||50, followup: answers[2]?.val||50, reports: answers[3]?.val||50, support: answers[4]?.val||50, ops: answers[5]?.val||50 };
+    const overall = Math.round(Object.values(cats).reduce((a,b)=>a+b,0)/5);
+    const teamMult = (answers[0]?.val||60)/100;
+
+    // savings
+    const weakScore = (100 - overall)/100;
+    const hoursBack = Math.round(weakScore * 18 * teamMult + 2);
+    const moneyBack = Math.round(hoursBack * 4.3 * 160 / 1000) * 1000;
+    const leadBoost = Math.round(weakScore * 55 + 10);
+
+    const results = document.getElementById('diag-results');
+    results.classList.add('active');
+    results.scrollIntoView({behavior:'smooth', block:'start'});
+
+    // animate gauge
+    setTimeout(()=>{
+      const arc = 283;
+      const offset = arc - (overall/100)*arc;
+      document.getElementById('gaugeFill').style.strokeDashoffset = offset;
+      // color
+      const color = overall >= 70 ? '#00f5d4' : overall >= 40 ? '#f59e0b' : '#ef4444';
+      document.getElementById('gaugeFill').style.stroke = color;
+
+      // count up score
+      let n=0;
+      const t = setInterval(()=>{ n=Math.min(n+2, overall); document.getElementById('gaugeNum').textContent=n; if(n>=overall) clearInterval(t); },18);
+
+      // tag
+      const tag = overall>=80?'מתקדם טכנולוגית':overall>=55?'פוטנציאל גבוה':overall>=35?'יש מה לשפר':'בדחיפות גבוהה';
+      document.getElementById('gaugeTag').textContent=tag;
+
+      // bars
+      Object.entries(cats).forEach(([k,v])=>{
+        setTimeout(()=>{
+          document.getElementById('bar-'+k).style.width=v+'%';
+          document.getElementById('sc-'+k).textContent=v+'%';
+        },200);
+      });
+
+      // counters
+      animCount('save-hours', 0, hoursBack, '', 30);
+      animCount('save-money', 0, moneyBack, '₪', 20, true);
+      animCount('save-leads', 0, leadBoost, '', 25, false, '%');
+
+      // recommendations
+      buildRecs(cats, overall);
+    }, 300);
+
+    // CTA
+    document.getElementById('diagCtaBtn').onclick = ()=>{
+      document.getElementById('contactBtn').click();
+    };
+  }
+
+  function animCount(id, from, to, prefix, speed, comma, suffix){
+    let n=from;
+    const step = Math.ceil((to-from)/40);
+    const el = document.getElementById(id);
+    const t = setInterval(()=>{
+      n = Math.min(n+step, to);
+      let display = comma ? (n>=1000?'₪'+(n/1000).toFixed(0)+'K':'₪'+n) : prefix+n+(suffix||'');
+      el.textContent = display;
+      if(n>=to) clearInterval(t);
+    }, speed);
+  }
+
+  const REC_BANK = {
+    crm:      { icon:'💼', title:'הטמעת CRM אוטומטי',      desc:'כל ליד נכנס נשמר אוטומטית, מסווג ומקבל טיפול - בלי שאיש נגע בו. חוסך 3-4 שעות בשבוע ומונע "נפילת לידים".' },
+    followup: { icon:'🤖', title:'רצף פולואפ אוטומטי',     desc:'סדרת הודעות WhatsApp + מייל יוצאת לכל ליד בתזמון מדויק - גם בחצות, גם בשישי. מעלה סגירות ב-40%.' },
+    reports:  { icon:'📊', title:'דשבורד ודוחות חיים',      desc:'במקום לבלות שעות על גיליונות - דוח שבועי/יומי מגיע אוטומטית למייל, מעודכן בזמן אמת.' },
+    support:  { icon:'💬', title:'בוט שירות לקוחות 24/7',   desc:'עונה ללקוחות תוך שניות בכל שעה - מסנן שאלות, מעביר רק מה שצריך אדם. מפנה 5+ שעות בשבוע.' },
+    ops:      { icon:'📅', title:'אוטומציה תפעולית',        desc:'פגישה נקבעת - לקוח מקבל אישור + תזכורת. פגישה הסתיימה - חשבונית יוצאת. הכל בלי מגע אנושי.' },
+  };
+
+  function buildRecs(cats, overall){
+    const sorted = Object.entries(cats).sort((a,b)=>a[1]-b[1]).slice(0,3);
+    const list = document.getElementById('recList');
+    list.innerHTML = '';
+    sorted.forEach(([k])=>{
+      const r = REC_BANK[k];
+      if(!r) return;
+      list.innerHTML += `<div class="rec-item"><span class="rec-icon">${r.icon}</span><div><div class="rec-title">${r.title}</div><div class="rec-desc">${r.desc}</div></div></div>`;
+    });
+  }
+
+  function restartDiag(){
+    Object.keys(answers).forEach(k=>delete answers[k]);
+    currentStep=0;
+    for(let i=0;i<totalSteps;i++){
+      const card=document.getElementById('dq'+i);
+      if(card){ card.classList.remove('active'); card.querySelectorAll('.diag-opt').forEach(o=>o.classList.remove('selected')); }
+      const dot=document.getElementById('dot'+i);
+      if(dot){ dot.classList.remove('active','done'); }
+      const line=document.getElementById('line'+i);
+      if(line) line.classList.remove('done');
+    }
+    document.getElementById('diag-results').classList.remove('active');
+    document.getElementById('diagProgress').style.display='flex';
+    document.getElementById('dq0').classList.add('active');
+    document.getElementById('dot0').classList.add('active');
+    document.getElementById('diagnosis').scrollIntoView({behavior:'smooth'});
+  }
+  </script>
 
   <!-- Dark strip between products and blog -->
   <div class="dark-strip">
