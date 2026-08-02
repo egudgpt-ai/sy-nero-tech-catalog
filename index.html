@@ -318,6 +318,43 @@
       font-size:clamp(1.3rem,2.5vw,2.1rem); font-weight:700;
       color:#fff; line-height:1.35; letter-spacing:-.02em; max-width:720px;
     }
+
+    /* ── Automation ticker ── */
+    .auto-ticker{
+      position:absolute; bottom:0; left:0; right:0; z-index:2;
+      overflow:hidden; height:40px;
+      border-top:1px solid rgba(0,245,212,.15);
+      background:rgba(6,9,19,.6);
+      display:flex; align-items:center;
+    }
+    @keyframes ticker{
+      0%  { transform:translateX(-50%); }
+      100%{ transform:translateX(0); }
+    }
+    .ticker-track{
+      display:flex; gap:0; white-space:nowrap;
+      animation:ticker 18s linear infinite;
+      will-change:transform;
+    }
+    .ticker-item{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; font-weight:600; letter-spacing:.5px;
+      color:rgba(255,255,255,.55); padding:0 32px;
+      border-left:1px solid rgba(0,245,212,.12);
+    }
+    .ticker-item .t-dot{
+      width:6px; height:6px; border-radius:50%;
+      background:var(--accent); flex-shrink:0;
+      box-shadow:0 0 6px rgba(0,245,212,.7);
+      animation:pulse-dot .9s ease-in-out infinite alternate;
+    }
+    @keyframes pulse-dot{
+      from{ opacity:1; transform:scale(1); }
+      to  { opacity:.4; transform:scale(.7); }
+    }
+    .ticker-item .t-check{
+      color:var(--accent); font-size:13px;
+    }
     .kicker{
       font-size:12px; font-weight:600; letter-spacing:4px; color:var(--fog);
       text-transform:uppercase; margin-bottom:24px;
@@ -479,6 +516,8 @@
       background:#f0f0ee;
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       gap:12px; cursor:pointer; position:relative; overflow:hidden;
+      border:2px solid rgba(0,196,168,.35);
+      box-shadow:0 0 0 1px rgba(0,196,168,.1), inset 0 0 20px rgba(0,196,168,.04);
     }
     .card-demo-preview::before{
       content:''; position:absolute; inset:0;
@@ -1113,6 +1152,26 @@
     <div class="img-divider-content">
       <span class="idc-label">SYNERO TECH</span>
       <p class="idc-text">כל דקה שהצוות שלך מבלה על הקלדות חוזרות - היא דקה שנגנבה מהצמיחה שלך</p>
+    </div>
+    <div class="auto-ticker">
+      <div class="ticker-track">
+        <span class="ticker-item"><span class="t-dot"></span>ליד נכנס — נשמר אוטומטית ב-CRM</span>
+        <span class="ticker-item"><span class="t-check">✓</span>הצעת מחיר נשלחה ללקוח</span>
+        <span class="ticker-item"><span class="t-dot"></span>מייל מעקב פולואפ — נשלח ב-09:00</span>
+        <span class="ticker-item"><span class="t-check">✓</span>תשלום התקבל — קבלה נשלחה אוטומטית</span>
+        <span class="ticker-item"><span class="t-dot"></span>WhatsApp — לקוח קיבל מענה תוך 3 שניות</span>
+        <span class="ticker-item"><span class="t-check">✓</span>דוח שבועי — נוצר ונשלח למנהל</span>
+        <span class="ticker-item"><span class="t-dot"></span>פגישה תואמה ונקבעה ביומן</span>
+        <span class="ticker-item"><span class="t-check">✓</span>קמפיין ROAS 5.8x — נמדד בזמן אמת</span>
+        <span class="ticker-item"><span class="t-dot"></span>ליד נכנס — נשמר אוטומטית ב-CRM</span>
+        <span class="ticker-item"><span class="t-check">✓</span>הצעת מחיר נשלחה ללקוח</span>
+        <span class="ticker-item"><span class="t-dot"></span>מייל מעקב פולואפ — נשלח ב-09:00</span>
+        <span class="ticker-item"><span class="t-check">✓</span>תשלום התקבל — קבלה נשלחה אוטומטית</span>
+        <span class="ticker-item"><span class="t-dot"></span>WhatsApp — לקוח קיבל מענה תוך 3 שניות</span>
+        <span class="ticker-item"><span class="t-check">✓</span>דוח שבועי — נוצר ונשלח למנהל</span>
+        <span class="ticker-item"><span class="t-dot"></span>פגישה תואמה ונקבעה ביומן</span>
+        <span class="ticker-item"><span class="t-check">✓</span>קמפיין ROAS 5.8x — נמדד בזמן אמת</span>
+      </div>
     </div>
   </div>
 
