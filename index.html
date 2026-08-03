@@ -614,7 +614,7 @@
 
     .modal{
       width:min(1020px,100%); max-height:92vh;
-      background:var(--ink); border:1px solid var(--line);
+      background:#161929; border:1px solid var(--line);
       display:flex; flex-direction:column; overflow:hidden;
       box-shadow:0 60px 120px rgba(0,0,0,.9), 0 0 0 1px rgba(0,245,212,.1);
       position:relative;
@@ -656,9 +656,27 @@
       flex:1; overflow-y:auto;
       display:grid; grid-template-columns:1fr 420px;
       align-items:start;
-      scrollbar-width:none;
+      scrollbar-width:thin;
+      scrollbar-color:rgba(0,245,212,.3) transparent;
     }
-    .modal-body::-webkit-scrollbar{ display:none; }
+    .modal-body::-webkit-scrollbar{ width:5px; }
+    .modal-body::-webkit-scrollbar-thumb{ background:rgba(0,245,212,.3); border-radius:4px; }
+    .modal-body::-webkit-scrollbar-track{ background:transparent; }
+    /* scroll hint fade at bottom */
+    .modal-scroll-hint{
+      position:absolute; bottom:0; left:0; right:0; height:60px;
+      background:linear-gradient(to top, #161929 10%, transparent);
+      pointer-events:none; z-index:5;
+      display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px;
+    }
+    .modal-scroll-hint span{
+      font-size:10px; letter-spacing:2px; color:rgba(0,245,212,.5);
+      text-transform:uppercase; animation:bounceY 1.5s ease-in-out infinite;
+    }
+    @keyframes bounceY{
+      0%,100%{ transform:translateY(0); }
+      50%{ transform:translateY(4px); }
+    }
     @media(max-width:860px){ .modal-body{ grid-template-columns:1fr; } }
 
     /* ── Demo layout: full-width top ── */
@@ -1483,7 +1501,8 @@
         <button class="close" id="closeModal" type="button" aria-label="סגירה">×</button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-scroll-hint" id="modalScrollHint"><span>גלול ↓</span></div>
+      <div class="modal-body" id="modalBody" onscroll="this.previousElementSibling.style.opacity=this.scrollTop>40?'0':'1'">
         <!-- Left: description + includes -->
         <div class="modal-left">
           <div>
@@ -2390,8 +2409,7 @@
           "מתאים לכל מי שיוצא מפגישות - ייעוץ, מכירות, ניהול, חשבונאות ועוד"
         ],
         icon: iconMic(),
-        demo: "/assets/recapdemo.html",
-        image: "https://egud.org.il/wp-content/uploads/2026/06/צילום-מסך-5786-10-14-ב-15.11.12.png"
+        demo: "/assets/recapdemo.html"
       },
  
     ];
