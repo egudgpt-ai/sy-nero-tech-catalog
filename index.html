@@ -2496,6 +2496,8 @@
         const g = document.createElement('div');
         g.className = 'grid';
         items.forEach(p => g.appendChild(makeCard(p, q)));
+        const rem = items.length % 3;
+        if(rem > 0){ for(let i=0;i<3-rem;i++){ const ph=document.createElement('div'); ph.style.background='#f5f4f1'; g.appendChild(ph); } }
         sec.appendChild(g);
         servicesContainer.appendChild(sec);
       }
