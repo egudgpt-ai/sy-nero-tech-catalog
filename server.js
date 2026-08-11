@@ -55,6 +55,20 @@ app.post('/send-request', async (req, res) => {
 
   const html = buildHtml({ id, name, short, price, customerEmail, phone, message });
 
+  // Send lead to CRM
+  try {
+    const nameParts = (name || '').trim().split(/\s+/);
+    const firstName = nameParts[0] || name;
+    const lastName  = nameParts.slice(1).join(' ') || '';
+    await fetch('https://app-one-beta-xengw8j0d0.vercel.app/api/ingest/leads', {
+      method: 'POST',
+      headers: { 'X-API-Key': 'ca087981-c22b-444b-b225-75f191ef9ddd', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, lastName, email: customerEmail, phone: phone || '', company: '' }),
+    });
+  } catch (e) {
+    console.error('CRM ingest error:', e.message);
+  }
+
   // Try SMTP first (Gmail app password)
   const smtpUser = process.env.SMTP_USER;
   const smtpPass = process.env.SMTP_PASS;
