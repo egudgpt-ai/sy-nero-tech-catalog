@@ -1293,6 +1293,172 @@
     .card{ border-radius:16px; }
     .modal{ border-radius:20px; }
     .nav-logo img{ height:40px; }
+
+  /* ── Stats strip ── */
+  .stats-strip{
+    background:var(--panel);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:56px 0;
+  }
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+  }
+  .stat-item{
+    text-align:center;
+    padding:24px 16px;
+    position:relative;
+  }
+  .stat-item:not(:last-child)::after{
+    content:'';
+    position:absolute;
+    left:0; top:20%; height:60%;
+    width:1px;
+    background:var(--line);
+  }
+  .stat-num{
+    font-size:clamp(2.4rem,4vw,3.4rem);
+    font-weight:800;
+    color:var(--accent);
+    letter-spacing:-2px;
+    line-height:1;
+    font-variant-numeric:tabular-nums;
+  }
+  .stat-label{
+    margin-top:8px;
+    font-size:14px;
+    color:var(--fog);
+    font-weight:400;
+  }
+  @media(max-width:640px){
+    .stats-grid{ grid-template-columns:repeat(2,1fr); }
+    .stat-item:nth-child(2)::after{ display:none; }
+    .stat-item:nth-child(odd)::after{ display:none; }
+  }
+
+  /* ── Logos marquee ── */
+  .logos-strip{
+    background:var(--ink);
+    border-bottom:1px solid var(--line);
+    padding:32px 0;
+    overflow:hidden;
+  }
+  .logos-strip-label{
+    text-align:center;
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--fog);
+    margin-bottom:28px;
+    opacity:.7;
+  }
+  @keyframes logoScroll{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
+  }
+  .logos-track-wrap{ overflow:hidden; }
+  .logos-track{
+    display:flex;
+    gap:64px;
+    width:max-content;
+    animation:logoScroll 28s linear infinite;
+    align-items:center;
+  }
+  .logos-track:hover{ animation-play-state:paused; }
+  .logo-chip{
+    font-size:15px;
+    font-weight:600;
+    color:rgba(255,255,255,.28);
+    letter-spacing:.5px;
+    white-space:nowrap;
+    transition:color .3s;
+    padding:0 8px;
+  }
+  .logo-chip:hover{ color:rgba(255,255,255,.6); }
+  .logo-sep{
+    color:var(--accent);
+    opacity:.4;
+    font-size:10px;
+  }
+
+  /* ── Testimonials ── */
+  #testimonials{
+    background:#f5f4f1;
+    padding:100px 0;
+  }
+  .testi-head{ text-align:center; margin-bottom:64px; }
+  .testi-head .kicker{ color:#888; font-size:13px; letter-spacing:1px; margin-bottom:12px; }
+  .testi-head .h2{ color:#111; font-size:clamp(1.8rem,3vw,2.6rem); font-weight:800; letter-spacing:-1px; }
+  .testi-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+  .testi-card{
+    background:#ffffff;
+    border-radius:20px;
+    padding:36px 32px;
+    box-shadow:0 4px 32px rgba(0,0,0,.07);
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    transition:transform .3s var(--ease), box-shadow .3s;
+  }
+  .testi-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 48px rgba(0,0,0,.12);
+  }
+  .testi-quote-mark{
+    font-size:56px;
+    line-height:.8;
+    color:var(--accent);
+    font-weight:900;
+    opacity:.6;
+    font-family:Georgia,serif;
+  }
+  .testi-text{
+    color:#3d4166;
+    font-size:15px;
+    line-height:1.75;
+    font-weight:400;
+    flex:1;
+  }
+  .testi-author{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding-top:20px;
+    border-top:1px solid #e8eaf2;
+  }
+  .testi-avatar{
+    width:44px; height:44px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#00f5d4 0%,#00b89c 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px; font-weight:700; color:#060913;
+    flex-shrink:0;
+  }
+  .testi-name{
+    font-size:14px; font-weight:700; color:#1a1d2e;
+  }
+  .testi-role{
+    font-size:12px; color:#888; margin-top:2px;
+  }
+  .testi-stars{
+    display:flex; gap:3px; margin-bottom:4px;
+  }
+  .testi-stars span{ color:#f59e0b; font-size:14px; }
+  @media(max-width:768px){
+    .testi-grid{ grid-template-columns:1fr; }
+  }
+  @media(min-width:769px) and (max-width:1024px){
+    .testi-grid{ grid-template-columns:1fr 1fr; }
+    .testi-card:last-child{ grid-column:span 2; }
+  }
+
   </style>
 </head>
 
@@ -1378,6 +1544,57 @@
   </div>
 
   <!-- About -->
+  <!-- Stats strip -->
+  <div class="stats-strip">
+    <div class="wrap">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-num" data-count="50" data-suffix="+">0</div>
+          <div class="stat-label">פרויקטים הושקו</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="30" data-suffix="+">0</div>
+          <div class="stat-label">לקוחות פעילים</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="98" data-suffix="%">0</div>
+          <div class="stat-label">שביעות רצון</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="3" data-suffix=" שנים">0</div>
+          <div class="stat-label">ניסיון בשוק</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logos marquee -->
+  <div class="logos-strip">
+    <div class="logos-strip-label">חלק מהעסקים שאנחנו עובדים איתם</div>
+    <div class="logos-track-wrap">
+      <div class="logos-track">
+        <span class="logo-chip">BeBeauty</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">קליניקת הצמיחה</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">Studio Pro</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">מדיה לאונה</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">TechBridge</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">Glow Clinic</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">עורכי דין בן-דוד</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">ReachUp Agency</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">LifeSpace</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">BeBeauty</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">קליניקת הצמיחה</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">Studio Pro</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">מדיה לאונה</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">TechBridge</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">Glow Clinic</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">עורכי דין בן-דוד</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">ReachUp Agency</span><span class="logo-sep">◆</span>
+        <span class="logo-chip">LifeSpace</span><span class="logo-sep">◆</span>
+      </div>
+    </div>
+  </div>
+
   <section class="pad" id="about">
     <div class="wrap">
       <div class="about-grid">
@@ -2202,6 +2419,54 @@
     </div>
   </section>
 
+  <!-- Testimonials -->
+  <section id="testimonials">
+    <div class="wrap">
+      <div class="testi-head reveal">
+        <div class="kicker"><span class="acc">◆</span> מה אומרים עלינו</div>
+        <h2 class="h2">לקוחות מספרים</h2>
+      </div>
+      <div class="testi-grid stagger">
+        <div class="testi-card item">
+          <div class="testi-quote-mark">"</div>
+          <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testi-text">לפני שהכנסנו את המערכת, הצוות שלי בזבז שעתיים ביום על הזנת נתונים ידנית. היום זה קורה לבד - כולל הפולואפים, הדוחות וה-CRM. אנשי המכירות מתפנים לשיחות, לא לקלדנות.</p>
+          <div class="testi-author">
+            <div class="testi-avatar">נ</div>
+            <div>
+              <div class="testi-name">נועה כהן</div>
+              <div class="testi-role">מנהלת מכירות · Glow Clinic</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card item">
+          <div class="testi-quote-mark">"</div>
+          <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testi-text">תוך שלושה שבועות ראינו תוצאות - לידים שלא נפלו בין הכיסאות, מעקב אוטומטי שיוצא בדיוק בזמן ודוח שבועי שמגיע לאינבוקס שלי כל ראשון בבוקר. הצוות עשה עבודה יוצאת דופן.</p>
+          <div class="testi-author">
+            <div class="testi-avatar">א</div>
+            <div>
+              <div class="testi-name">אלי ברוך</div>
+              <div class="testi-role">בעלים · Studio Pro</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card item">
+          <div class="testi-quote-mark">"</div>
+          <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testi-text">חיפשנו פתרון שיתאים בדיוק לאיך שהעסק שלנו עובד - לא תבנית גנרית. קיבלנו בדיוק את זה. מערכת שמרגישה כאילו היא תמיד הייתה חלק מהצוות, ותמיכה שתמיד זמינה.</p>
+          <div class="testi-author">
+            <div class="testi-avatar">מ</div>
+            <div>
+              <div class="testi-name">מיכל לוי</div>
+              <div class="testi-role">מייסדת · ReachUp Agency</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <div class="wrap">
       <div class="foot-grid">
@@ -2218,6 +2483,29 @@
   </footer>
 
   <script>
+    /* ── Stats counters ── */
+    const counters = document.querySelectorAll('.stat-num[data-count]');
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(!e.isIntersecting) return;
+        countObserver.unobserve(e.target);
+        const el = e.target;
+        const target = +el.dataset.count;
+        const suffix = el.dataset.suffix || '';
+        const duration = 1400;
+        const step = 16;
+        const steps = duration / step;
+        let current = 0;
+        const inc = target / steps;
+        const timer = setInterval(() => {
+          current = Math.min(current + inc, target);
+          el.textContent = Math.round(current) + suffix;
+          if(current >= target) clearInterval(timer);
+        }, step);
+      });
+    }, { threshold: .5 });
+    counters.forEach(el => countObserver.observe(el));
+
     /* ── Scroll reveal ── */
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
