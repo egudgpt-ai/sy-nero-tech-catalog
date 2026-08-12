@@ -513,95 +513,128 @@
     @media(max-width:640px){ .grid{ grid-template-columns:1fr; } }
 
     /* Card */
+    /* ── Card system ── */
     .card{
       position:relative;
-      background:#fff;
-      padding:36px 30px;
-      display:flex; flex-direction:column; gap:0;
+      background:#ffffff;
+      border:1px solid #eaecf5;
+      padding:0;
+      display:flex; flex-direction:column;
       cursor:pointer;
-      transition:background .3s, transform .3s;
+      transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s;
       overflow:hidden;
     }
-    .card::after{
-      content:""; position:absolute; top:0; right:0; left:0; height:3px;
-      background:#00c4a8; transform:scaleX(0); transform-origin:right;
-      transition:transform .4s var(--ease);
+    .card::before{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(135deg, rgba(0,196,168,.03) 0%, transparent 60%);
+      opacity:0; transition:opacity .4s;
+      pointer-events:none; z-index:0;
     }
-    .card:hover{ background:#f9f9f7; transform:translateY(-3px); box-shadow:0 8px 32px rgba(0,0,0,.08); }
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 20px 60px rgba(0,0,0,.11), 0 4px 16px rgba(0,196,168,.08);
+      border-color:rgba(0,196,168,.3);
+    }
+    .card:hover::before{ opacity:1; }
+
+    /* accent bar slides in from right on hover */
+    .card::after{
+      content:""; position:absolute; top:0; right:0; left:0; height:2px;
+      background:linear-gradient(to left, #00f5d4, #00b89c);
+      transform:scaleX(0); transform-origin:right;
+      transition:transform .45s var(--ease);
+    }
     .card:hover::after{ transform:scaleX(1); }
 
     .card-media{
-      width:100%; height:150px; overflow:hidden; margin-bottom:24px;
-      background:#eee;
+      width:100%; height:190px; overflow:hidden;
+      background:#f0f2f8;
       display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
     }
-    .card-media img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s var(--ease); }
-    .card:hover .card-media img{ transform:scale(1.04); }
+    .card-media img{
+      width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform .6s var(--ease);
+    }
+    .card:hover .card-media img{ transform:scale(1.06); }
+
+    .card-body{
+      padding:28px 28px 0;
+      display:flex; flex-direction:column; flex:1;
+      position:relative; z-index:1;
+    }
+
     .card-icon-wrap{
-      width:48px; height:48px;
+      width:44px; height:44px;
       display:grid; place-items:center;
-      border:1px solid #e0e0e0;
-      margin-bottom:20px;
+      border-radius:10px;
+      background:rgba(0,196,168,.08);
+      border:1px solid rgba(0,196,168,.18);
+      margin-bottom:18px;
     }
+    .card-icon-wrap svg{ width:20px; height:20px; stroke:#00a08a; }
+
     .card-demo-preview{
-      background:#f0f0ee;
+      background:#f0f4f8;
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       gap:12px; cursor:pointer; position:relative; overflow:hidden;
-      border:2px solid rgba(0,196,168,.35);
-      box-shadow:0 0 0 1px rgba(0,196,168,.1), inset 0 0 20px rgba(0,196,168,.04);
+      border:1.5px solid rgba(0,196,168,.3);
     }
     .card-demo-preview::before{
       content:''; position:absolute; inset:0;
-      background:radial-gradient(circle at 50% 50%, rgba(0,196,168,.06), transparent 70%);
+      background:radial-gradient(circle at 50% 40%, rgba(0,196,168,.07), transparent 65%);
     }
     .demo-badge{
-      font-size:12px; font-weight:700; letter-spacing:.8px;
-      color:#00a08a; border:1px solid rgba(0,196,168,.4);
-      padding:6px 14px; z-index:1; background:#fff;
+      font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+      color:#00a08a; border:1px solid rgba(0,196,168,.35);
+      padding:5px 14px; z-index:1; background:#fff; border-radius:20px;
     }
     .demo-dots{ display:flex; gap:6px; z-index:1; }
-    .demo-dots span{ width:6px; height:6px; border-radius:50%; background:rgba(0,196,168,.3); }
+    .demo-dots span{ width:7px; height:7px; border-radius:50%; background:rgba(0,196,168,.25); }
     .demo-dots span:first-child{ background:#00c4a8; }
     .demo-lines{ display:flex; flex-direction:column; gap:5px; width:80px; z-index:1; }
-    .demo-lines span{ height:3px; border-radius:2px; background:#ddd; }
-    .demo-lines span:nth-child(1){ width:100%; }
+    .demo-lines span{ height:3px; border-radius:2px; background:#e0e3ee; }
+    .demo-lines span:nth-child(1){ width:100%; background:#c8f0ea; }
     .demo-lines span:nth-child(2){ width:70%; }
     .demo-lines span:nth-child(3){ width:85%; }
     .demo-lines span:nth-child(4){ width:55%; }
-    .card-icon-wrap svg{ width:22px; height:22px; stroke:#555; }
 
     .card-cat{
-      font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
-      color:#00a08a; margin-bottom:14px;
+      font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+      color:#00a08a; margin-bottom:10px;
     }
     .card-name{
-      font-size:20px; font-weight:700; color:#111;
-      margin:0 0 14px; line-height:1.25; letter-spacing:-.3px;
+      font-size:18px; font-weight:700; color:#0f1120;
+      margin:0 0 12px; line-height:1.3; letter-spacing:-.3px;
     }
     .card-desc{
-      font-size:15px; color:#444; line-height:1.85;
+      font-size:14px; color:#5a5f7a; line-height:1.8;
       margin:0 0 20px; font-weight:400; flex:1;
     }
-    .tags-row{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:24px; }
+    .tags-row{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; }
     .tag{
-      font-size:13px; padding:5px 12px;
-      border:1px solid #ddd;
-      color:#666; font-weight:400; letter-spacing:.3px;
+      font-size:12px; padding:4px 11px; border-radius:20px;
+      background:#f0f2f9; border:1px solid #e2e5f0;
+      color:#666d8a; font-weight:500; letter-spacing:.2px;
     }
     .card-price{
-      font-size:13px; color:#888; font-weight:400;
-      letter-spacing:.3px; margin-bottom:20px;
+      font-size:13px; color:#9098b0; font-weight:400;
+      letter-spacing:.2px; margin-bottom:20px;
     }
-    .card-bottom{ padding-top:16px; border-top:1px solid #eee; }
+    .card-bottom{
+      padding:18px 28px 24px;
+      border-top:1px solid #f0f2f8;
+      position:relative; z-index:1;
+    }
     .card-link{
-      display:inline-flex; align-items:center; gap:10px;
-      font-size:13px; font-weight:600; color:var(--white);
-      letter-spacing:.3px; border:none; background:none; cursor:pointer;
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:13px; font-weight:600; color:#0f1120;
+      letter-spacing:.2px; border:none; background:none; cursor:pointer;
       font-family:inherit; padding:0;
-      transition:gap .3s var(--ease), color .3s;
+      transition:color .25s, gap .25s var(--ease);
     }
-    .card-link .arr{ transition:transform .3s var(--ease); }
-    .card:hover .card-link{ color:var(--accent); }
+    .card-link .arr{ transition:transform .3s var(--ease); color:#00a08a; }
+    .card:hover .card-link{ color:#00a08a; gap:12px; }
     .card:hover .card-link .arr{ transform:translateX(-4px); }
 
     /* ── Modal ── */
@@ -1294,8 +1327,8 @@
     .modal{ border-radius:20px; }
     .nav-logo img{ height:40px; }
 
-  /* ── Stats strip ── */
-  .stats-strip{
+  /* ── [removed] ── */
+  .stats-strip-REMOVED{
     background:var(--panel);
     border-top:1px solid var(--line);
     border-bottom:1px solid var(--line);
@@ -1539,58 +1572,6 @@
       <div class="stat-box reveal">
         <div class="stat-n">100<span class="acc">%</span></div>
         <div class="stat-l">שליטה - ללא תלות בספקי תוכנה יקרים</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- About -->
-  <!-- Stats strip -->
-  <div class="stats-strip">
-    <div class="wrap">
-      <div class="stats-grid">
-        <div class="stat-item">
-          <div class="stat-num" data-count="50" data-suffix="+">0</div>
-          <div class="stat-label">פרויקטים הושקו</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num" data-count="30" data-suffix="+">0</div>
-          <div class="stat-label">לקוחות פעילים</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num" data-count="98" data-suffix="%">0</div>
-          <div class="stat-label">שביעות רצון</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num" data-count="3" data-suffix=" שנים">0</div>
-          <div class="stat-label">ניסיון בשוק</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Logos marquee -->
-  <div class="logos-strip">
-    <div class="logos-strip-label">חלק מהעסקים שאנחנו עובדים איתם</div>
-    <div class="logos-track-wrap">
-      <div class="logos-track">
-        <span class="logo-chip">BeBeauty</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">קליניקת הצמיחה</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">Studio Pro</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">מדיה לאונה</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">TechBridge</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">Glow Clinic</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">עורכי דין בן-דוד</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">ReachUp Agency</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">LifeSpace</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">BeBeauty</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">קליניקת הצמיחה</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">Studio Pro</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">מדיה לאונה</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">TechBridge</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">Glow Clinic</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">עורכי דין בן-דוד</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">ReachUp Agency</span><span class="logo-sep">◆</span>
-        <span class="logo-chip">LifeSpace</span><span class="logo-sep">◆</span>
       </div>
     </div>
   </div>
@@ -2419,54 +2400,6 @@
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section id="testimonials">
-    <div class="wrap">
-      <div class="testi-head reveal">
-        <div class="kicker"><span class="acc">◆</span> מה אומרים עלינו</div>
-        <h2 class="h2">לקוחות מספרים</h2>
-      </div>
-      <div class="testi-grid stagger">
-        <div class="testi-card item">
-          <div class="testi-quote-mark">"</div>
-          <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-          <p class="testi-text">לפני שהכנסנו את המערכת, הצוות שלי בזבז שעתיים ביום על הזנת נתונים ידנית. היום זה קורה לבד - כולל הפולואפים, הדוחות וה-CRM. אנשי המכירות מתפנים לשיחות, לא לקלדנות.</p>
-          <div class="testi-author">
-            <div class="testi-avatar">נ</div>
-            <div>
-              <div class="testi-name">נועה כהן</div>
-              <div class="testi-role">מנהלת מכירות · Glow Clinic</div>
-            </div>
-          </div>
-        </div>
-        <div class="testi-card item">
-          <div class="testi-quote-mark">"</div>
-          <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-          <p class="testi-text">תוך שלושה שבועות ראינו תוצאות - לידים שלא נפלו בין הכיסאות, מעקב אוטומטי שיוצא בדיוק בזמן ודוח שבועי שמגיע לאינבוקס שלי כל ראשון בבוקר. הצוות עשה עבודה יוצאת דופן.</p>
-          <div class="testi-author">
-            <div class="testi-avatar">א</div>
-            <div>
-              <div class="testi-name">אלי ברוך</div>
-              <div class="testi-role">בעלים · Studio Pro</div>
-            </div>
-          </div>
-        </div>
-        <div class="testi-card item">
-          <div class="testi-quote-mark">"</div>
-          <div class="testi-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-          <p class="testi-text">חיפשנו פתרון שיתאים בדיוק לאיך שהעסק שלנו עובד - לא תבנית גנרית. קיבלנו בדיוק את זה. מערכת שמרגישה כאילו היא תמיד הייתה חלק מהצוות, ותמיכה שתמיד זמינה.</p>
-          <div class="testi-author">
-            <div class="testi-avatar">מ</div>
-            <div>
-              <div class="testi-name">מיכל לוי</div>
-              <div class="testi-role">מייסדת · ReachUp Agency</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <footer>
     <div class="wrap">
       <div class="foot-grid">
@@ -2751,11 +2684,13 @@
               </div>`
             : `<div class="card-media"><div class="card-icon-wrap">${p.icon}</div></div>`
         }
-        <div class="card-cat">${cats[p.id] || 'PRODUCT'}</div>
-        <h3 class="card-name">${hl(p.name)}</h3>
-        <p class="card-desc">${hl(p.short)}</p>
-        <div class="tags-row">${(p.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
-        <div class="card-price">${escapeHtml(p.price || '')}</div>
+        <div class="card-body">
+          <div class="card-cat">${cats[p.id] || 'PRODUCT'}</div>
+          <h3 class="card-name">${hl(p.name)}</h3>
+          <p class="card-desc">${hl(p.short)}</p>
+          <div class="tags-row">${(p.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+          <div class="card-price">${escapeHtml(p.price || '')}</div>
+        </div>
         <div class="card-bottom">
           <button class="card-link" type="button" data-open="${p.id}">
             בחינת התאמה לעסק <span class="arr">←</span>
