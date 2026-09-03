@@ -96,6 +96,35 @@
     }
     .nav-cta:hover{ filter:brightness(1.08); transform:translateY(-1px); }
 
+    /* Hamburger */
+    .nav-burger{
+      display:none; flex-direction:column; gap:5px; cursor:pointer;
+      background:none; border:none; padding:6px;
+    }
+    .nav-burger span{
+      display:block; width:22px; height:2px; background:var(--white);
+      border-radius:2px; transition:transform .3s, opacity .3s;
+    }
+    .nav-burger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2){ opacity:0; }
+    .nav-burger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+    @media(max-width:700px){
+      .nav-inner{ height:60px; padding:0 20px; }
+      .nav-links{ display:none; flex-direction:column; align-items:flex-start;
+        position:fixed; top:60px; right:0; left:0;
+        background:rgba(6,9,19,.97); backdrop-filter:blur(20px);
+        padding:24px 24px 32px; gap:0; border-bottom:1px solid var(--line-s);
+        z-index:99;
+      }
+      .nav-links.open{ display:flex; }
+      .nav-links a{ padding:14px 0; font-size:16px; width:100%;
+        border-bottom:1px solid rgba(255,255,255,.06); }
+      .nav-links a:last-child{ border-bottom:none; }
+      .nav-cta{ display:none; }
+      .nav-burger{ display:flex; }
+    }
+
     /* ── Hero ── */
     .hero{
       position:relative; height:100vh; min-height:640px;
@@ -134,20 +163,17 @@
     .hero-blob-1{
       width:80vw; height:80vw; max-width:1000px; max-height:1000px;
       top:-20%; left:15%;
-      background:radial-gradient(circle, rgba(0,245,212,.55) 0%, rgba(0,196,168,.25) 40%, transparent 70%);
-      animation:blob1 7s ease-in-out infinite;
+      background:radial-gradient(circle, rgba(0,245,212,.18) 0%, rgba(0,196,168,.07) 40%, transparent 70%);
+      animation:blob1 14s ease-in-out infinite;
     }
     .hero-blob-2{
       width:60vw; height:60vw; max-width:750px; max-height:750px;
       bottom:-20%; right:-10%;
-      background:radial-gradient(circle, rgba(0,245,212,.4) 0%, rgba(0,196,168,.18) 40%, transparent 70%);
-      animation:blob2 9s ease-in-out infinite;
+      background:radial-gradient(circle, rgba(0,245,212,.12) 0%, rgba(0,196,168,.05) 40%, transparent 70%);
+      animation:blob2 18s ease-in-out infinite;
     }
     .hero-blob-3{
-      width:45vw; height:45vw; max-width:550px; max-height:550px;
-      top:35%; left:-5%;
-      background:radial-gradient(circle, rgba(0,180,160,.35) 0%, rgba(0,120,110,.15) 45%, transparent 70%);
-      animation:blob3 11s ease-in-out infinite;
+      display:none;
     }
     /* animated grid bg */
     .hero-grid{
@@ -157,18 +183,8 @@
         linear-gradient(to bottom, rgba(255,255,255,.022) 1px, transparent 1px);
       background-size:80px 80px;
     }
-    .hero-nodes{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.18; width:100vw; height:100vh; }
-    /* scanline effect */
-    .hero-scan{
-      position:absolute; inset:0; z-index:2; pointer-events:none; overflow:hidden;
-    }
-    .hero-scan::after{
-      content:"";
-      position:absolute; left:0; right:0; top:0;
-      height:200px;
-      background:linear-gradient(to bottom, transparent, rgba(0,245,212,.03), transparent);
-      animation:scanline 6s linear infinite;
-    }
+    .hero-nodes{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.07; width:100vw; height:100vh; }
+    .hero-scan{ display:none; }
     .hero-veil{
       position:absolute; inset:0; z-index:3; pointer-events:none;
       background:
@@ -478,158 +494,209 @@
 
     /* ── Products section light ── */
     #products{
-      background:#f5f4f1; color:#1a1a1a;
+      background:#0d1117; color:#e0e0e0;
     }
-    #products .kicker{ color:#888; }
-    #products .kicker .acc{ color:#00c4a8; }
-    #products .h2{ color:#111; }
-    #products .products-head .lead{ color:#555; }
+    #products .kicker{ color:#6b7280; }
+    #products .kicker .acc{ color:#00f5d4; }
+    #products .h2{ color:#fff; }
 
-    /* ── Products ── */
-    .products-head{ margin-bottom:56px; }
-    .search-row{
-      display:flex; align-items:center; justify-content:space-between;
-      flex-wrap:wrap; gap:16px; margin-bottom:40px;
-      padding-bottom:20px; border-bottom:1px solid #ddd;
-    }
-    .search-label{ font-size:12px; letter-spacing:3px; text-transform:uppercase; color:#999; }
-    #searchInput{
-      background:transparent; border:0; border-bottom:1px solid #ccc;
-      color:#111; font-family:inherit; font-size:14px;
-      padding:8px 0; width:260px; outline:none; direction:rtl;
-      transition:border-color .25s;
-    }
-    #searchInput:focus{ border-color:#00c4a8; }
-    #searchInput::placeholder{ color:#aaa; }
+    /* ── Products head ── */
+    .products-head{ margin-bottom:40px; }
+    .search-row{ display:none; } /* hide search - carousel handles navigation */
 
-    /* Group headers */
-    .service-group{ margin-bottom:64px; }
-    .service-group-header{ margin-bottom:32px; padding-bottom:18px; border-bottom:2px solid #e8e6e2; }
-    .service-group-title{ font-size:22px; font-weight:800; color:#111; letter-spacing:-.5px; margin-bottom:5px; }
-    .service-group-sub{ font-size:14px; color:#777; font-weight:400; }
+    /* ── Demo Carousel ── */
+    .demo-carousel{
+      position:relative; border-radius:20px; overflow:hidden;
+      border:1px solid #1f2937; margin-bottom:24px;
+      background:#060913;
+      box-shadow:0 24px 80px rgba(0,0,0,.5);
+    }
+    .carousel-viewport{
+      overflow:hidden; position:relative; width:100%;
+    }
+    .carousel-track{
+      display:flex; width:100%;
+      transition:transform .65s cubic-bezier(.4,0,.2,1);
+    }
+    .carousel-slide{
+      flex-shrink:0; width:100%;
+      position:relative; cursor:pointer;
+    }
+    .carousel-iframe-wrap{
+      position:relative; width:100%;
+      padding-top:54%; /* ~16:8.6 ratio */
+      background:#060913; overflow:hidden;
+    }
+    .carousel-iframe-wrap iframe{
+      position:absolute; top:0; left:0;
+      width:1300px; border:0; pointer-events:none;
+      transform-origin:top left;
+    }
+    /* gradient overlay */
+    .carousel-grad{
+      position:absolute; inset:0;
+      background:linear-gradient(
+        to bottom,
+        transparent 30%,
+        rgba(6,9,19,.7) 70%,
+        rgba(6,9,19,.97) 100%
+      );
+      pointer-events:none;
+    }
+    /* info panel inside the slide, bottom-aligned */
+    .carousel-info{
+      position:absolute; bottom:0; right:0; left:0;
+      padding:28px 32px 24px;
+      display:flex; align-items:flex-end; justify-content:space-between; gap:20px;
+    }
+    .carousel-text{ flex:1; }
+    .carousel-cat{
+      font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase;
+      color:#00f5d4; font-family:monospace; display:block; margin-bottom:7px;
+    }
+    .carousel-name{
+      font-size:22px; font-weight:800; color:#fff; line-height:1.25;
+      letter-spacing:-.4px; margin:0 0 10px;
+    }
+    .carousel-tags{ display:flex; gap:6px; flex-wrap:wrap; }
+    .carousel-tag{
+      font-size:10px; padding:3px 10px; border-radius:20px;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+      color:#d1d5db; font-weight:500;
+    }
+    .carousel-cta{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:14px; font-weight:700; color:#060913;
+      background:#00f5d4; border:none; border-radius:10px;
+      padding:13px 22px; cursor:pointer; font-family:inherit;
+      white-space:nowrap; flex-shrink:0;
+      transition:background .2s, transform .2s, box-shadow .2s;
+      box-shadow:0 4px 20px rgba(0,245,212,.35);
+    }
+    .carousel-cta:hover{
+      background:#00dfc0; transform:translateY(-2px);
+      box-shadow:0 8px 28px rgba(0,245,212,.45);
+    }
+    .carousel-cta .arr{ transition:transform .2s; }
+    .carousel-cta:hover .arr{ transform:translateX(-3px); }
 
-    /* Grid */
-    .grid{
-      display:grid; grid-template-columns:repeat(3,1fr);
-      gap:20px; background:transparent;
-    }
-    .grid::after{ display:none; }
-    @media(max-width:1020px){ .grid{ grid-template-columns:repeat(2,1fr); } }
-    @media(max-width:640px){ .grid{ grid-template-columns:1fr; } }
-
-    /* Card */
-    /* ── Card system ── */
-    .card{
-      position:relative;
-      background:#ffffff;
-      border-radius:18px;
-      border:1px solid #e8e5e0;
-      padding:0;
-      display:flex; flex-direction:column;
-      cursor:pointer;
-      transition:transform .32s var(--ease), box-shadow .32s var(--ease), border-color .32s;
-      overflow:hidden;
-    }
-    .card:hover{
-      transform:translateY(-6px);
-      box-shadow:0 20px 52px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.05);
-      border-color:#c8e8e2;
-    }
-    .card::after{
-      content:""; position:absolute; top:0; right:0; left:0; height:3px;
-      background:linear-gradient(to left, #00f5d4, #00b89c);
-      transform:scaleX(0); transform-origin:right;
-      transition:transform .42s var(--ease);
-    }
-    .card:hover::after{ transform:scaleX(1); }
-
-    .card-media{
-      width:100%; height:185px; overflow:hidden;
-      background:#eef0f5;
+    /* Nav arrows */
+    .carousel-arrow{
+      position:absolute; top:50%; transform:translateY(-50%);
+      width:40px; height:40px; border-radius:50%;
+      background:rgba(0,0,0,.5); backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,.12); color:#fff;
+      font-size:18px; cursor:pointer; z-index:10;
       display:flex; align-items:center; justify-content:center;
-      flex-shrink:0;
+      transition:background .2s, border-color .2s;
     }
-    .card-media img{
-      width:100%; height:100%; object-fit:cover; display:block;
-      transition:transform .55s var(--ease);
-    }
-    .card:hover .card-media img{ transform:scale(1.05); }
+    .carousel-arrow:hover{ background:rgba(0,245,212,.2); border-color:rgba(0,245,212,.5); }
+    .carousel-prev{ right:16px; }
+    .carousel-next{ left:16px; }
 
-    .card-body{
-      padding:26px 26px 0;
-      display:flex; flex-direction:column; flex:1;
+    /* Dots + product tabs below */
+    .carousel-controls{
+      display:flex; align-items:center; justify-content:center;
+      gap:0; padding:0; border-top:1px solid #1a2030;
+      overflow-x:auto; scrollbar-width:none;
+    }
+    .carousel-controls::-webkit-scrollbar{ display:none; }
+    .carousel-tab{
+      flex:1; min-width:0; padding:14px 16px;
+      display:flex; align-items:center; gap:10px;
+      border-left:1px solid #1a2030; cursor:pointer;
+      transition:background .2s; background:transparent;
+      text-align:right; border-top:none; border-bottom:none; border-right:none;
+      font-family:inherit;
+    }
+    .carousel-tab:first-child{ border-left:none; }
+    .carousel-tab.active{ background:rgba(0,245,212,.06); }
+    .carousel-tab:hover:not(.active){ background:rgba(255,255,255,.03); }
+    .tab-dot{
+      width:6px; height:6px; border-radius:50%; background:#2d3748; flex-shrink:0;
+      transition:background .25s, box-shadow .25s;
+    }
+    .carousel-tab.active .tab-dot{
+      background:#00f5d4; box-shadow:0 0 8px rgba(0,245,212,.6);
+    }
+    .tab-name{
+      font-size:11px; font-weight:600; color:#6b7280;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      transition:color .2s;
+    }
+    .carousel-tab.active .tab-name{ color:#e0e0e0; }
+
+    /* Progress bar */
+    .carousel-progress{
+      height:2px; background:#1a2030; position:relative; overflow:hidden;
+    }
+    .carousel-progress-bar{
+      height:100%; background:#00f5d4; width:0%;
+      transition:width linear;
     }
 
-    .card-icon-wrap{
-      width:44px; height:44px;
-      display:grid; place-items:center;
-      border-radius:12px;
-      background:#f0faf8;
-      border:1px solid #c8ede7;
-      margin-bottom:16px;
+    /* ── Service cards (non-demo) ── */
+    .service-cards{
+      display:grid; grid-template-columns:1fr 1fr; gap:16px;
     }
-    .card-icon-wrap svg{ width:20px; height:20px; stroke:#00a08a; }
-
-    .card-demo-preview{
-      background:#f4f5f8;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      gap:12px; cursor:pointer; position:relative; overflow:hidden;
+    .svc-card{
+      background:#131a27; border:1px solid #1f2937; border-radius:16px;
+      padding:28px; cursor:pointer;
+      transition:background .2s, border-color .2s, transform .25s var(--ease);
+      position:relative; overflow:hidden;
     }
-    .card-demo-preview::before{
-      content:''; position:absolute; inset:0;
-      background:radial-gradient(circle at 50% 40%, rgba(0,196,168,.06), transparent 65%);
+    .svc-card::before{
+      content:''; position:absolute; top:0; right:0; left:0; height:2px;
+      background:linear-gradient(to left,#00f5d4,#00c4a8);
+      transform:scaleX(0); transform-origin:right;
+      transition:transform .35s var(--ease);
     }
-    .demo-badge{
-      font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
-      color:#00a08a; border:1px solid rgba(0,196,168,.35);
-      padding:5px 14px; z-index:1; background:#fff; border-radius:20px;
+    .svc-card:hover::before{ transform:scaleX(1); }
+    .svc-card:hover{ background:#17212f; border-color:#2d3748; transform:translateY(-3px); }
+    .svc-cat{
+      font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;
+      color:#00c4a8; font-family:monospace; margin-bottom:10px; display:block;
     }
-    .demo-dots{ display:flex; gap:6px; z-index:1; }
-    .demo-dots span{ width:7px; height:7px; border-radius:50%; background:rgba(0,196,168,.2); }
-    .demo-dots span:first-child{ background:#00c4a8; }
-    .demo-lines{ display:flex; flex-direction:column; gap:5px; width:80px; z-index:1; }
-    .demo-lines span{ height:3px; border-radius:2px; background:#e4e6ef; }
-    .demo-lines span:nth-child(1){ width:100%; background:#b0e8e0; }
-    .demo-lines span:nth-child(2){ width:70%; }
-    .demo-lines span:nth-child(3){ width:85%; }
-    .demo-lines span:nth-child(4){ width:55%; }
-
-    .card-cat{
-      font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;
-      color:#00a08a; margin-bottom:9px;
+    .svc-name{
+      font-size:17px; font-weight:800; color:#f1f5f9; line-height:1.3;
+      letter-spacing:-.3px; margin:0 0 10px;
     }
-    .card-name{
-      font-size:17px; font-weight:800; color:#0d1020;
-      margin:0 0 11px; line-height:1.3; letter-spacing:-.3px;
-    }
-    .card-desc{
-      font-size:13.5px; color:#6b7280; line-height:1.85;
-      margin:0 0 18px; font-weight:400; flex:1;
-    }
-    .tags-row{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
-    .tag{
-      font-size:11.5px; padding:4px 11px; border-radius:20px;
-      background:#f3f4f8; border:1px solid #e4e6ef;
+    .svc-desc{ font-size:13px; color:#6b7280; line-height:1.7; margin:0 0 16px; }
+    .svc-tags{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; }
+    .svc-tag{
+      font-size:10px; padding:3px 9px; border-radius:3px;
+      background:rgba(255,255,255,.04); border:1px solid #1f2937;
       color:#6b7280; font-weight:500;
     }
-    .card-price{
-      font-size:13px; color:#9ca3af; font-weight:400;
-      margin-bottom:18px;
+    .svc-link{
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:12px; font-weight:700; color:#00f5d4;
+      background:none; border:none; cursor:pointer; font-family:inherit; padding:0;
+      transition:gap .2s var(--ease);
     }
-    .card-bottom{
-      padding:16px 26px 22px;
-      border-top:1px solid #f0ede8;
+    .svc-card:hover .svc-link{ gap:10px; }
+
+    /* Tag (modal) */
+    .tag{
+      font-size:11px; padding:4px 11px; border-radius:4px;
+      background:rgba(255,255,255,.05); border:1px solid #1f2937;
+      color:#9ca3af; font-weight:500;
     }
-    .card-link{
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:13px; font-weight:700; color:#374151;
-      border:none; background:none; cursor:pointer;
-      font-family:inherit; padding:0;
-      transition:color .22s, gap .22s var(--ease);
+    .tags-row{ display:flex; gap:6px; flex-wrap:wrap; }
+    .demo-badge{
+      font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+      color:#00f5d4; border:1px solid rgba(0,245,212,.35);
+      padding:3px 9px; z-index:1; background:rgba(0,245,212,.07); border-radius:4px;
     }
-    .card-link .arr{ color:#00c4a8; transition:transform .3s var(--ease); }
-    .card:hover .card-link{ color:#00a08a; gap:13px; }
-    .card:hover .card-link .arr{ transform:translateX(-4px); }
+
+    @media(max-width:700px){
+      .carousel-name{ font-size:16px; }
+      .carousel-info{ flex-direction:column; align-items:flex-start; padding:20px; }
+      .carousel-cta{ width:100%; justify-content:center; }
+      .carousel-tab{ padding:10px 12px; }
+      .tab-name{ display:none; }
+      .service-cards{ grid-template-columns:1fr; }
+    }
 
     /* ── Modal ── */
     .modal-backdrop{
@@ -1504,14 +1571,18 @@
           <img src="/assets/logo.png" alt="SYNERO TECH">
         </a>
       </div>
-      <nav class="nav-links">
-        <a href="#about">אודות</a>
-        <a href="#products">שירותים</a>
-        <a href="#diagnosis">אבחון</a>
-        <a href="#blog">מאמרים</a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#about" onclick="closeNav()">אודות</a>
+        <a href="#products" onclick="closeNav()">שירותים</a>
+        <a href="#diagnosis" onclick="closeNav()">שיחת היכרות</a>
+        <a href="#blog" onclick="closeNav()">מאמרים</a>
         <a href="https://sy-nero.com/" target="_blank">האתר הראשי</a>
+        <a href="#" onclick="closeNav();document.getElementById('contactBtn').click();return false;" style="color:var(--accent);font-weight:700">צור קשר</a>
       </nav>
       <button class="nav-cta" id="contactBtn" type="button">צור קשר</button>
+      <button class="nav-burger" id="navBurger" aria-label="תפריט" onclick="toggleNav()">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
@@ -1530,19 +1601,19 @@
     <div class="hero-content">
       <div class="hero-tag">
         <span class="dot"></span>
-        הופכים עסקים לחכמים יותר
+        מחלקת הטכנולוגיה · סינרו
       </div>
       <img class="hero-logo"
         src="/assets/logo.png"
         alt="SYNERO TECH">
       <h1 class="hero-h1">
-        טכנולוגיה שעובדת<br>
-        <span class="thin">בשבילך,</span> <span class="accent">לא להפך</span>
+        אנחנו לא מתאימים את העסק שלך לתוכנה.<br>
+        <span class="accent">אנחנו בונים את התוכנה סביב העסק שלך.</span>
       </h1>
       <br>
 
       <div class="hero-actions">
-        <button class="btn-primary" id="contactBtnHero" type="button">דברו איתנו</button>
+        <button class="btn-primary" id="contactBtnHero" type="button">שיחת היכרות חינם ← 30 דקות</button>
         <a class="btn-secondary" href="#products">השירותים שלנו</a>
       </div>
     </div>
@@ -1556,12 +1627,12 @@
   <div class="stats-bar">
     <div class="stats-inner">
       <div class="stat-box reveal">
-        <div class="stat-n">3<span class="acc">x</span></div>
-        <div class="stat-l">תשואה ממוצעת על ההשקעה אצל לקוחותינו תוך 90 יום</div>
+        <div class="stat-n">30<span class="acc">–55%</span></div>
+        <div class="stat-l">מהטמעות CRM נכשלות - לא בגלל הטכנולוגיה, בגלל שאף אחד לא מיפה איך העסק עובד</div>
       </div>
       <div class="stat-box reveal">
-        <div class="stat-n"><span class="acc">0</span> %</div>
-        <div class="stat-l">טעויות אנוש בתהליכים שעברו אוטומציה</div>
+        <div class="stat-n"><span class="acc">6</span>–10%</div>
+        <div class="stat-l">בלבד מהכישלונות האלה הם טכנולוגיים - השאר אנושי ותהליכי. זה הפער שאנחנו סוגרים</div>
       </div>
       <div class="stat-box reveal">
         <div class="stat-n">24/6<span class="acc"></span></div>
@@ -1579,9 +1650,9 @@
       <div class="about-grid">
         <div class="about-copy reveal">
           <p class="kicker"><span class="acc">/</span> אודות SYNERO TECH</p>
-          <h2 class="h2">טכנולוגיה<br><span class="thin">שעובדת בשבילך</span></h2>
-          <p class="lead">אנחנו גורמים לעסק שלך לעבוד בשבילך - לא להפך.</p>
-          <h5 style="font-size:15px; font-weight:400; color:var(--silver); line-height:1.8;">המטרה שלנו פשוטה:<br>כל דקה שהצוות שלך מבלה על הקלדות חוזרות, תיאומים ידניים ומעקב בוואטסאפ - היא דקה שנגנבה מהצמיחה של העסק. אנחנו לוקחים את כל זה מהידיים שלכם ומגדירים אותו מחדש כתהליך שעובד לבד, ברקע, באופן אוטומטי ומושלם.</h5>
+          <h2 class="h2">מערכות שלא<br><span class="thin">נשארות ריקות</span></h2>
+          <p class="lead">אנחנו לא בונים תוכנה שאתה צריך להתכופף אליה - אנחנו ממפים איך העסק שלך באמת עובד, ובונים סביב זה.</p>
+          <h5 style="font-size:15px; font-weight:400; color:var(--silver); line-height:1.8;">אם אתה מנהל לידים באקסל, מתאם בוואטסאפ ומרגיש שהעסק תלוי בך כל הזמן - אתה לא צריך יותר עובדים. אתה צריך שהתהליכים יעבדו לבד. אנחנו מחזירים לך שעות בשבוע, ומראים לך מספרים שלא ראית קודם.</h5>
 
           <div class="values-list stagger" style="margin-top:48px;">
             <div class="value-row item">
@@ -1589,8 +1660,8 @@
                 <svg viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 12-14h-7l-1-6z" stroke-linejoin="round"/></svg>
               </div>
               <div>
-                <div class="value-title">פנויים סוף סוף לדברים שחשובים</div>
-                <div class="value-desc">אנחנו מזהים את כל הפעולות שהצוות שלכם חוזר עליהן שוב ושוב - ומגדירים אותן כתהליך שמתבצע לבד, בדיוק כמו שצריך, בכל פעם. הצוות מתפנה לעשות את מה שרק בני אדם יכולים לעשות: לחשוב, ליצור קשר אנושי ולסגור עסקאות.</div>
+                <div class="value-title">מערכות שהעובדים באמת משתמשים בהן</div>
+                <div class="value-desc">לפני שבונים, אנחנו ממפים איך העסק שלך באמת עובד - לא סביב תוכנה מוכנה מראש. התוצאה: מערכת שמרגישה טבעית לצוות ולא נשארת ריקה אחרי שבועיים.</div>
               </div>
             </div>
             <div class="value-row item">
@@ -1598,8 +1669,8 @@
                 <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               </div>
               <div>
-                <div class="value-title">תמיד צעד אחד לפני השוק</div>
-                <div class="value-desc">השוק משתנה מהר. לקוחות מצפים לתגובות מיידיות, שירות מדויק ותקשורת שוטפת. אנחנו מביאים לעסק שלכם את הכלים החכמים שמאפשרים לכם לתת את השירות הזה - מבלי להוסיף עובדים ומבלי לשרוף משאבים יקרים.</div>
+                <div class="value-title">אחרי המסירה אתה נשאר עם מי שמכיר אותך</div>
+                <div class="value-desc">לא פרילנסר שנעלם ולא מטמיע CRM שמכיר רק מוצר אחד. ליווי שוטף מהאדם שבנה את המערכת - שיודע בדיוק מה הוגדר ולמה.</div>
               </div>
             </div>
             <div class="value-row item">
@@ -1607,8 +1678,8 @@
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
               </div>
               <div>
-                <div class="value-title">פתרון שנבנה בדיוק בשבילכם</div>
-                <div class="value-desc">כל עסק עובד אחרת. אנחנו לא מכניסים אתכם לתבניות קיימות - אנחנו מקשיבים לדרך שבה העסק שלכם חושב ופועל, ובונים פתרון שמרגיש כאילו הוא תמיד היה חלק מהצוות. תוצאה: פחות בלבול, פחות עצירות, יותר צמיחה.</div>
+                <div class="value-title">שקיפות מלאה - בתשלום ובלוחות זמנים</div>
+                <div class="value-desc">פריסת תשלומים נוחה, מדדי הצלחה ברורים מראש, ותחושת התקדמות לאורך כל הדרך. סינרו עומדת מאחורי זה כמחלקה רצינית - לא כפרויקט צד.</div>
               </div>
             </div>
           </div>
@@ -1647,7 +1718,7 @@
     </div>
     <div class="img-divider-content">
       <span class="idc-label">SYNERO TECH</span>
-      <p class="idc-text">כל דקה שהצוות שלך מבלה על הקלדות חוזרות - היא דקה שנגנבה מהצמיחה שלך</p>
+      <p class="idc-text">אנחנו מחזירים לך שעות בשבוע, ומראים לך מספרים שלא ראית קודם</p>
     </div>
     <div class="auto-ticker">
       <div class="ticker-track">
@@ -1675,13 +1746,15 @@
   <section class="pad" id="products" style="padding-top:60px;">
     <div class="wrap">
       <div class="products-head reveal">
-        <p class="kicker"><span class="acc">/</span> השירותים שלנו</p>
-        <h2 class="h2">הפתרונות שלנו<br><span class="thin">בשבילך</span></h2>
+        <div class="stack-meta">
+          SYNERO.TECH <span class="stack-version">PRODUCT STACK · v2.0</span>
+        </div>
+        <h2 class="h2">מה אנחנו בונים<br><span class="thin">בשבילך</span></h2>
       </div>
 
-      <div class="search-row">
-        <span class="search-label">5 שירותים זמינים</span>
-        <input id="searchInput" type="search" placeholder="חפש שירות או תגית..." aria-label="חיפוש שירותים" />
+      <div class="search-row" style="margin-bottom:28px;">
+        <span class="search-label">6 מודולים זמינים</span>
+        <input id="searchInput" type="search" placeholder="חפש מוצר או תגית..." aria-label="חיפוש שירותים" />
       </div>
 
       <div id="servicesContainer"></div>
@@ -1807,7 +1880,7 @@
   <!-- ══ DIAGNOSIS CALCULATOR ══ -->
   <section id="diagnosis">
     <div class="diag-wrap">
-      <div class="diag-eyebrow">אבחון טכנולוגי חינמי</div>
+      <div class="diag-eyebrow">6 שאלות, חינם - ותדע איפה אתה עומד</div>
       <h2 class="diag-title">איפה העסק שלך <span class="acc">תקוע</span> טכנולוגית?</h2>
       <p class="diag-sub">6 שאלות קצרות - וקבל תמונה מלאה של כמה זמן וכסף אתה מפסיד, ואיפה אוטומציה תשנה הכל.</p>
 
@@ -2656,74 +2729,174 @@
       dashboard:   'DASHBOARD BI',
     };
 
-    function makeCard(p, q){
-      const hasImg = (Array.isArray(p.images) && p.images.length) || !!(p.image && String(p.image).trim());
-      const cover  = (Array.isArray(p.images) && p.images.length) ? p.images[0] : (p.image || '');
-      const hl = (text) => {
-        if(!q) return escapeHtml(text);
-        const esc = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        return escapeHtml(text).replace(new RegExp(esc,'gi'), m => `<mark>${m}</mark>`);
-      };
-      const el = document.createElement('article');
-      el.className = 'card item';
-      el.dataset.id = p.id;
-      el.dataset.open = p.id;
-      el.innerHTML = `
-        ${hasImg
-          ? `<div class="card-media"><img src="${cover}" alt="${escapeHtml(p.name)}"></div>`
-          : p.demo
-            ? `<div class="card-media card-demo-preview" style="position:relative;overflow:hidden;padding:0;background:var(--panel);">
-                <iframe src="${escapeHtml(p.demo)}"
-                  style="position:absolute;top:0;left:0;width:1300px;height:560px;border:0;
-                         transform:scale(0.27);transform-origin:top left;pointer-events:none;"
-                  loading="lazy" tabindex="-1"></iframe>
-                <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(6,9,19,.55));pointer-events:none;z-index:2;"></div>
-                <div class="demo-badge" style="position:absolute;bottom:9px;right:10px;z-index:3;pointer-events:none;">▶ סיור מוצר אינטראקטיבי</div>
-              </div>`
-            : `<div class="card-media"><div class="card-icon-wrap">${p.icon}</div></div>`
-        }
-        <div class="card-body">
-          <div class="card-cat">${cats[p.id] || 'PRODUCT'}</div>
-          <h3 class="card-name">${hl(p.name)}</h3>
-          <p class="card-desc">${hl(p.short)}</p>
-          <div class="tags-row">${(p.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
-          <div class="card-price">${escapeHtml(p.price || '')}</div>
-        </div>
-        <div class="card-bottom">
-          <button class="card-link" type="button" data-open="${p.id}">
-            בחינת התאמה לעסק <span class="arr">←</span>
-          </button>
-        </div>
-      `;
-      return el;
-    }
+    function buildCarousel(demoProducts, allProducts) {
+      const carousel = document.createElement('div');
+      carousel.className = 'demo-carousel';
 
-    function render(list, term){
-      const q = String(term || '').trim();
-      servicesContainer.innerHTML = '';
+      // Progress bar
+      const prog = document.createElement('div');
+      prog.className = 'carousel-progress';
+      const progBar = document.createElement('div');
+      progBar.className = 'carousel-progress-bar';
+      prog.appendChild(progBar);
+      carousel.appendChild(prog);
 
-      const shelf   = list.filter(p => p.type === 'shelf');
-      const service = list.filter(p => p.type === 'service');
+      // Viewport + track
+      const vp = document.createElement('div');
+      vp.className = 'carousel-viewport';
+      const track = document.createElement('div');
+      track.className = 'carousel-track';
 
-      function renderGroup(items, label, sublabel){
-        if(!items.length) return;
-        const sec = document.createElement('div');
-        sec.className = 'service-group stagger';
-        const hdr = document.createElement('div');
-        hdr.className = 'service-group-header';
-        hdr.innerHTML = `<h3 class="service-group-title">${label}</h3><p class="service-group-sub">${sublabel}</p>`;
-        sec.appendChild(hdr);
-        const g = document.createElement('div');
-        g.className = 'grid';
-        items.forEach(p => g.appendChild(makeCard(p, q)));
-        const rem = items.length % 3;
-        if(rem > 0){ for(let i=0;i<3-rem;i++){ const ph=document.createElement('div'); ph.style.background='transparent'; g.appendChild(ph); } }
-        sec.appendChild(g);
-        servicesContainer.appendChild(sec);
+      demoProducts.forEach(p => {
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+        slide.dataset.open = p.id;
+        const tagsHtml = (p.tags||[]).map(t=>`<span class="carousel-tag">${escapeHtml(t)}</span>`).join('');
+        slide.innerHTML = `
+          <div class="carousel-iframe-wrap" id="wrap-${p.id}">
+            <iframe src="${escapeHtml(p.demo)}" loading="lazy" tabindex="-1"></iframe>
+          </div>
+          <div class="carousel-grad"></div>
+          <div class="carousel-info">
+            <div class="carousel-text">
+              <span class="carousel-cat">${cats[p.id]||'PRODUCT'}</span>
+              <h3 class="carousel-name">${escapeHtml(p.name)}</h3>
+              <div class="carousel-tags">${tagsHtml}</div>
+            </div>
+            <button class="carousel-cta" data-open="${p.id}">
+              פרטים מלאים <span class="arr">←</span>
+            </button>
+          </div>`;
+        track.appendChild(slide);
+      });
+
+      vp.appendChild(track);
+      carousel.appendChild(vp);
+
+      // Arrows
+      const prev = document.createElement('button');
+      prev.className = 'carousel-arrow carousel-prev';
+      prev.setAttribute('aria-label','הבא');
+      prev.innerHTML = '→';
+      const next = document.createElement('button');
+      next.className = 'carousel-arrow carousel-next';
+      next.setAttribute('aria-label','הקודם');
+      next.innerHTML = '←';
+      carousel.appendChild(prev);
+      carousel.appendChild(next);
+
+      // Tabs
+      const controls = document.createElement('div');
+      controls.className = 'carousel-controls';
+      demoProducts.forEach((p, i) => {
+        const tab = document.createElement('button');
+        tab.className = 'carousel-tab' + (i===0?' active':'');
+        tab.dataset.idx = i;
+        tab.innerHTML = `<span class="tab-dot"></span><span class="tab-name">${escapeHtml(p.name.split('-')[0].trim())}</span>`;
+        controls.appendChild(tab);
+      });
+      carousel.appendChild(controls);
+
+      servicesContainer.appendChild(carousel);
+
+      // Carousel logic
+      let cur = 0;
+      const n = demoProducts.length;
+      const INTERVAL = 6000;
+      let timer, progTimer, paused = false;
+      const tabs = controls.querySelectorAll('.carousel-tab');
+
+      function goTo(idx, resetProgress=true){
+        cur = (idx + n) % n;
+        track.style.transform = 'translateX('+(-cur * (100/n))+'%)';
+        tabs.forEach((t,i) => t.classList.toggle('active', i===cur));
+        if(resetProgress) startProgress();
       }
 
-      renderGroup(shelf,   '\u05ea\u05e9\u05ea\u05d9\u05d5\u05ea \u05d5\u05de\u05e0\u05d5\u05e2\u05d9 \u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d4 \u05de\u05e0\u05d5\u05d4\u05dc\u05d9\u05dd', '\u05de\u05e2\u05e8\u05db\u05d5\u05ea \u05d0\u05d5\u05d8\u05d5\u05e0\u05d5\u05de\u05d9\u05d5\u05ea \u05de\u05d5\u05db\u05e0\u05d5\u05ea \u05dc\u05e8\u05d9\u05e6\u05d4 \u2013 \u05e2\u05e8\u05da \u05ea\u05e4\u05e2\u05d5\u05dc\u05d9 \u05de\u05d4\u05e8\u05d2\u05e2 \u05d4\u05e8\u05d0\u05e9\u05d5\u05df');
-      renderGroup(service, '\u05d4\u05e0\u05d3\u05e1\u05ea \u05ea\u05d4\u05dc\u05d9\u05db\u05d9\u05dd Tailor\u2011Made', '\u05e4\u05ea\u05e8\u05d5\u05e0\u05d5\u05ea \u05de\u05d5\u05ea\u05d0\u05de\u05d9\u05dd \u05dc\u05dc\u05d5\u05d2\u05d9\u05e7\u05d4 \u05d4\u05de\u05e0\u05e6\u05d7\u05ea \u05e9\u05dc\u05db\u05dd \u2013 \u05d1\u05dc\u05d9 \u05e4\u05e9\u05e8\u05d5\u05ea \u05d5\u05d1\u05dc\u05d9 \u05de\u05d2\u05d1\u05dc\u05d5\u05ea');
+      function startProgress(){
+        progBar.style.transition = 'none';
+        progBar.style.width = '0%';
+        clearTimeout(progTimer);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            progBar.style.transition = 'width '+INTERVAL+'ms linear';
+            progBar.style.width = '100%';
+          });
+        });
+        clearTimeout(timer);
+        if(!paused) timer = setTimeout(() => goTo(cur+1), INTERVAL);
+      }
+
+      goTo(0);
+
+      prev.addEventListener('click', () => goTo(cur-1));
+      next.addEventListener('click', () => goTo(cur+1));
+      tabs.forEach((t,i) => t.addEventListener('click', () => goTo(i)));
+      carousel.addEventListener('mouseenter', () => { paused=true; clearTimeout(timer); progBar.style.animationPlayState='paused'; });
+      carousel.addEventListener('mouseleave', () => { paused=false; startProgress(); });
+
+      // Touch swipe
+      let tx0 = 0;
+      vp.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, {passive:true});
+      vp.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - tx0;
+        if(Math.abs(dx) > 40) goTo(dx < 0 ? cur+1 : cur-1);
+      }, {passive:true});
+
+      // Pixel-based sizing + iframe scale (retry until vp is painted)
+      function initSizes(){
+        const vpW = vp.offsetWidth;
+        if(!vpW) return setTimeout(initSizes, 100);
+        track.style.width = (n * vpW) + 'px';
+        track.querySelectorAll('.carousel-slide').forEach(s => { s.style.width = vpW + 'px'; });
+        goTo(0, false);
+        scaleIframes();
+      }
+      function scaleIframes(){
+        demoProducts.forEach(p => {
+          const wrap = document.getElementById('wrap-'+p.id);
+          if(!wrap) return;
+          const w = wrap.offsetWidth;
+          const iframe = wrap.querySelector('iframe');
+          if(iframe && w > 0){
+            const scale = w / 1300;
+            iframe.style.transform = 'scale('+scale+')';
+            iframe.style.height = Math.round(wrap.offsetHeight / scale) + 'px';
+          }
+        });
+      }
+      setTimeout(initSizes, 50);
+      window.addEventListener('resize', () => { initSizes(); });
+    }
+
+    function render(list){
+      servicesContainer.innerHTML = '';
+      const demoProds = list.filter(p => p.demo);
+      const serviceProds = list.filter(p => !p.demo);
+
+      if(demoProds.length) buildCarousel(demoProds, list);
+
+      // Non-demo products as cards
+      if(serviceProds.length){
+        const grid = document.createElement('div');
+        grid.className = 'service-cards';
+        serviceProds.forEach(p => {
+          const card = document.createElement('article');
+          card.className = 'svc-card item';
+          card.dataset.open = p.id;
+          const tagsHtml = (p.tags||[]).map(t=>`<span class="svc-tag">${escapeHtml(t)}</span>`).join('');
+          card.innerHTML = `
+            <span class="svc-cat">${cats[p.id]||'SERVICE'}</span>
+            <h3 class="svc-name">${escapeHtml(p.name)}</h3>
+            <p class="svc-desc">${escapeHtml(p.short)}</p>
+            <div class="svc-tags">${tagsHtml}</div>
+            <button class="svc-link" type="button" data-open="${p.id}">
+              פרטים מלאים <span class="arr">←</span>
+            </button>`;
+          grid.appendChild(card);
+        });
+        servicesContainer.appendChild(grid);
+      }
 
       servicesContainer.querySelectorAll('.item').forEach((el,i) => {
         setTimeout(()=> el.classList.add('shown'), i * 80);
@@ -2956,19 +3129,7 @@
     });
 
     /* ── Search ── */
-    const searchInput = document.getElementById('searchInput');
-    let searchTimer = null;
-    function applyFilter(){
-      const q = (searchInput.value||'').trim();
-      if(!q) return render(products);
-      const low = q.toLowerCase();
-      render(products.filter(p =>
-        (p.name||'').toLowerCase().includes(low) ||
-        (p.short||'').toLowerCase().includes(low) ||
-        (p.tags||[]).some(t => String(t).toLowerCase().includes(low))
-      ), q);
-    }
-    if(searchInput) searchInput.addEventListener('input',()=>{ clearTimeout(searchTimer); searchTimer=setTimeout(applyFilter,220); });
+    /* search hidden - carousel replaces it */
 
     /* ── Initial render ── */
     render(products);
@@ -3154,6 +3315,57 @@
       window.addEventListener('resize', ()=>{ resize(); });
       init(); loop();
     })();
+</script>
+<script>
+  function toggleNav(){
+    const b=document.getElementById('navBurger');
+    const n=document.getElementById('navLinks');
+    b.classList.toggle('open');n.classList.toggle('open');
+  }
+  function closeNav(){
+    document.getElementById('navBurger').classList.remove('open');
+    document.getElementById('navLinks').classList.remove('open');
+  }
+
+  function track(type, data) {
+    const blob = new Blob([JSON.stringify({ type, data })], { type: 'application/json' });
+    navigator.sendBeacon('/api/track', blob);
+  }
+
+  // Click events
+  document.addEventListener('click', e => {
+    const card = e.target.closest('[data-open]');
+    if (card) track('product_click', { id: card.dataset.open });
+    if (e.target.closest('.btn-interest, #requestBtn')) track('cta_click', {});
+    if (e.target.closest('.contact-backdrop .btn-primary, #sendBtn')) track('contact_submit', {});
+  });
+
+  // Diagnosis completion
+  document.addEventListener('diagComplete', e => track('diag_complete', e.detail || {}));
+
+  // Section visibility (which parts of the page were seen)
+  const _seen = new Set();
+  const sectionObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !_seen.has(e.target.id)) {
+        _seen.add(e.target.id);
+        track('section_view', { id: e.target.id });
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('[id]').forEach(el => {
+    if (['hero','products','diagnosis','contact','about'].some(s => el.id.includes(s)))
+      sectionObs.observe(el);
+  });
+
+  // Scroll depth (25 / 50 / 75 / 100%)
+  const _depths = new Set();
+  window.addEventListener('scroll', () => {
+    const pct = Math.round((window.scrollY + window.innerHeight) / document.body.scrollHeight * 100);
+    [25, 50, 75, 100].forEach(d => {
+      if (pct >= d && !_depths.has(d)) { _depths.add(d); track('scroll_depth', { pct: d }); }
+    });
+  }, { passive: true });
 </script>
 </body>
 </html>
