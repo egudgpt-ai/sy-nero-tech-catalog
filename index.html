@@ -538,7 +538,7 @@
     }
     .carousel-iframe-wrap{
       position:relative; width:100%;
-      padding-top:54%; /* ~16:8.6 ratio */
+      height:400px; /* overridden by JS */
       background:#060913; overflow:hidden;
     }
     .carousel-iframe-wrap iframe{
@@ -557,6 +557,7 @@
       );
       pointer-events:none;
     }
+    .carousel-logo{ height:28px; width:auto; filter:invert(1) brightness(2); opacity:.75; margin-bottom:10px; display:block; }
     /* info panel inside the slide, bottom-aligned */
     .carousel-info{
       position:absolute; bottom:0; right:0; left:0;
@@ -2759,6 +2760,7 @@
           </div>
           <div class="carousel-grad"></div>
           <div class="carousel-info">
+            <img src="/assets/logo.png" alt="SYNERO TECH" class="carousel-logo">
             <div class="carousel-text">
               <span class="carousel-cat">${cats[p.id]||'PRODUCT'}</span>
               <h3 class="carousel-name">${escapeHtml(p.name)}</h3>
@@ -2853,12 +2855,15 @@
       function scaleIframes(vpW){
         if(!vpW) vpW = getVpW();
         const scale = vpW / 1300;
+        const wrapH = Math.round(702 * scale);
         demoProducts.forEach(p => {
           const wrap = document.getElementById('wrap-'+p.id);
           if(!wrap) return;
+          wrap.style.height = wrapH + 'px';
           const iframe = wrap.querySelector('iframe');
           if(iframe){
             iframe.style.transform = 'scale('+scale+')';
+            iframe.style.width = '1300px';
             iframe.style.height = '702px';
           }
         });
