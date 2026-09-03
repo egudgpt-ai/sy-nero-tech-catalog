@@ -278,51 +278,41 @@
     /* ── Stats ── */
     .stats-bar{
       border-top:1px solid var(--line); border-bottom:1px solid var(--line);
-      padding:48px 0;
+      padding:40px 0; overflow:hidden;
     }
+    /* marquee track */
     .stats-inner{
-      max-width:var(--maxw); margin:0 auto; padding:0 40px;
-      display:flex; justify-content:center; gap:80px; align-items:center;
+      display:flex; gap:80px; align-items:center;
+      width:max-content;
+      animation:statMarquee 12s linear infinite;
     }
+    @keyframes statMarquee{
+      0%{ transform:translateX(0); }
+      100%{ transform:translateX(-50%); }
+    }
+    .stats-bar:hover .stats-inner{ animation-play-state:paused; }
     .stat-circle{
-      display:flex; flex-direction:column; align-items:center; gap:12px;
-      cursor:default;
+      display:flex; flex-direction:column; align-items:center; gap:10px;
+      flex-shrink:0;
     }
     .stat-ring{
-      width:140px; height:140px; border-radius:50%;
-      border:2px solid var(--line);
+      width:130px; height:130px; border-radius:50%;
+      border:2px solid rgba(255,255,255,.12);
       display:flex; align-items:center; justify-content:center;
-      position:relative;
-      transition:border-color .4s ease, box-shadow .4s ease, transform .5s cubic-bezier(.34,1.56,.64,1);
-      transform:scale(1);
-    }
-    .stat-ring::before{
-      content:''; position:absolute; inset:-1px; border-radius:50%;
-      border:2px solid transparent;
-      background:linear-gradient(135deg, var(--accent), transparent 60%) border-box;
-      -webkit-mask:linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-      mask:linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite:destination-out; mask-composite:exclude;
-      opacity:0; transition:opacity .4s ease;
+      transition:border-color .5s, box-shadow .5s, transform .5s cubic-bezier(.34,1.56,.64,1);
     }
     .stat-circle.stat-pop .stat-ring{
-      transform:scale(1.18);
+      transform:scale(1.15);
       border-color:var(--accent);
-      box-shadow:0 0 32px rgba(0,245,212,.3), 0 0 0 8px rgba(0,245,212,.06);
+      box-shadow:0 0 28px rgba(0,245,212,.35), 0 0 0 6px rgba(0,245,212,.07);
     }
-    .stat-circle.stat-pop .stat-ring::before{ opacity:1; }
     .stat-circle.stat-pop .stat-n{ color:var(--accent); }
     .stat-n{
-      font-size:clamp(22px,2.5vw,30px); font-weight:800; letter-spacing:-1px;
-      color:var(--white); line-height:1; transition:color .4s ease; text-align:center;
+      font-size:clamp(20px,2vw,26px); font-weight:800; letter-spacing:-1px;
+      color:var(--white); line-height:1; transition:color .5s; text-align:center;
     }
     .stat-n .acc{ color:var(--accent); }
-    .stat-l{ font-size:12px; font-weight:400; color:var(--fog); text-align:center; max-width:120px; line-height:1.4; }
-    @media(max-width:600px){
-      .stats-inner{ gap:32px; }
-      .stat-ring{ width:100px; height:100px; }
-      .stat-n{ font-size:18px; }
-    }
+    .stat-l{ font-size:11px; font-weight:400; color:var(--fog); text-align:center; max-width:110px; line-height:1.4; }
 
     .tw-cursor{
       display:inline-block; width:2px; background:var(--accent);
@@ -1648,18 +1638,16 @@
   <!-- Stats -->
   <div class="stats-bar">
     <div class="stats-inner" id="statsInner">
-      <div class="stat-circle">
-        <div class="stat-ring"><div class="stat-n">100<span class="acc">%</span></div></div>
-        <div class="stat-l">שליטה מלאה, ללא תלות בספקים</div>
-      </div>
-      <div class="stat-circle">
-        <div class="stat-ring"><div class="stat-n">24/6</div></div>
-        <div class="stat-l">שעות ביממה - העסק עובד גם בלעדיך</div>
-      </div>
-      <div class="stat-circle">
-        <div class="stat-ring"><div class="stat-n">30<span class="acc">–55%</span></div></div>
-        <div class="stat-l">מהטמעות CRM נכשלות - הסיבה אנושית, לא טכנולוגית</div>
-      </div>
+      <!-- set 1 -->
+      <div class="stat-circle"><div class="stat-ring"><div class="stat-n">100<span class="acc">%</span></div></div><div class="stat-l">שליטה מלאה, ללא תלות בספקים</div></div>
+      <div class="stat-circle"><div class="stat-ring"><div class="stat-n">24/6</div></div><div class="stat-l">שעות ביממה - העסק עובד גם בלעדיך</div></div>
+      <div class="stat-circle"><div class="stat-ring"><div class="stat-n">30<span class="acc">–55%</span></div></div><div class="stat-l">מהטמעות CRM נכשלות - הסיבה אנושית</div></div>
+      <div class="stat-circle"><div class="stat-ring"><div class="stat-n"><span class="acc">6</span>–10%</div></div><div class="stat-l">מהכישלונות הם טכנולוגיים - השאר אנושי</div></div>
+      <!-- set 2 (duplicate for seamless loop) -->
+      <div class="stat-circle" aria-hidden="true"><div class="stat-ring"><div class="stat-n">100<span class="acc">%</span></div></div><div class="stat-l">שליטה מלאה, ללא תלות בספקים</div></div>
+      <div class="stat-circle" aria-hidden="true"><div class="stat-ring"><div class="stat-n">24/6</div></div><div class="stat-l">שעות ביממה - העסק עובד גם בלעדיך</div></div>
+      <div class="stat-circle" aria-hidden="true"><div class="stat-ring"><div class="stat-n">30<span class="acc">–55%</span></div></div><div class="stat-l">מהטמעות CRM נכשלות - הסיבה אנושית</div></div>
+      <div class="stat-circle" aria-hidden="true"><div class="stat-ring"><div class="stat-n"><span class="acc">6</span>–10%</div></div><div class="stat-l">מהכישלונות הם טכנולוגיים - השאר אנושי</div></div>
     </div>
   </div>
 
@@ -2861,15 +2849,6 @@
         if(Math.abs(dx) > 40) goTo(dx < 0 ? cur+1 : cur-1);
       }, {passive:true});
 
-      // Pixel-based sizing + iframe scale (retry until vp is painted)
-      function initSizes(){
-        const vpW = vp.offsetWidth;
-        if(!vpW) return setTimeout(initSizes, 100);
-        track.style.width = (n * vpW) + 'px';
-        track.querySelectorAll('.carousel-slide').forEach(s => { s.style.width = vpW + 'px'; });
-        goTo(0, false);
-        scaleIframes();
-      }
       function scaleIframes(){
         demoProducts.forEach(p => {
           const wrap = document.getElementById('wrap-'+p.id);
@@ -2883,8 +2862,28 @@
           }
         });
       }
-      setTimeout(initSizes, 50);
-      window.addEventListener('resize', () => { initSizes(); });
+
+      let sized = false;
+      function initSizes(){
+        const vpW = vp.offsetWidth || carousel.offsetWidth;
+        if(!vpW) return;
+        sized = true;
+        track.style.width = (n * vpW) + 'px';
+        track.querySelectorAll('.carousel-slide').forEach(s => { s.style.width = vpW + 'px'; });
+        goTo(cur, false);
+        scaleIframes();
+      }
+
+      // Try immediately, then on scroll (IntersectionObserver)
+      setTimeout(initSizes, 0);
+      setTimeout(initSizes, 200);
+      new IntersectionObserver((entries, obs) => {
+        if(entries[0].isIntersecting){ initSizes(); if(sized) obs.disconnect(); }
+      }, {threshold:0.1}).observe(carousel);
+      window.addEventListener('resize', initSizes);
+
+      // Re-scale when each iframe loads
+      carousel.querySelectorAll('iframe').forEach(f => f.addEventListener('load', scaleIframes));
     }
 
     function render(list){
@@ -3429,16 +3428,16 @@
     tick();
   })();
 
-  // ── Stats circles sequential pop ──
+  // ── Stats circles glow (first set only) ──
   (function(){
-    const circles = document.querySelectorAll('#statsInner .stat-circle');
+    const circles = [...document.querySelectorAll('#statsInner .stat-circle')].filter(c=>!c.hasAttribute('aria-hidden'));
     if(!circles.length) return;
     let cur = 0;
     function next(){
       circles.forEach(c => c.classList.remove('stat-pop'));
       circles[cur].classList.add('stat-pop');
       cur = (cur + 1) % circles.length;
-      setTimeout(next, 900);
+      setTimeout(next, 1400);
     }
     next();
   })();
