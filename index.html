@@ -1740,6 +1740,9 @@
     </div>
   </div>
 
+  <!-- Light gap between city divider and products -->
+  <div style="height:48px; background:#f0f2f5;"></div>
+
   <!-- Services -->
   <section class="pad" id="products" style="padding-top:60px;">
     <div class="wrap">
@@ -2842,10 +2845,9 @@
       }, {passive:true});
 
       function getVpW(){
-        // Use clientWidth of document to avoid any layout quirk
-        const pageW = document.documentElement.clientWidth || window.innerWidth || 1280;
-        const maxw = 1280;
-        return Math.min(pageW - 48, maxw); // 24px padding each side
+        // Match .wrap: max-width:1180px, padding:0 40px → content max = 1100px
+        const pageW = document.documentElement.clientWidth || window.innerWidth || 1000;
+        return Math.min(pageW - 80, 1100); // 40px padding each side
       }
 
       function scaleIframes(vpW){
@@ -3453,29 +3455,29 @@
     // init
     for(let i=0;i<3;i++){ setContent(i,dataAt[i]); applyPos(i,pos[i],true); }
 
+    let paused = false;
+    const bar = document.querySelector('.stats-bar');
+    if(bar){
+      bar.addEventListener('mouseenter', () => paused=true);
+      bar.addEventListener('mouseleave', () => paused=false);
+    }
+
     function advance(){
-      if(busy) return; busy=true;
-      // slide all left by 1
+      if(busy || paused) return; busy=true;
       for(let i=0;i<3;i++){ pos[i]--; applyPos(i,pos[i],false); }
 
       setTimeout(()=>{
-        // find who is at -2 (exited left)
         const exitIdx = pos.indexOf(-2);
-        // new data for recycled slot = stat that was at +1, now at 0, +1 is new
-        const centerDataIdx = dataAt[pos.indexOf(0) < 0 ? 0 : pos.indexOf(0)]; // data now at center
-        const rightDataIdx = (dataAt[pos.indexOf(0)>-1?pos.indexOf(0):0] + STATS.length + 1) % STATS.length;
-        // simpler: right content = center's next
-        const newData = (STATS.indexOf(STATS[dataAt.find?.((_,i)=>pos[i]===0)]) + 1) % STATS.length;
         const centerIdx = pos.indexOf(0);
         dataAt[exitIdx] = (dataAt[centerIdx] + 1) % STATS.length;
         setContent(exitIdx, dataAt[exitIdx]);
-        pos[exitIdx] = 2; applyPos(exitIdx,2,true); // snap to far right
+        pos[exitIdx] = 2; applyPos(exitIdx,2,true);
         setTimeout(()=>{ pos[exitIdx]=1; applyPos(exitIdx,1,false); }, 30);
         busy=false;
       }, DUR+50);
     }
 
-    setInterval(advance, 2500);
+    setInterval(advance, 1400);
   })();
 
   const _depths = new Set();
