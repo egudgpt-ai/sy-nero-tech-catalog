@@ -278,29 +278,51 @@
     /* ── Stats ── */
     .stats-bar{
       border-top:1px solid var(--line); border-bottom:1px solid var(--line);
-      overflow:hidden;
+      padding:48px 0;
     }
     .stats-inner{
       max-width:var(--maxw); margin:0 auto; padding:0 40px;
-      position:relative; height:88px;
+      display:flex; justify-content:center; gap:80px; align-items:center;
     }
-    .stat-box{
-      position:absolute; inset:0; padding:0 40px;
-      display:flex; align-items:center; gap:24px;
-      opacity:0; transform:translateX(-30px);
-      transition:opacity .4s ease, transform .4s ease;
-      pointer-events:none;
+    .stat-circle{
+      display:flex; flex-direction:column; align-items:center; gap:12px;
+      cursor:default;
     }
-    .stat-box.stat-active{
-      opacity:1; transform:translateX(0); pointer-events:auto;
+    .stat-ring{
+      width:140px; height:140px; border-radius:50%;
+      border:2px solid var(--line);
+      display:flex; align-items:center; justify-content:center;
+      position:relative;
+      transition:border-color .4s ease, box-shadow .4s ease, transform .5s cubic-bezier(.34,1.56,.64,1);
+      transform:scale(1);
     }
+    .stat-ring::before{
+      content:''; position:absolute; inset:-1px; border-radius:50%;
+      border:2px solid transparent;
+      background:linear-gradient(135deg, var(--accent), transparent 60%) border-box;
+      -webkit-mask:linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      mask:linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite:destination-out; mask-composite:exclude;
+      opacity:0; transition:opacity .4s ease;
+    }
+    .stat-circle.stat-pop .stat-ring{
+      transform:scale(1.18);
+      border-color:var(--accent);
+      box-shadow:0 0 32px rgba(0,245,212,.3), 0 0 0 8px rgba(0,245,212,.06);
+    }
+    .stat-circle.stat-pop .stat-ring::before{ opacity:1; }
+    .stat-circle.stat-pop .stat-n{ color:var(--accent); }
     .stat-n{
-      font-size:clamp(28px,3vw,40px); font-weight:800; letter-spacing:-1.5px;
-      color:var(--white); line-height:1; white-space:nowrap; flex-shrink:0;
+      font-size:clamp(22px,2.5vw,30px); font-weight:800; letter-spacing:-1px;
+      color:var(--white); line-height:1; transition:color .4s ease; text-align:center;
     }
     .stat-n .acc{ color:var(--accent); }
-    .stat-divider{ width:1px; height:40px; background:var(--line); flex-shrink:0; }
-    .stat-l{ font-size:13px; font-weight:400; color:var(--fog); letter-spacing:.3px; max-width:500px; }
+    .stat-l{ font-size:12px; font-weight:400; color:var(--fog); text-align:center; max-width:120px; line-height:1.4; }
+    @media(max-width:600px){
+      .stats-inner{ gap:32px; }
+      .stat-ring{ width:100px; height:100px; }
+      .stat-n{ font-size:18px; }
+    }
 
     .tw-cursor{
       display:inline-block; width:2px; background:var(--accent);
@@ -1626,25 +1648,17 @@
   <!-- Stats -->
   <div class="stats-bar">
     <div class="stats-inner" id="statsInner">
-      <div class="stat-box stat-active">
-        <div class="stat-n">30<span class="acc">–55%</span></div>
-        <div class="stat-divider"></div>
-        <div class="stat-l">מהטמעות CRM נכשלות - לא בגלל הטכנולוגיה, בגלל שאף אחד לא מיפה איך העסק עובד</div>
+      <div class="stat-circle">
+        <div class="stat-ring"><div class="stat-n">100<span class="acc">%</span></div></div>
+        <div class="stat-l">שליטה מלאה, ללא תלות בספקים</div>
       </div>
-      <div class="stat-box">
-        <div class="stat-n"><span class="acc">6</span>–10%</div>
-        <div class="stat-divider"></div>
-        <div class="stat-l">בלבד מהכישלונות האלה הם טכנולוגיים - השאר אנושי ותהליכי. זה הפער שאנחנו סוגרים</div>
+      <div class="stat-circle">
+        <div class="stat-ring"><div class="stat-n">24/6</div></div>
+        <div class="stat-l">שעות ביממה - העסק עובד גם בלעדיך</div>
       </div>
-      <div class="stat-box">
-        <div class="stat-n">24/6</div>
-        <div class="stat-divider"></div>
-        <div class="stat-l">שעות ביממה העסק שלך עובד - גם בלעדיך</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-n">100<span class="acc">%</span></div>
-        <div class="stat-divider"></div>
-        <div class="stat-l">שליטה - ללא תלות בספקי תוכנה יקרים</div>
+      <div class="stat-circle">
+        <div class="stat-ring"><div class="stat-n">30<span class="acc">–55%</span></div></div>
+        <div class="stat-l">מהטמעות CRM נכשלות - הסיבה אנושית, לא טכנולוגית</div>
       </div>
     </div>
   </div>
@@ -2758,7 +2772,7 @@
         const tagsHtml = (p.tags||[]).map(t=>`<span class="carousel-tag">${escapeHtml(t)}</span>`).join('');
         slide.innerHTML = `
           <div class="carousel-iframe-wrap" id="wrap-${p.id}">
-            <iframe src="${escapeHtml(p.demo)}" loading="lazy" tabindex="-1"></iframe>
+            <iframe src="${escapeHtml(p.demo)}" tabindex="-1" onload="this.dataset.loaded='1'"></iframe>
           </div>
           <div class="carousel-grad"></div>
           <div class="carousel-info">
@@ -3415,16 +3429,18 @@
     tick();
   })();
 
-  // ── Stats carousel ──
+  // ── Stats circles sequential pop ──
   (function(){
-    const boxes = document.querySelectorAll('#statsInner .stat-box');
-    if(!boxes.length) return;
+    const circles = document.querySelectorAll('#statsInner .stat-circle');
+    if(!circles.length) return;
     let cur = 0;
-    setInterval(() => {
-      boxes[cur].classList.remove('stat-active');
-      cur = (cur + 1) % boxes.length;
-      boxes[cur].classList.add('stat-active');
-    }, 2200);
+    function next(){
+      circles.forEach(c => c.classList.remove('stat-pop'));
+      circles[cur].classList.add('stat-pop');
+      cur = (cur + 1) % circles.length;
+      setTimeout(next, 900);
+    }
+    next();
   })();
 
   const _depths = new Set();
