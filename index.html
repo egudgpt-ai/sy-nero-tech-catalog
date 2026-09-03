@@ -278,41 +278,43 @@
     /* ── Stats ── */
     .stats-bar{
       border-top:1px solid var(--line); border-bottom:1px solid var(--line);
-      padding:40px 0; overflow:hidden;
+      padding:48px 0;
     }
-    /* marquee track */
     .stats-inner{
-      display:flex; gap:80px; align-items:center;
-      width:max-content;
-      animation:statMarquee 12s linear infinite;
+      max-width:900px; margin:0 auto; padding:0 40px;
+      display:flex; justify-content:center; align-items:center; gap:60px;
     }
-    @keyframes statMarquee{
-      0%{ transform:translateX(0); }
-      100%{ transform:translateX(-50%); }
-    }
-    .stats-bar:hover .stats-inner{ animation-play-state:paused; }
     .stat-circle{
-      display:flex; flex-direction:column; align-items:center; gap:10px;
-      flex-shrink:0;
+      display:flex; flex-direction:column; align-items:center; gap:12px;
+      transition:opacity .6s ease, transform .6s cubic-bezier(.34,1.4,.64,1);
+      opacity:.35; transform:scale(.82);
+    }
+    .stat-circle.stat-pop{
+      opacity:1; transform:scale(1);
     }
     .stat-ring{
-      width:130px; height:130px; border-radius:50%;
-      border:2px solid rgba(255,255,255,.12);
+      width:140px; height:140px; border-radius:50%;
+      border:2px solid rgba(255,255,255,.1);
       display:flex; align-items:center; justify-content:center;
-      transition:border-color .5s, box-shadow .5s, transform .5s cubic-bezier(.34,1.56,.64,1);
+      transition:border-color .6s, box-shadow .6s;
     }
     .stat-circle.stat-pop .stat-ring{
-      transform:scale(1.15);
       border-color:var(--accent);
-      box-shadow:0 0 28px rgba(0,245,212,.35), 0 0 0 6px rgba(0,245,212,.07);
+      box-shadow:0 0 36px rgba(0,245,212,.4), 0 0 0 8px rgba(0,245,212,.07);
     }
     .stat-circle.stat-pop .stat-n{ color:var(--accent); }
     .stat-n{
-      font-size:clamp(20px,2vw,26px); font-weight:800; letter-spacing:-1px;
-      color:var(--white); line-height:1; transition:color .5s; text-align:center;
+      font-size:clamp(22px,2.5vw,30px); font-weight:800; letter-spacing:-1px;
+      color:rgba(255,255,255,.5); line-height:1; transition:color .6s; text-align:center;
     }
+    .stat-circle.stat-pop .stat-n{ color:var(--accent); }
     .stat-n .acc{ color:var(--accent); }
-    .stat-l{ font-size:11px; font-weight:400; color:var(--fog); text-align:center; max-width:110px; line-height:1.4; }
+    .stat-l{
+      font-size:11px; color:var(--fog); text-align:center;
+      max-width:110px; line-height:1.4;
+      transition:opacity .6s;
+    }
+    .stat-circle:not(.stat-pop) .stat-l{ opacity:0; }
 
     .tw-cursor{
       display:inline-block; width:2px; background:var(--accent);
@@ -544,7 +546,7 @@
     }
     .carousel-iframe-wrap iframe{
       position:absolute; top:0; left:0;
-      width:1300px; border:0; pointer-events:none;
+      width:1300px; height:702px; border:0; pointer-events:none;
       transform-origin:top left;
     }
     /* gradient overlay */
@@ -1638,16 +1640,9 @@
   <!-- Stats -->
   <div class="stats-bar">
     <div class="stats-inner" id="statsInner">
-      <!-- set 1 -->
-      <div class="stat-circle"><div class="stat-ring"><div class="stat-n">100<span class="acc">%</span></div></div><div class="stat-l">שליטה מלאה, ללא תלות בספקים</div></div>
+      <div class="stat-circle stat-pop"><div class="stat-ring"><div class="stat-n">100<span class="acc">%</span></div></div><div class="stat-l">שליטה מלאה, ללא תלות בספקים</div></div>
       <div class="stat-circle"><div class="stat-ring"><div class="stat-n">24/6</div></div><div class="stat-l">שעות ביממה - העסק עובד גם בלעדיך</div></div>
       <div class="stat-circle"><div class="stat-ring"><div class="stat-n">30<span class="acc">–55%</span></div></div><div class="stat-l">מהטמעות CRM נכשלות - הסיבה אנושית</div></div>
-      <div class="stat-circle"><div class="stat-ring"><div class="stat-n"><span class="acc">6</span>–10%</div></div><div class="stat-l">מהכישלונות הם טכנולוגיים - השאר אנושי</div></div>
-      <!-- set 2 (duplicate for seamless loop) -->
-      <div class="stat-circle" aria-hidden="true"><div class="stat-ring"><div class="stat-n">100<span class="acc">%</span></div></div><div class="stat-l">שליטה מלאה, ללא תלות בספקים</div></div>
-      <div class="stat-circle" aria-hidden="true"><div class="stat-ring"><div class="stat-n">24/6</div></div><div class="stat-l">שעות ביממה - העסק עובד גם בלעדיך</div></div>
-      <div class="stat-circle" aria-hidden="true"><div class="stat-ring"><div class="stat-n">30<span class="acc">–55%</span></div></div><div class="stat-l">מהטמעות CRM נכשלות - הסיבה אנושית</div></div>
-      <div class="stat-circle" aria-hidden="true"><div class="stat-ring"><div class="stat-n"><span class="acc">6</span>–10%</div></div><div class="stat-l">מהכישלונות הם טכנולוגיים - השאר אנושי</div></div>
     </div>
   </div>
 
@@ -2857,8 +2852,10 @@
           const iframe = wrap.querySelector('iframe');
           if(iframe && w > 0){
             const scale = w / 1300;
+            // aspect ratio is padding-top:54% → height = 0.54 * w
+            const iframeH = Math.round(0.54 * 1300); // always 702px
             iframe.style.transform = 'scale('+scale+')';
-            iframe.style.height = Math.round(wrap.offsetHeight / scale) + 'px';
+            iframe.style.height = iframeH + 'px';
           }
         });
       }
@@ -3428,16 +3425,16 @@
     tick();
   })();
 
-  // ── Stats circles glow (first set only) ──
+  // ── Stats circles sequential highlight ──
   (function(){
-    const circles = [...document.querySelectorAll('#statsInner .stat-circle')].filter(c=>!c.hasAttribute('aria-hidden'));
+    const circles = document.querySelectorAll('#statsInner .stat-circle');
     if(!circles.length) return;
     let cur = 0;
     function next(){
       circles.forEach(c => c.classList.remove('stat-pop'));
       circles[cur].classList.add('stat-pop');
       cur = (cur + 1) % circles.length;
-      setTimeout(next, 1400);
+      setTimeout(next, 2000);
     }
     next();
   })();
