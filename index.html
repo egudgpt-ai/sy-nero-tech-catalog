@@ -545,6 +545,7 @@
       position:absolute; top:0; left:0;
       width:1300px; height:702px; border:0; pointer-events:none;
       transform-origin:top left;
+      display:block;
     }
     /* gradient overlay */
     .carousel-grad{
@@ -2862,7 +2863,9 @@
           wrap.style.height = wrapH + 'px';
           const iframe = wrap.querySelector('iframe');
           if(iframe){
-            iframe.style.transform = 'scale('+scale+')';
+            // zoom changes the element's layout box (unlike transform) — reliable for clipping
+            iframe.style.zoom = scale;
+            iframe.style.transform = '';
             iframe.style.width = '1300px';
             iframe.style.height = '702px';
           }
