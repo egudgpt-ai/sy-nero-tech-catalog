@@ -1173,6 +1173,16 @@
     .foot-links a{ font-size:14px; color:var(--mute); transition:color .3s; }
 
   /* ══ DIAGNOSIS CALCULATOR ══ */
+  @keyframes diagFloat{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-14px) rotate(3deg)}66%{transform:translateY(-6px) rotate(-2deg)}}
+  @keyframes diagPulseRing{0%{transform:scale(1);opacity:.5}100%{transform:scale(1.8);opacity:0}}
+  @keyframes diagGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,201,174,.3)}50%{box-shadow:0 0 32px 8px rgba(0,201,174,.18)}}
+  @keyframes diagSlideOpt{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes diagDotPop{0%{transform:scale(1)}40%{transform:scale(1.35)}70%{transform:scale(.9)}100%{transform:scale(1)}}
+  @keyframes diagLineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes diagShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  @keyframes diagOrb1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}}
+  @keyframes diagOrb2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,20px)}}
+
   #diagnosis{
     background:#f5f7fa;
     padding:100px 0 120px;
@@ -1186,6 +1196,92 @@
                radial-gradient(ellipse 50% 60% at 80% 30%, rgba(0,200,170,.05) 0%, transparent 70%);
     pointer-events:none;
   }
+  /* floating orbs behind the quiz */
+  #diagnosis .diag-orb{
+    position:absolute;border-radius:50%;pointer-events:none;filter:blur(60px);
+  }
+  #diagnosis .diag-orb1{
+    width:400px;height:400px;background:rgba(0,201,174,.1);
+    top:-60px;right:-100px;animation:diagOrb1 12s ease-in-out infinite;
+  }
+  #diagnosis .diag-orb2{
+    width:300px;height:300px;background:rgba(99,102,241,.07);
+    bottom:-40px;left:-80px;animation:diagOrb2 15s ease-in-out infinite;
+  }
+  /* eyebrow entrance */
+  .diag-eyebrow{
+    animation:fadeUp .6s cubic-bezier(.22,1,.36,1) both;
+  }
+  .diag-title{
+    animation:fadeUp .7s .1s cubic-bezier(.22,1,.36,1) both;
+  }
+  .diag-sub{
+    animation:fadeUp .7s .2s cubic-bezier(.22,1,.36,1) both;
+  }
+  /* step dot animation on become active */
+  .diag-step-dot.active{
+    background:#00c9ae; color:#fff; border-color:#00c9ae;
+    box-shadow:0 0 14px rgba(0,200,170,.35);
+    animation:diagDotPop .4s cubic-bezier(.22,1,.36,1), diagGlow 2s 0.4s ease-in-out infinite;
+  }
+  .diag-step-dot.done{
+    background:rgba(0,200,170,.15); color:#00a88e; border-color:rgba(0,200,170,.4);
+    animation:diagDotPop .35s cubic-bezier(.22,1,.36,1);
+  }
+  /* progress line fill animation */
+  .diag-step-line.done::after{
+    animation:diagLineGrow .5s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  /* card entrance */
+  .diag-card.active{
+    display:block;
+    animation:fadeSlide .4s cubic-bezier(.22,1,.36,1);
+    border-top:3px solid #00c9ae;
+  }
+  /* option stagger entrance */
+  .diag-card.active .diag-opt{
+    animation:diagSlideOpt .35s cubic-bezier(.22,1,.36,1) both;
+  }
+  .diag-card.active .diag-opt:nth-child(1){animation-delay:.05s}
+  .diag-card.active .diag-opt:nth-child(2){animation-delay:.12s}
+  .diag-card.active .diag-opt:nth-child(3){animation-delay:.19s}
+  .diag-card.active .diag-opt:nth-child(4){animation-delay:.26s}
+  /* hover lift on option */
+  .diag-opt{
+    transition:all .25s cubic-bezier(.22,1,.36,1);
+  }
+  .diag-opt:hover{
+    border-color:#00c9ae;background:rgba(0,200,170,.05);
+    transform:translateY(-2px) scale(1.01);
+    box-shadow:0 4px 20px rgba(0,201,174,.12);
+  }
+  .diag-opt.selected{
+    border-color:#00c9ae;background:rgba(0,200,170,.08);
+    box-shadow:0 0 0 2px rgba(0,200,170,.25), 0 4px 20px rgba(0,201,174,.15);
+    transform:scale(1.01);
+  }
+  /* next button pulse */
+  .diag-btn-next{
+    background:#00c9ae;color:#fff;
+    position:relative;overflow:hidden;
+  }
+  .diag-btn-next::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.25) 50%,transparent 100%);
+    background-size:200% 100%;
+    animation:diagShimmer 2.5s ease-in-out infinite;
+  }
+  .diag-btn-next:hover{
+    filter:brightness(1.08);transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(0,201,174,.4);
+  }
+  /* active dot pulse ring */
+  .diag-step-dot.active::after{
+    content:'';position:absolute;inset:-4px;border-radius:50%;
+    border:2px solid rgba(0,201,174,.5);
+    animation:diagPulseRing 1.8s ease-out infinite;
+  }
+  .diag-step-dot{position:relative;}
   .diag-wrap{
     max-width:820px; margin:0 auto; padding:0 24px;
   }
@@ -1882,6 +1978,8 @@
 
   <!-- ══ DIAGNOSIS CALCULATOR ══ -->
   <section id="diagnosis">
+    <div class="diag-orb diag-orb1"></div>
+    <div class="diag-orb diag-orb2"></div>
     <div class="diag-wrap">
       <div class="diag-eyebrow">6 שאלות, חינם - ותדע איפה אתה עומד</div>
       <h2 class="diag-title">איפה העסק שלך <span class="acc">תקוע</span> טכנולוגית?</h2>
