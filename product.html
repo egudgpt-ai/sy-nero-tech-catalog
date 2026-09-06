@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SYNERO TECH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#060913; --app:#0d1020; --side:#131729;
+    --ink:#e8eaf0; --muted:#8a94a8; --fog:#5a6478;
+    --accent:#00f5d4; --accent-d:#00c9ae;
+    --line:rgba(255,255,255,.07);
+    --maxw:1100px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:"Heebo","Assistant",system-ui,Arial,sans-serif;
+    font-size:16px;line-height:1.6;min-height:100vh;
+  }
+
+  /* ── NAV ── */
+  .nav{
+    position:sticky;top:0;z-index:100;
+    background:rgba(6,9,19,.85);backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:var(--maxw);margin:0 auto;
+    padding:0 40px;height:64px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+  }
+  .nav-logo img{height:32px;width:auto;filter:brightness(0) invert(1);opacity:.9}
+  .nav-back{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:700;color:var(--muted);
+    text-decoration:none;letter-spacing:.3px;
+    transition:color .2s;
+  }
+  .nav-back:hover{color:var(--accent)}
+  .nav-back::before{content:'→';font-size:15px}
+
+  /* ── HERO ── */
+  .hero{
+    padding:72px 40px 60px;
+    max-width:var(--maxw);margin:0 auto;
+  }
+  .eyebrow{
+    font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+    color:var(--accent);font-family:monospace;margin-bottom:18px;display:block;
+  }
+  .product-name{
+    font-size:clamp(28px,4vw,48px);font-weight:900;line-height:1.15;
+    letter-spacing:-.5px;color:#fff;margin-bottom:18px;
+  }
+  .product-short{
+    font-size:clamp(15px,1.5vw,17px);color:var(--muted);
+    max-width:620px;line-height:1.75;margin-bottom:28px;
+  }
+  .price-badge{
+    display:inline-flex;align-items:center;gap:10px;
+    background:rgba(0,245,212,.08);border:1px solid rgba(0,245,212,.2);
+    border-radius:8px;padding:10px 18px;
+    font-size:15px;font-weight:700;color:var(--accent);
+  }
+
+  /* ── DEMO ── */
+  .demo-section{
+    background:var(--app);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:48px 0;
+  }
+  .demo-inner{max-width:var(--maxw);margin:0 auto;padding:0 40px;}
+  .demo-label{
+    font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+    color:var(--muted);font-family:monospace;margin-bottom:20px;display:block;
+  }
+  .demo-frame-wrap{
+    width:100%;border-radius:16px;overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:0 24px 80px -24px rgba(0,0,0,.7);
+    position:relative;background:#060913;
+    height:500px; /* fallback, overridden by JS */
+  }
+  .demo-frame-wrap iframe{
+    position:absolute;top:0;left:0;
+    width:1300px;height:702px;border:0;
+    transform-origin:top left;display:block;
+  }
+  .demo-link{
+    display:inline-flex;align-items:center;gap:6px;margin-top:14px;
+    font-size:12px;font-weight:700;color:var(--accent-d);
+    text-decoration:none;letter-spacing:.5px;opacity:.8;
+    transition:opacity .2s;
+  }
+  .demo-link:hover{opacity:1}
+
+  /* ── CONTENT GRID ── */
+  .content-section{padding:72px 40px;max-width:var(--maxw);margin:0 auto;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+  @media(max-width:720px){.two-col{grid-template-columns:1fr}}
+
+  .section-title{
+    font-size:22px;font-weight:800;color:#fff;
+    margin-bottom:24px;line-height:1.3;
+  }
+  .long-text{
+    font-size:15px;color:var(--muted);line-height:1.9;white-space:pre-wrap;
+  }
+  .long-text strong{color:var(--ink);font-weight:700}
+
+  /* ── INCLUDES ── */
+  .includes-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .includes-list li{
+    display:flex;align-items:flex-start;gap:12px;
+    font-size:14px;color:var(--muted);line-height:1.55;
+  }
+  .includes-list li::before{
+    content:'✓';color:var(--accent);font-weight:800;
+    font-size:13px;flex-shrink:0;margin-top:1px;
+  }
+
+  /* ── FIT / ROI boxes ── */
+  .info-boxes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px;}
+  @media(max-width:540px){.info-boxes{grid-template-columns:1fr}}
+  .info-box{
+    background:var(--app);border:1px solid var(--line);border-radius:12px;
+    padding:20px 22px;
+  }
+  .info-box-label{
+    font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+    color:var(--accent);font-family:monospace;margin-bottom:8px;display:block;
+  }
+  .info-box p{font-size:13px;color:var(--muted);line-height:1.65}
+
+  /* ── TAGS ── */
+  .tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+  .tag{
+    font-size:11px;padding:5px 12px;border-radius:20px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+    color:var(--muted);font-weight:600;
+  }
+
+  /* ── CTA ── */
+  .cta-section{
+    background:linear-gradient(135deg,rgba(0,245,212,.06),rgba(0,201,174,.03));
+    border-top:1px solid rgba(0,245,212,.12);
+    border-bottom:1px solid rgba(0,245,212,.12);
+    padding:64px 40px;text-align:center;
+  }
+  .cta-title{font-size:28px;font-weight:900;color:#fff;margin-bottom:14px;}
+  .cta-sub{font-size:15px;color:var(--muted);margin-bottom:32px;line-height:1.65}
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--accent);color:#060913;
+    font-size:15px;font-weight:800;padding:16px 36px;
+    border-radius:12px;border:none;cursor:pointer;
+    font-family:inherit;text-decoration:none;
+    transition:transform .2s,box-shadow .2s,background .2s;
+    box-shadow:0 6px 28px rgba(0,245,212,.35);
+    letter-spacing:.2px;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(0,245,212,.45);background:#00f5d4}
+  .btn-secondary{
+    display:inline-flex;align-items:center;gap:10px;
+    background:transparent;color:var(--ink);
+    font-size:15px;font-weight:700;padding:16px 36px;
+    border-radius:12px;border:1px solid var(--line);cursor:pointer;
+    font-family:inherit;text-decoration:none;
+    transition:border-color .2s,color .2s;margin-right:12px;
+  }
+  .btn-secondary:hover{border-color:rgba(255,255,255,.2);color:#fff}
+
+  /* ── FOOTER ── */
+  .footer{
+    padding:32px 40px;border-top:1px solid var(--line);
+    max-width:var(--maxw);margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:12px;color:var(--fog);
+  }
+  .footer img{height:22px;filter:brightness(0) invert(1);opacity:.4}
+
+  /* ── INTEREST MODAL ── */
+  .modal-backdrop{
+    display:none;position:fixed;inset:0;z-index:200;
+    background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+    align-items:center;justify-content:center;
+  }
+  .modal-backdrop.open{display:flex}
+  .modal-box{
+    background:#111524;border:1px solid var(--line);border-radius:20px;
+    padding:40px;max-width:460px;width:calc(100% - 40px);
+    position:relative;
+  }
+  .modal-close{
+    position:absolute;top:18px;left:18px;
+    width:32px;height:32px;border-radius:50%;border:1px solid var(--line);
+    background:transparent;color:var(--muted);font-size:18px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color .2s,color .2s;
+  }
+  .modal-close:hover{border-color:rgba(255,255,255,.2);color:#fff}
+  .modal-title{font-size:20px;font-weight:800;color:#fff;margin-bottom:6px}
+  .modal-sub{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6}
+  .form-group{margin-bottom:16px}
+  .form-label{font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:6px}
+  .form-input{
+    width:100%;background:#0d1020;border:1px solid var(--line);border-radius:8px;
+    color:var(--ink);font-size:14px;font-family:inherit;
+    padding:11px 14px;transition:border-color .2s;outline:none;
+  }
+  .form-input:focus{border-color:rgba(0,245,212,.4)}
+  .form-btn{
+    width:100%;background:var(--accent);color:#060913;font-size:15px;font-weight:800;
+    border:none;border-radius:10px;padding:14px;cursor:pointer;font-family:inherit;
+    margin-top:8px;transition:background .2s;
+  }
+  .form-btn:hover{background:#00e0c3}
+  .form-msg{font-size:13px;text-align:center;margin-top:12px;color:var(--accent);min-height:20px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/assets/logo.png" alt="SYNERO TECH"></a>
+    <a href="/#products" class="nav-back">חזרה לכל השירותים</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <span class="eyebrow" id="pCat">PRODUCT</span>
+  <h1 class="product-name" id="pName">טוען…</h1>
+  <div class="tag-row" id="pTags"></div>
+  <p class="product-short" id="pShort"></p>
+  <div class="price-badge" id="pPrice" style="display:none"></div>
+</section>
+
+<!-- DEMO -->
+<div class="demo-section" id="demoSection" style="display:none">
+  <div class="demo-inner">
+    <span class="demo-label">הדגמה חיה</span>
+    <div class="demo-frame-wrap" id="demoWrap">
+      <iframe id="demoIframe" loading="eager" tabindex="-1"></iframe>
+    </div>
+    <a class="demo-link" id="demoFullLink" href="#" target="_blank">פתח את ההדגמה בחלון מלא ↗</a>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<section class="content-section">
+  <div class="info-boxes" id="pInfoBoxes" style="display:none">
+    <div class="info-box">
+      <span class="info-box-label">מתאים ל</span>
+      <p id="pFit"></p>
+    </div>
+    <div class="info-box">
+      <span class="info-box-label">מה תרוויחו</span>
+      <p id="pRoi"></p>
+    </div>
+  </div>
+
+  <div class="two-col" id="pContent">
+    <div>
+      <h2 class="section-title">על המוצר</h2>
+      <p class="long-text" id="pLong"></p>
+    </div>
+    <div>
+      <h2 class="section-title">מה כלול</h2>
+      <ul class="includes-list" id="pIncludes"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2 class="cta-title">מוכנים להתחיל?</h2>
+  <p class="cta-sub" id="ctaSub">נשמח לענות על כל שאלה ולבנות יחד את הפתרון הנכון לעסק שלכם.</p>
+  <a href="/" class="btn-secondary">חזרה לאתר</a>
+  <button class="btn-primary" id="ctaBtn">אני מעוניין/ת ← </button>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <img src="/assets/logo.png" alt="SYNERO TECH">
+  <span>© 2025 SYNERO TECH · כל הזכויות שמורות</span>
+</div>
+
+<!-- INTEREST MODAL -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">×</button>
+    <div class="modal-title">אשמח לשמוע עוד</div>
+    <div class="modal-sub" id="modalSub"></div>
+    <div class="form-group">
+      <label class="form-label" for="iName">שם מלא</label>
+      <input class="form-input" id="iName" type="text" placeholder="ישראל ישראלי">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="iEmail">אימייל</label>
+      <input class="form-input" id="iEmail" type="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="iPhone">טלפון (אופציונלי)</label>
+      <input class="form-input" id="iPhone" type="tel" placeholder="05X-XXXXXXX">
+    </div>
+    <button class="form-btn" id="iSend">שליחה</button>
+    <div class="form-msg" id="iMsg"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ── product data (mirrors index.html) ── */
+  const PRODUCTS = [
+    {
+      id:"crm-sub", cat:"CRM",
+      name:"מערכת ניהול לקוחות שמתאימה את עצמה לעסק שלך",
+      short:"כל הלידים, הלקוחות, המיילים והמכירות - במקום אחד, עם שדות ושלבים שאתם מגדירים בדיוק לפי הדרך שבה העסק שלכם עובד. שתי חבילות: בסיס (150 ₪/חודש) ופרימיום (250 ₪/חודש).",
+      price:"150 ₪ / חודש | הקמה חד-פעמית מ-3,500 ₪",
+      tags:["ניהול לידים","Gmail מחובר","ללא הגבלת משתמשים"],
+      fit:"לעסקים שרוצים מערכת ניהול לקוחות מושלמת - עם חבילה בסיסית שנותנת את כל הכלים החיוניים, וחבילת פרימיום שהופכת את כל התהליך לאוטומטי לחלוטין.",
+      roi:"ניהול כל הלידים, ההמיילים והמכירות ממקום אחד - מבלי לשלם על תוכנות יקרות לכל עובד. גדלים? המחיר נשאר קבוע.",
+      long:`כל הלידים, הלקוחות, המיילים והמכירות - במקום אחד. עם שדות ושלבים שאתם מגדירים בדיוק לפי הדרך שבה העסק שלכם עובד.
+
+המערכת מגיעה בשתי חבילות:
+
+חבילת בסיס - 150 ₪ לחודש (הקמה חד-פעמית 3,500 ₪)
+ניהול לידים ולקוחות עם כרטיס לכל איש קשר, שלבי מכירה צבעוניים שמראים בדיוק איפה כל לקוח עומד, חיבור מלא לתיבת ה-Gmail.
+
+חבילת פרימיום - 250 ₪ לחודש (הקמה חד-פעמית 7,500 ₪)
+כל מה שבבסיס, ובנוסף: הצעות מחיר עם חתימה דיגיטלית, מעקב תשלומים, דוחות ופילטרים עם ייצוא לאקסל, דשבורד ניהול לביצועי הצוות, ניוזלטר וקמפיינים.`,
+      includes:[
+        "ניהול לידים ולקוחות - כרטיס לכל איש קשר עם שדות מותאמים לסוג העסק",
+        "שלבי מכירה צבעוניים - רואים בדיוק איפה כל לקוח עומד בכל רגע",
+        "חיבור לתיבת Gmail - שליחה, קבלה וניהול כל ההתכתבויות מהמערכת",
+        "ניהול משימות ומעקב פולואפים - אף לקוח לא נשכח",
+        "לוח בקרה עם המספרים החשובים לעסק",
+        "[פרימיום] הצעות מחיר עם חתימה דיגיטלית - הלקוח חותם אונליין",
+        "[פרימיום] מעקב תשלומים - מי שילם, מי חייב ומתי",
+        "[פרימיום] ניוזלטר, קמפיינים ולוח שיווק",
+        "ללא הגבלת משתמשים - המחיר לא גדל עם הצוות"
+      ],
+      demo:"/assets/synerodemo.html"
+    },
+    {
+      id:"bot", cat:"WHATSAPP BOT",
+      name:"נציג וואטסאפ אוטומטי - עונה תמיד, לא מפספס אף לקוח",
+      short:"לקוח שלח הודעה בשבת בלילה? הוא מקבל מענה מיידי. שאל שאלה שחוזרת על עצמה 30 פעם ביום? מקבל תשובה אוטומטית. הצוות שלכם מקבל רק את הפניות שבאמת צריכות אתכם.",
+      price:"החל מ-600 ₪",
+      tags:["WhatsApp API","מענה אוטומטי","איסוף לידים חכם"],
+      fit:"לעסקים שהצוות מבלה חלק גדול מהיום בלענות על אותן שאלות שוב ושוב - ורוצים שזה יטופל לבד.",
+      roi:"כל לקוח מקבל מענה מיידי - גם בחצות. הצוות מטפל רק בפניות שבאמת צריכות נציג אנושי.",
+      long:`כשלקוח שולח הודעה ולא מקבל תגובה - הוא פשוט עובר למתחרה.
+
+הנציג האוטומטי שלנו לעולם לא ישכח לענות. לעולם לא יהיה עייף ולעולם לא יהיה בפגישה. הוא מנהל שיחה אמיתית עם הלקוח: שואל מה הוא צריך, אוסף את הפרטים הרלוונטיים ומכניס אותם מסודר לתיק הלקוח.
+
+כשמגיע שלב שדורש נציג אנושי - הבוט מודיע לצוות ומעביר את השיחה בחלקלקות. הלקוח מרגיש שטופלו בו מהרגע הראשון, והצוות חוסך שעות של מענה לשאלות שגרתיות.`,
+      includes:[
+        "תסריט שיחה שמדבר בקול של העסק שלכם - לא תגובות גנריות",
+        "אוסף מהלקוח את כל הפרטים הדרושים לפני שהצוות מדבר איתו",
+        "תפריטים וכפתורות נוחים - הלקוח בוחר מה הוא צריך בלחיצה אחת",
+        "התראה מיידית לצוות רק כשיש פנייה שבאמת דורשת טיפול אנושי",
+        "מעבר חלק לנציג אנושי - בלי שהלקוח יחוש שום קצב",
+        "שולח ללקוח תפריטים, מחירונים, טפסים ומסמכים - אוטומטית",
+        "כל פנייה נשמרת אוטומטית בתיק הלקוח - ללא הקלדה ידנית"
+      ],
+      demo:"/assets/botdemo.html"
+    },
+    {
+      id:"campaigns", cat:"שיווק",
+      name:"מערכת מדידת קמפיינים - שלך ושל הלקוחות שלך",
+      short:"פלטפורמה אחת לניהול, מדידה ושיפור של קמפיינים שיווקיים - שאפשר למתג בשמך. כל לקוח מקבל פורטל אישי עם דאשבורד תובנות משלו.",
+      price:"צרו קשר לפרטים",
+      tags:["מדידת ROAS","פורטל לכל לקוח","white-label"],
+      fit:"סוכנויות, פרילנסרים ומנהלי שיווק שמנהלים קמפיינים למספר לקוחות ורוצים לדעת אילו קמפיינים באמת מחזירים כסף.",
+      roi:"דאשבורד אחד שמפיק לבד מסקנות לשיפור. כל לקוח רואה את הנתונים שלו בלבד - ואתם שולטים על הכל.",
+      long:`המערכת מרכזת את כל הפעילות השיווקית במקום אחד: יצירת קמפיינים, הזנת נתונים (או שליפה אוטומטית מ-Google Analytics), ומדידת ביצועים בזמן אמת - הוצאה, הכנסה, המרות, ROAS ועוד.
+
+הייחוד: המערכת בנויה לעבודה מול לקוחות. כל לקוח מקבל קישור אישי לפורטל משלו - מנהל את הקמפיינים שלו ורואה דאשבורד תובנות אישי.
+
+למי זה מתאים:
+• סוכנויות ופרילנסרים בשיווק שמנהלים קמפיינים למספר לקוחות
+• בעלי עסקים שרוצים לדעת אילו קמפיינים באמת מחזירים כסף
+• מי שרוצה למכור פלטפורמה ממותגת משלו ללקוחותיו (white-label)`,
+      includes:[
+        "דאשבורד פילוחים - מדדי-על, מגמות לאורך זמן, ופילוח לפי ערוץ ומטרה",
+        "מסקנות אוטומטיות - המערכת מזהה את הערוץ הרווחי ביותר והיכן יש הפסד",
+        "ניהול קמפיינים עשיר - קהל יעד, הצעה, יעד הצלחה ועמוד נחיתה",
+        "פורטל אישי לכל לקוח - קישור פרטי + דאשבורד תובנות משלו",
+        "שליטת פרטיות מלאה - קובעים מי משתף נתונים",
+        "חיבור ל-Google Analytics - שליפה אוטומטית של נתונים",
+        "מיתוג גמיש (white-label) - שם, תת-כותרת ולוגו מותאמים לכל חברה"
+      ],
+      demo:"/assets/campaigndemo.html"
+    },
+    {
+      id:"automation", cat:"אוטומציה",
+      name:"חיבור וסנכרון כל הכלים שלכם - הכל עובד יחד",
+      short:"לקוח מילא טופס באתר? מיד נפתח לו תיק, נשלחת הודעת וואטסאפ ונוצרת משימה לנציג - בלי שאף אחד הקיש מקלדת. כך נראה עסק שעובד בשבילך.",
+      price:"החל מ-500 ₪ לאוטומציה",
+      tags:["הכל עובד יחד","אפס הקלדה כפולה","שעות חוזרות לצוות"],
+      fit:"לעסקים שהעובדים שלהם מעתיקים את אותו מידע ממקום למקום, ממערכת למערכת - ומבזבזים שעות שבועיות.",
+      roi:"אפס טעויות מהעתקה ידנית. 10–20 שעות שבועיות שחוזרות לצוות לעשות עבודה אמיתית.",
+      long:`כל פעם שמישהו בצוות מעתיק מידע ממקום למקום - זה כסף שנזרק.
+
+אנחנו מחברים את כל הכלים שלכם - האתר, הוואטסאפ, ה-CRM, הטפסים, האקסל - ומגדירים שתרחישים חכמים יקרו אוטומטית:
+
+לקוח מילא טופס → נפתח תיק + נשלח וואטסאפ + נוצרת משימה לנציג.
+חשבונית שולמה → מתעדכנת המערכת + נשלח אישור ללקוח.
+פגישה קבועה → נשלחת תזכורת + נפתחת משימה לפולואפ.`,
+      includes:[
+        "מיפוי כל נקודות השפשוף - איפה הזמן אובד ומה ניתן לייעל מיידית",
+        "חיבור בין כל הכלים שלכם - האתר, הוואטסאפ, קובץ האקסל, טפסי ההרשמה ועוד",
+        "תרחישים חכמים: 'אם לקוח לא ענה תוך 24 שעות - שלח תזכורת אוטומטית'",
+        "יצירת חוזים, אישורים והודעות ללקוח - אוטומטית, ללא הקלדה",
+        "בדיקה מלאה שהכל עובד בדיוק כמו שצריך לפני שמפעילים",
+        "הסבר ברור לצוות שלכם איך כל תהליך עובד - כך תמיד תהיו בשליטה"
+      ],
+      demo:null
+    },
+    {
+      id:"custom", cat:"פיתוח מותאם",
+      name:"פתרון עסקי מותאם אישית - מהדף לביצוע",
+      short:"כשאף מערכת מוכנה לא מתאימה בדיוק לאופן שבו העסק שלכם עובד - אנחנו בונים משהו חדש. מהאפס. שיתאים בדיוק לכם.",
+      price:"החל מ-20,000 ₪ (אפיון ראשוני: 650 ₪)",
+      tags:["בנוי בדיוק בשבילכם","ללא פשרות","תמיכה שוטפת"],
+      fit:"לחברות שניסו כבר כמה מערכות ״מהמדף״ ומצאו שאף אחת לא מתאימה בדיוק לדרך שבה הן עובדות.",
+      roi:"פתרון שבנוי סביב העסק שלכם - לא להפך. ללא תשלום חודשי לשום ספק תוכנה חיצוני.",
+      long:`כשהעסק שלכם עובד בדרך ייחודית - אתם צריכים כלי שמתאים בדיוק לדרך הזו.
+
+לא לקנות תוכנה ולהתאים את עצמכם אליה. להפך.
+
+אנחנו מבינים לעומק מה אתם צריכים, בונים את הפתרון מהאפס, ומבטיחים שהוא עובד בדיוק כמו שהצוות שלכם חושב ופועל.`,
+      includes:[
+        "פגישת עבודה מעמיקה - מבינים לעומק מה אתם צריכים לפני שמתחילים",
+        "עיצוב ממשק שנראה ומרגיש בדיוק כמו שהצוות שלכם אוהב לעבוד",
+        "בנייה מקצועית, מהירה ומאובטחת - פתרון שיחזיק לאורך שנים",
+        "חיבור לכל מערכת שכבר יש לכם - אין צורך לזרוק כלום",
+        "בדיקה מלאה בסביבה נפרדת לפני שמפעילים",
+        "ליווי מתמשך וזמינות לתמיכה - גם אחרי שהפתרון עולה לאוויר"
+      ],
+      demo:null
+    },
+    {
+      id:"recap", cat:"AI TOOLS",
+      name:"RecapAI - סיכום פגישות אוטומטי",
+      short:"מקליטים את הפגישה בלחיצת כפתור. כשהפגישה נגמרת - מחכה לכם סיכום מוכן עם כל ההחלטות, המשימות והנקודות החשובות. מוכן לשליחה ללקוח מיידית.",
+      price:"החל מ-12 ₪ לחודש",
+      tags:["תמלול אוטומטי","AI Insights","Word / PDF","עברית"],
+      fit:"לכל מי שיוצא מפגישה עם ראש מלא מידע - ואז צריך להשקיע שעה נוספת לכתוב סיכום, לשלוח ולתעד.",
+      roi:"3–6 שעות שבועיות שחוזרות לעבודה האמיתית. כל פגישה מסוכמת ומתועדת תוך שניות.",
+      long:`כמה שעות מתבזבזות לכם בשבוע על כתיבת סיכומי פגישות?
+
+עכשיו דמיינו שאתם יוצאים מכל פגישה - ואחרי שתי דקות מחכה לכם מסמך מסודר עם כל מה שנאמר: ההחלטות, המשימות, הנקודות החשובות - מוכן לשליחה ללקוח בלחיצת כפתור.
+
+כך זה עובד:
+1. לוחצים כפתור אחד לפני שהפגישה מתחילה
+2. מדברים כרגיל - לא צריך לרשום כלום
+3. כשהפגישה נגמרת - מקבלים תמלול מלא וסיכום מסודר בעברית
+4. מוציאים מסמך מעוצב עם הלוגו שלכם - מוכן לשליחה מיידית`,
+      includes:[
+        "מקליטים ישירות מהמחשב - ללא הורדות, ללא התקנות, פשוט פותחים ולוחצים",
+        "כל מה שנאמר בפגישה הופך לטקסט כתוב - בדיוק, בעברית ובאנגלית",
+        "סיכום מסודר עם מה הוחלט, מה נשאר פתוח ומי צריך לעשות מה",
+        "מסמך מקצועי ומעוצב עם הלוגו שלכם - מוכן לשליחה ללקוח מיידית",
+        "כל הפגישות שמורות ומסודרות לפי לקוח - תמיד אפשר לחזור ולחפש",
+        "מתאים לכל מי שיוצא מפגישות - ייעוץ, מכירות, ניהול, חשבונאות ועוד"
+      ],
+      demo:"/assets/recapdemo.html"
+    }
+  ];
+
+  /* ── load product ── */
+  const id = new URLSearchParams(location.search).get('id') || '';
+  const p = PRODUCTS.find(x => x.id === id);
+
+  if(!p){
+    document.getElementById('pName').textContent = 'מוצר לא נמצא';
+    return;
+  }
+
+  document.title = p.name + ' | SYNERO TECH';
+  document.getElementById('pCat').textContent = p.cat;
+  document.getElementById('pName').textContent = p.name;
+  document.getElementById('pShort').textContent = p.short;
+
+  if(p.price){
+    const el = document.getElementById('pPrice');
+    el.textContent = '💰 ' + p.price;
+    el.style.display = 'inline-flex';
+  }
+
+  const tagsEl = document.getElementById('pTags');
+  (p.tags||[]).forEach(t => {
+    const s = document.createElement('span');
+    s.className = 'tag'; s.textContent = t;
+    tagsEl.appendChild(s);
+  });
+
+  document.getElementById('pFit').textContent = p.fit||'';
+  document.getElementById('pRoi').textContent = p.roi||'';
+  if(p.fit || p.roi) document.getElementById('pInfoBoxes').style.display = 'grid';
+
+  document.getElementById('pLong').textContent = p.long || p.short;
+
+  const ul = document.getElementById('pIncludes');
+  (p.includes||[]).forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item; ul.appendChild(li);
+  });
+
+  document.getElementById('modalSub').textContent = 'מעוניין/ת לשמוע עוד על ' + p.name + '? אשמח לחזור אליכם.';
+  document.getElementById('ctaSub').textContent = 'מוכנים להתחיל עם ' + p.name + '? נשמח לענות על כל שאלה.';
+
+  /* ── demo iframe ── */
+  if(p.demo){
+    const sec = document.getElementById('demoSection');
+    sec.style.display = 'block';
+    const iframe = document.getElementById('demoIframe');
+    iframe.src = p.demo;
+    const fullLink = document.getElementById('demoFullLink');
+    fullLink.href = p.demo;
+
+    function sizeDemo(){
+      const wrap = document.getElementById('demoWrap');
+      const available = Math.min(document.documentElement.clientWidth - 80, 1100);
+      const scale = available / 1300;
+      const h = Math.round(702 * scale);
+      wrap.style.height = h + 'px';
+      iframe.style.zoom = scale;
+      iframe.style.width = '1300px';
+      iframe.style.height = '702px';
+    }
+    sizeDemo();
+    setTimeout(sizeDemo, 300);
+    window.addEventListener('resize', sizeDemo);
+    iframe.addEventListener('load', sizeDemo);
+  }
+
+  /* ── interest modal ── */
+  const modal = document.getElementById('modal');
+  document.getElementById('ctaBtn').addEventListener('click', () => modal.classList.add('open'));
+  document.getElementById('modalClose').addEventListener('click', () => modal.classList.remove('open'));
+  modal.addEventListener('click', e => { if(e.target===modal) modal.classList.remove('open'); });
+
+  document.getElementById('iSend').addEventListener('click', async () => {
+    const name = document.getElementById('iName').value.trim();
+    const email = document.getElementById('iEmail').value.trim();
+    const phone = document.getElementById('iPhone').value.trim();
+    const msg = document.getElementById('iMsg');
+    if(!name || !email){ msg.textContent = 'אנא מלאו שם ואימייל'; return; }
+    msg.textContent = 'שולח…';
+    try{
+      const res = await fetch('/send-request',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({id:p.id, name:p.name, short:p.short, price:p.price, customerEmail:email, customerName:name, customerPhone:phone})
+      });
+      if(res.ok){
+        msg.textContent = '✓ קיבלנו! נחזור אליכם בהקדם';
+        setTimeout(()=>modal.classList.remove('open'),1800);
+      } else { msg.textContent = 'שגיאה, נסו שוב'; }
+    }catch(e){ msg.textContent = 'שגיאה, נסו שוב'; }
+  });
+})();
+</script>
+</body>
+</html>

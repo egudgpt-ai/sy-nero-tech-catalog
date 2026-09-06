@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "assets/**", "use": "@vercel/static" },
+    { "src": "server.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/send-request", "dest": "server.js" },
+    { "src": "/api/(.*)", "dest": "server.js" },
+    { "src": "/admin", "dest": "server.js" },
+    { "src": "/product", "dest": "server.js" },
+    { "src": "/", "dest": "server.js" },
+    { "src": "/index.html", "dest": "server.js" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

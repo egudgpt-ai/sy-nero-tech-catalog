@@ -3029,7 +3029,11 @@
 
     document.addEventListener('click',(e)=>{
       const btn = e.target.closest('[data-open]');
-      if(btn){ openProduct(btn.dataset.open); return; }
+      if(btn){
+        const id = btn.dataset.open;
+        window.open('/product?id=' + encodeURIComponent(id), '_blank');
+        return;
+      }
       if(e.target === backdrop) close();
     });
     closeModal.addEventListener('click', close);

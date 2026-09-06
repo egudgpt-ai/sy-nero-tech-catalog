@@ -8,10 +8,215 @@ const nodemailer = require('nodemailer');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
+// ── Upstash Redis via REST ──
+const REDIS_URL   = process.env.UPSTASH_REDIS_REST_URL;
+const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-app.get(['/', '/index.html'], (req, res) => {
+async function redis(commands) {
+  if (!REDIS_URL || !REDIS_TOKEN) return commands.map(() => null);
+  try {
+    const r = await fetch(`${REDIS_URL}/pipeline`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${REDIS_TOKEN}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(commands),
+    });
+    const data = await r.json();
+    return Array.isArray(data) ? data.map(d => d.result) : [];
+  } catch (e) {
+    console.error('Redis error:', e.message);
+    return commands.map(() => null);
+  }
+}
+
+app.use(bodyParser.json());
+app.use(bodyParser.text({ type: '*/*' }));
+
+function isoDate(ts) { return new Date(ts).toISOString().slice(0, 10); }
+function isoHour(ts) { return String(new Date(ts).getUTCHours()).padStart(2, '0'); }
+
+function parseBrowser(ua='') {
+  if (/Edg\//.test(ua)) return 'Edge';
+  if (/OPR\/|Opera/.test(ua)) return 'Opera';
+  if (/Chrome\//.test(ua)) return 'Chrome';
+  if (/Firefox\//.test(ua)) return 'Firefox';
+  if (/Safari\//.test(ua) && !/Chrome/.test(ua)) return 'Safari';
+  return 'Other';
+}
+function parseOS(ua='') {
+  if (/Windows/.test(ua)) return 'Windows';
+  if (/Android/.test(ua)) return 'Android';
+  if (/iPhone|iPad/.test(ua)) return 'iOS';
+  if (/Mac OS X/.test(ua)) return 'macOS';
+  if (/Linux/.test(ua)) return 'Linux';
+  return 'Other';
+}
+function parseDevice(ua='') {
+  if (/Mobile|iPhone|Android(?!.*Tablet)/.test(ua)) return 'mobile';
+  if (/iPad|Tablet/.test(ua)) return 'tablet';
+  return 'desktop';
+}
+
+async function geolocate(ip) {
+  if (!ip || ip === '::1' || ip.startsWith('127.') || ip.startsWith('192.168.')) return {};
+  try {
+    const r = await fetch(`http://ip-api.com/json/${ip}?fields=country,city,regionName`);
+    const d = await r.json();
+    return { country: d.country||'', city: d.city||'', region: d.regionName||'' };
+  } catch { return {}; }
+}
+
+async function saveVisitor(ip, ua, ref, lang) {
+  const now = Date.now();
+  const browser = parseBrowser(ua);
+  const os = parseOS(ua);
+  const device = parseDevice(ua);
+  const visitor = { ts: now, ip, browser, os, device, ref: ref || '', lang: (lang||'').slice(0,10) };
+  // Store basic first, then update with geo
+  await redis([['LPUSH', 'visitors', JSON.stringify(visitor)], ['LTRIM', 'visitors', '0', '99']]);
+  // Async geo update - best effort
+  geolocate(ip).then(async (geo) => {
+    if (!geo.country) return;
+    const enriched = JSON.stringify({ ...visitor, country: geo.country, city: geo.city, region: geo.region });
+    await redis([['LSET', 'visitors', '0', enriched]]);
+  }).catch(() => {});
+}
+
+async function trackPV(ref, ip) {
+  const now = Date.now();
+  const d   = isoDate(now);
+  const h   = isoHour(now);
+  const cmds = [
+    ['INCR', 'pv_total'],
+    ['INCR', `pv_d:${d}`],
+    ['EXPIRE', `pv_d:${d}`, 86400 * 9],
+    ['INCR', `pv_h:${d}:${h}`],
+    ['EXPIRE', `pv_h:${d}:${h}`, 86400 * 2],
+  ];
+  // Unique visitors via HyperLogLog
+  if (ip) {
+    cmds.push(['PFADD', `uv_d:${d}`, ip]);
+    cmds.push(['EXPIRE', `uv_d:${d}`, 86400 * 9]);
+    cmds.push(['PFADD', 'uv_total', ip]);
+  }
+  // Referrer — store full URL
+  if (ref && ref.startsWith('http')) cmds.push(['ZINCRBY', 'refs', 1, ref]);
+  await redis(cmds);
+}
+
+async function trackEvent(type) {
+  await redis([['HINCRBY', 'events', type, 1]]);
+}
+
+async function saveLead(lead) {
+  const json = JSON.stringify(lead);
+  await redis([
+    ['LPUSH', 'leads', json],
+    ['LTRIM', 'leads', '0', '49'],
+    ['INCR', 'leads_total'],
+  ]);
+}
+
+app.get('/product', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.sendFile(path.join(__dirname, 'product.html'));
+});
+
+app.get(['/', '/index.html'], async (req, res) => {
+  const ref = req.headers['referer'] || '';
+  const ip  = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim();
+  const ua  = req.headers['user-agent'] || '';
+  const lang = req.headers['accept-language'] || '';
+  trackPV(ref, ip).catch(() => {});
+  saveVisitor(ip, ua, ref, lang).catch(() => {});
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// ── Track client-side events ──
+app.post('/api/track', async (req, res) => {
+  let body = req.body;
+  if (typeof body === 'string') { try { body = JSON.parse(body); } catch {} }
+  const { type } = body || {};
+  if (type) trackEvent(type).catch(() => {});
+  res.send('ok');
+});
+
+// ── Admin ──
+const ADMIN_PASS = process.env.ADMIN_PASS || 'synero2026';
+
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'assets', 'admin.html'));
+});
+
+app.get('/api/stats', async (req, res) => {
+  if (req.query.pass !== ADMIN_PASS) return res.status(401).json({ error: 'unauthorized' });
+
+  const now = Date.now();
+
+  // Day keys for past 7 days
+  const dayKeys = Array.from({ length: 7 }, (_, i) => `pv_d:${isoDate(now - i * 86400000)}`);
+
+  // Hourly keys for past 24 hours
+  const hourSlots = Array.from({ length: 24 }, (_, i) => {
+    const t = now - (23 - i) * 3600000;
+    return { key: `pv_h:${isoDate(t)}:${isoHour(t)}`, h: new Date(t).getUTCHours() };
+  });
+
+  const todayDate = isoDate(now);
+  const uvDayKeys = Array.from({ length: 7 }, (_, i) => `uv_d:${isoDate(now - i * 86400000)}`);
+
+  const pipeline = [
+    ['GET', 'pv_total'],
+    ['HGETALL', 'events'],
+    ['ZREVRANGE', 'refs', '0', '9', 'WITHSCORES'],
+    ['LRANGE', 'leads', '0', '19'],
+    ['LRANGE', 'visitors', '0', '49'],
+    ['GET', 'leads_total'],
+    ['PFCOUNT', `uv_d:${todayDate}`],
+    ['PFCOUNT', 'uv_total'],
+    ...dayKeys.map(k => ['GET', k]),
+    ...hourSlots.map(s => ['GET', s.key]),
+  ];
+
+  const results = await redis(pipeline);
+
+  const [pvTotal, evHash, refsRaw, leadsRaw, visitorsRaw, leadsTotal, uvToday, uvTotal, ...rest] = results;
+  const dayVals  = rest.slice(0, 7).map(v => parseInt(v) || 0);
+  const hourVals = rest.slice(7).map(v => parseInt(v) || 0);
+
+  // Parse events hash (flat array [k,v,k,v,...])
+  const events = {};
+  if (Array.isArray(evHash)) {
+    for (let i = 0; i < evHash.length; i += 2) events[evHash[i]] = parseInt(evHash[i + 1]) || 0;
+  }
+
+  // Parse referrers (flat array [url, score, url, score,...])
+  const top_ref = [];
+  if (Array.isArray(refsRaw)) {
+    for (let i = 0; i < refsRaw.length; i += 2) {
+      top_ref.push({ k: refsRaw[i], v: parseInt(refsRaw[i + 1]) || 0 });
+    }
+  }
+
+  // Parse leads
+  const recent_leads = (leadsRaw || []).map(s => { try { return JSON.parse(s); } catch { return null; } }).filter(Boolean);
+
+  // Parse visitors
+  const recent_visitors = (visitorsRaw || []).map(s => { try { return JSON.parse(s); } catch { return null; } }).filter(Boolean);
+
+  res.json({
+    pv_today:     dayVals[0],
+    pv_week:      dayVals.reduce((a, b) => a + b, 0),
+    pv_total:     parseInt(pvTotal) || 0,
+    leads_total:  parseInt(leadsTotal) || 0,
+    uv_today:     parseInt(uvToday) || 0,
+    uv_total:     parseInt(uvTotal) || 0,
+    events,
+    top_ref,
+    hours:        hourSlots.map((s, i) => ({ h: s.h, v: hourVals[i] })),
+    recent_leads,
+    recent_visitors,
+  });
 });
 
 app.get('/assets/:file', (req, res) => {
@@ -21,6 +226,28 @@ app.get('/assets/:file', (req, res) => {
 });
 
 app.get('/_health', (req, res) => res.send('ok'));
+
+app.get('/api/redis-test', async (req, res) => {
+  if (req.query.pass !== ADMIN_PASS) return res.status(401).end();
+  const url   = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return res.json({ error: 'env vars missing', url: !!url, token: !!token });
+  try {
+    // Write a test event and read it back
+    const r = await fetch(`${url}/pipeline`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify([
+        ['HINCRBY', 'events', 'test_event', 1],
+        ['HGETALL', 'events'],
+      ]),
+    });
+    const data = await r.json();
+    res.json({ status: r.status, results: data });
+  } catch (e) {
+    res.json({ error: e.message });
+  }
+});
 
 function buildHtml({ id, name, short, price, customerEmail, phone, message }) {
   const esc = s => String(s||'').replace(/[&<>"']/g, m =>
@@ -54,6 +281,9 @@ app.post('/send-request', async (req, res) => {
     : `בקשת פגישת אסטרטגיה: ${name}`;
 
   const html = buildHtml({ id, name, short, price, customerEmail, phone, message });
+
+  // Save lead to Redis
+  saveLead({ ts: Date.now(), name, email: customerEmail, phone: phone||'', id: id||'contact' }).catch(() => {});
 
   // Send lead to CRM
   try {
@@ -92,7 +322,6 @@ app.post('/send-request', async (req, res) => {
       return res.send('ok');
     } catch (err) {
       console.error('SMTP error:', err.message);
-      // fall through to Resend
     }
   }
 
@@ -127,13 +356,6 @@ app.post('/send-request', async (req, res) => {
     res.status(500).send('send failed');
   }
 });
-
-function escapeHtml(s) {
-  if (!s) return '';
-  return String(s).replace(/[&<>"']/g, m =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]
-  );
-}
 
 if (require.main === module) {
   app.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));
