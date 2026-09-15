@@ -7,30 +7,30 @@
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#eceaf4;
+    --bg:#f5f7fb;
     --wa:#128C7E;
     --wa-light:#25D366;
     --wa-dark:#075E54;
-    --wa-bubble:#DCF8C6;
-    --wa-panel:#F0F0F0;
-    --ink:#111b21;
-    --muted:#667781;
-    --line:#e9edef;
-    --app:#fff;
-    --soft:#f7f8fa;
-    --accent:#00f5d4;
-    --purple:#7f77dd;
-    --amber:#e0912b;
-    --red:#e05656;
-    --teal:#1d9e75;
-    --teal-soft:#e9f6f1;
-    --shadow:0 40px 80px -40px rgba(40,30,90,.4);
+    --wa-bubble:#dcf8c6;
+    --wa-panel:#f0f3f8;
+    --ink:#1e2535;
+    --muted:#64748b;
+    --line:#e2e8f0;
+    --app:#ffffff;
+    --soft:#f0f3f8;
+    --accent:#00c9ae;
+    --purple:#574fc0;
+    --amber:#d97706;
+    --red:#dc2626;
+    --teal:#00c9ae;
+    --teal-soft:#e6faf8;
+    --shadow:0 16px 48px -16px rgba(0,0,0,.12);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{
     font-family:'Heebo',sans-serif;
-    background:radial-gradient(120% 100% at 100% 0%,#e5e2f4,transparent 60%),
-               radial-gradient(120% 100% at 0% 100%,#d4ede7,transparent 60%),var(--bg);
+    background:radial-gradient(120% 100% at 100% 0%,#d4eef7,transparent 60%),
+               radial-gradient(120% 100% at 0% 100%,#d4f7f2,transparent 60%),var(--bg);
     color:var(--ink);min-height:100vh;
     padding:clamp(10px,2vw,28px);
     display:flex;flex-direction:column;align-items:center;gap:14px;
@@ -56,7 +56,7 @@
   /* ── Sidebar ── */
   .side{
     width:210px;flex:none;border-inline-start:1px solid var(--line);
-    display:flex;flex-direction:column;background:#fff;
+    display:flex;flex-direction:column;background:var(--soft);
   }
   .side .brand{
     height:66px;display:flex;align-items:center;gap:10px;
@@ -68,11 +68,11 @@
   .nav{padding:10px;display:flex;flex-direction:column;gap:2px;overflow:auto;flex:1;}
   .nav a{
     display:flex;align-items:center;gap:9px;padding:10px 11px;
-    border-radius:11px;font-size:.83rem;font-weight:600;color:#55536a;
+    border-radius:11px;font-size:.83rem;font-weight:600;color:#aaaaaa;
     text-decoration:none;cursor:pointer;transition:.15s;
   }
-  .nav a .ic{width:14px;height:14px;border-radius:3px;background:#cbc9da;flex:none;transition:.15s;}
-  .nav a.active{background:#e8f5e9;color:#1b5e20;}
+  .nav a .ic{width:14px;height:14px;border-radius:3px;background:#1a1d26;flex:none;transition:.15s;}
+  .nav a.active{background:var(--teal-soft);color:var(--teal);}
   .nav a.active .ic{background:var(--wa);}
   .nav-tag{font-size:.6rem;font-weight:800;letter-spacing:.1em;color:var(--muted);padding:12px 11px 5px;text-transform:uppercase;}
 
@@ -84,7 +84,7 @@
   }
 
   /* ── Main ── */
-  .main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;background:#e5ddd5;}
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;background:var(--bg);}
 
   /* WhatsApp chat header */
   .wa-header{
@@ -115,7 +115,7 @@
   /* Day divider */
   .day-div{
     text-align:center;font-size:.71rem;font-weight:600;
-    color:var(--muted);background:rgba(255,255,255,.7);
+    color:var(--muted);background:rgba(19,23,41,.9);
     padding:4px 12px;border-radius:999px;align-self:center;
     margin:4px 0;
   }
@@ -130,8 +130,8 @@
     position:relative;
   }
   .msg.bot .bubble{
-    background:#fff;border-top-right-radius:0;
-    box-shadow:0 1px 2px rgba(0,0,0,.12);
+    background:var(--soft);border-top-right-radius:0;
+    box-shadow:0 1px 2px rgba(0,0,0,.4);
   }
   .msg.user .bubble{
     background:var(--wa-bubble);border-top-left-radius:0;
@@ -147,8 +147,8 @@
   /* Quick-reply buttons */
   .qr-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;align-self:flex-start;}
   .qr-btn{
-    background:#fff;border:1px solid rgba(0,150,136,.4);
-    color:var(--wa-dark);font-family:inherit;font-size:.8rem;font-weight:600;
+    background:var(--soft);border:1px solid rgba(0,150,136,.4);
+    color:#00f5d4;font-family:inherit;font-size:.8rem;font-weight:600;
     padding:7px 14px;border-radius:999px;cursor:pointer;
     transition:.15s;
   }
@@ -156,9 +156,9 @@
 
   /* Typing indicator */
   .typing{
-    align-self:flex-start;background:#fff;
+    align-self:flex-start;background:var(--soft);
     padding:10px 14px;border-radius:10px;border-top-right-radius:0;
-    box-shadow:0 1px 2px rgba(0,0,0,.12);
+    box-shadow:0 1px 2px rgba(0,0,0,.4);
     display:none;align-items:center;gap:5px;
   }
   .typing span{
@@ -171,11 +171,11 @@
 
   /* Input bar */
   .wa-input{
-    background:#f0f0f0;border-top:1px solid var(--line);
+    background:var(--app);border-top:1px solid var(--line);
     display:flex;align-items:center;gap:10px;padding:8px 14px;flex:none;
   }
   .wa-input .inp{
-    flex:1;background:#fff;border:none;border-radius:999px;
+    flex:1;background:var(--soft);border:none;border-radius:999px;
     padding:9px 16px;font-family:inherit;font-size:.85rem;color:var(--ink);
     outline:none;direction:rtl;
   }
@@ -188,7 +188,7 @@
   /* ── Admin panel (right side) ── */
   .admin{
     width:260px;flex:none;border-inline-end:1px solid var(--line);
-    display:flex;flex-direction:column;background:#fff;overflow:hidden;
+    display:flex;flex-direction:column;background:var(--soft);overflow:hidden;
   }
   .admin-header{
     padding:14px 16px;border-bottom:1px solid var(--line);
@@ -243,6 +243,37 @@
     .side{width:60px;}.side .brand .brand-tag,.nav a span,.nav-tag{display:none;}
     .admin{display:none;}.frame{height:78vh;}
   }
+
+  /* ── Animations ── */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity:0; } to { opacity:1; }
+    }
+    @keyframes slideInRight {
+      from { opacity:0; transform:translateX(18px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+    @keyframes pulseDot {
+      0%,100% { transform:scale(1); opacity:.7; }
+      50% { transform:scale(1.4); opacity:1; }
+    }
+    body { animation: fadeIn .5s ease both; }
+    .bar { animation: fadeUp .45s cubic-bezier(.22,.61,.36,1) .05s both; }
+    .frame { animation: fadeUp .5s cubic-bezier(.22,.61,.36,1) .15s both; }
+    .caption { animation: fadeUp .45s cubic-bezier(.22,.61,.36,1) .25s both; }
+    .admin { animation: slideInRight .5s cubic-bezier(.22,.61,.36,1) .2s both; }
+    .lead-card { transition: transform .2s cubic-bezier(.22,.61,.36,1), box-shadow .2s; }
+    .lead-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px -8px rgba(18,140,126,.2); }
+    .scenarios button { transition: background .2s, color .2s, transform .15s; }
+    .scenarios button:hover { transform: scale(1.04); }
+    .green-dot { animation: pulseDot 2s ease-in-out infinite; }
+    .frame { transition: box-shadow .3s; }
+    .frame:hover { box-shadow: 0 24px 64px -20px rgba(0,0,0,.18); }
+  }
 </style>
 </head>
 <body>
@@ -278,12 +309,12 @@
   <!-- Chat -->
   <div class="main">
     <div class="wa-header">
-      <div class="wa-avatar">🤖</div>
+      <div class="wa-avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="9" cy="13" r="1.5" fill="currentColor"/><circle cx="15" cy="13" r="1.5" fill="currentColor"/><path d="M12 3v4M8 3h8"/></svg></div>
       <div class="wa-info">
         <div class="wa-name">SYNERO Bot</div>
         <div class="wa-status" id="waStatus">מקוון · עונה תוך שניות</div>
       </div>
-      <div class="wa-actions"><span>🔍</span><span>⋮</span></div>
+      <div class="wa-actions"><span>⋮</span></div>
     </div>
 
     <div class="chat" id="chat">
@@ -294,10 +325,9 @@
       <span></span><span></span><span></span>
     </div>
 
-    <div class="toast" id="toast">🔔 ליד חדש התקבל!</div>
+    <div class="toast" id="toast">ליד חדש התקבל!</div>
 
     <div class="wa-input">
-      <span style="font-size:1.3rem;cursor:pointer;">😊</span>
       <input class="inp" placeholder="הקלד הודעה..." readonly>
       <button class="send-btn">➤</button>
     </div>
@@ -337,39 +367,39 @@ const scenarios = [
   // 0 — new lead flow
   [
     {from:'user', text:'שלום, ראיתי אתכם באינסטגרם ורציתי לשאול על המחירים'},
-    {from:'bot',  text:'שלום! 👋 ברוכים הבאים ל-SYNERO TECH.\nאני הנציג האוטומטי שלנו ואשמח לעזור.\n\nמה הייתם רוצים לדעת?', qr:['מחירים ותנאים','תיאור השירות','לדבר עם נציג']},
+    {from:'bot',  text:'שלום! ברוכים הבאים ל-SYNERO TECH.\nאני הנציג האוטומטי שלנו ואשמח לעזור.\n\nמה הייתם רוצים לדעת?', qr:['מחירים ותנאים','תיאור השירות','לדבר עם נציג']},
     {from:'user', text:'מחירים ותנאים'},
-    {from:'bot',  text:'מעולה! 💡 השירותים שלנו מתחילים מ-500 ₪ להקמה ועד לפתרונות מלאים.\n\nכדי לתת לכם הצעה מדויקת — איך קוראים לכם?'},
+    {from:'bot',  text:'מעולה! השירותים שלנו מתחילים מ-500 ₪ להקמה ועד לפתרונות מלאים.\n\nכדי לתת לכם הצעה מדויקת — איך קוראים לכם?'},
     {from:'user', text:'דנה לוי'},
-    {from:'bot',  text:'נעים מאוד, דנה! 😊\n\nמה מספר הטלפון שלכם? (להעברה לנציג שלנו)'},
+    {from:'bot',  text:'נעים מאוד, דנה!\n\nמה מספר הטלפון שלכם? (להעברה לנציג שלנו)'},
     {from:'user', text:'054-7781234'},
-    {from:'bot',  text:'תודה, דנה! ✅\n\nשמרתי את הפרטים שלכם. נציג מ-SYNERO יצור איתכם קשר בהקדם.\n\nעד אז — יש עוד שאלות?', qr:['עוד שאלות','תודה, להתראות']},
+    {from:'bot',  text:'תודה, דנה!\n\nשמרתי את הפרטים שלכם. נציג מ-SYNERO יצור איתכם קשר בהקדם.\n\nעד אז — יש עוד שאלות?', qr:['עוד שאלות','תודה, להתראות']},
     {lead:{name:'דנה לוי', phone:'054-7781234', need:'שאלה על מחירים ותנאים'}},
   ],
   // 1 — FAQ flow
   [
     {from:'user', text:'כמה זמן לוקח להקים מערכת?'},
-    {from:'bot',  text:'שאלה מעולה! ⚡\n\nזמן ההקמה תלוי בסוג השירות:\n• בוט וואטסאפ — 5-7 ימי עסקים\n• CRM מלא — 10-14 ימי עסקים\n• אוטומציות — 3-5 ימים\n\nהאם יש שירות ספציפי שמעניין אתכם?', qr:['בוט וואטסאפ','CRM','אוטומציות']},
+    {from:'bot',  text:'שאלה מעולה!\n\nזמן ההקמה תלוי בסוג השירות:\n• בוט וואטסאפ — 5-7 ימי עסקים\n• CRM מלא — 10-14 ימי עסקים\n• אוטומציות — 3-5 ימים\n\nהאם יש שירות ספציפי שמעניין אתכם?', qr:['בוט וואטסאפ','CRM','אוטומציות']},
     {from:'user', text:'בוט וואטסאפ'},
-    {from:'bot',  text:'נהדר! 🤖 בוט הוואטסאפ שלנו:\n\n✅ מגיב 24/7 ללא מגבלה\n✅ שואל את הלקוח מה הוא צריך\n✅ אוסף שם, טלפון ובקשה\n✅ מעביר לנציג כשצריך\n\nרוצים לקבל הצעת מחיר אישית?', qr:['כן, שלחו לי הצעה','לא תודה']},
+    {from:'bot',  text:'נהדר! בוט הוואטסאפ שלנו:\n\n• מגיב 24/7 ללא מגבלה\n• שואל את הלקוח מה הוא צריך\n• אוסף שם, טלפון ובקשה\n• מעביר לנציג כשצריך\n\nרוצים לקבל הצעת מחיר אישית?', qr:['כן, שלחו לי הצעה','לא תודה']},
     {from:'user', text:'כן, שלחו לי הצעה'},
-    {from:'bot',  text:'מצוין! 🎉 כדי לשלוח הצעה מותאמת — מה שמכם?'},
+    {from:'bot',  text:'מצוין! כדי לשלוח הצעה מותאמת — מה שמכם?'},
     {from:'user', text:'יוסי כהן'},
     {from:'bot',  text:'נעים מאוד יוסי! מה מספר הטלפון שלכם?'},
     {from:'user', text:'052-3344556'},
-    {from:'bot',  text:'תודה! ✅ הפרטים נשמרו. נציג שלנו ישלח לכם הצעה אישית תוך 24 שעות!', qr:['תודה!']},
+    {from:'bot',  text:'תודה! הפרטים נשמרו. נציג שלנו ישלח לכם הצעה אישית תוך 24 שעות!', qr:['תודה!']},
     {lead:{name:'יוסי כהן', phone:'052-3344556', need:'מעוניין בהצעה לבוט וואטסאפ'}},
   ],
   // 2 — handoff flow
   [
     {from:'user', text:'אני צריך עזרה דחופה, יש לי בעיה עם המערכת שלי'},
-    {from:'bot',  text:'מצטערים לשמוע! 🙏 אני כאן כדי לעזור.\n\nאפשר לספר לי מה הבעיה?', qr:['הבוט לא עונה','שגיאה בחיבור','אחר']},
+    {from:'bot',  text:'מצטערים לשמוע! אני כאן כדי לעזור.\n\nאפשר לספר לי מה הבעיה?', qr:['הבוט לא עונה','שגיאה בחיבור','אחר']},
     {from:'user', text:'הבוט לא עונה'},
-    {from:'bot',  text:'הבנתי. 🔍 כמה שאלות מהירות:\n\nמתי זה התחיל לקרות?'},
+    {from:'bot',  text:'הבנתי. כמה שאלות מהירות:\n\nמתי זה התחיל לקרות?'},
     {from:'user', text:'מאמש בערב'},
-    {from:'bot',  text:'תודה. בעיה זו דורשת טיפול של נציג טכני.\n\n⚡ אני מחבר אתכם עכשיו לנציג שלנו.\n\nמה שמכם?'},
+    {from:'bot',  text:'תודה. בעיה זו דורשת טיפול של נציג טכני.\n\nאני מחבר אתכם עכשיו לנציג שלנו.\n\nמה שמכם?'},
     {from:'user', text:'מיכל דוד'},
-    {from:'bot',  text:'מיכל, 📞 שלחתי כבר התראה לנציג הטכני שלנו!\n\nהוא יצור איתכם קשר תוך מספר דקות.\n\nמספר פנייה: #TKT-2847', qr:['תודה רבה']},
+    {from:'bot',  text:'מיכל, שלחתי כבר התראה לנציג הטכני שלנו!\n\nהוא יצור איתכם קשר תוך מספר דקות.\n\nמספר פנייה: #TKT-2847', qr:['תודה רבה']},
     {handoff:{name:'מיכל דוד', issue:'בוט לא עונה מאמש', ticket:'#TKT-2847'}},
   ]
 ];
@@ -425,19 +455,19 @@ function addLead(data){
   const isHandoff = !!data.issue;
   card.innerHTML = `
     <div class="lc-name"><span class="green-dot"></span>${data.name}</div>
-    <div class="lc-phone">${data.phone || '⚡ דחוף'}</div>
+    <div class="lc-phone">${data.phone || 'דחוף'}</div>
     <div class="lc-need">${data.need || data.issue}</div>
     ${data.ticket ? `<div class="lc-time">כרטיס ${data.ticket}</div>` : ''}
     <div class="lc-time">עכשיו</div>
     <div class="lc-status">
-      <button class="lc-btn g">✓ טופל</button>
-      <button class="lc-btn p">📞 התקשר</button>
+      <button class="lc-btn g">טופל</button>
+      <button class="lc-btn p">התקשר</button>
     </div>
   `;
   leadList.prepend(card);
 
   // toast
-  toast.textContent = isHandoff ? `⚡ פנייה דחופה — ${data.name}!` : `🔔 ליד חדש — ${data.name}!`;
+  toast.textContent = isHandoff ? `פנייה דחופה — ${data.name}!` : `ליד חדש — ${data.name}!`;
   toast.classList.add('show');
   setTimeout(()=>toast.classList.remove('show'), 3500);
 }
@@ -478,7 +508,7 @@ async function runScenario(sc){
       addLead(step.lead);
     } else if(step.handoff){
       await sleep(400);
-      waStatus.textContent = '⚡ מחובר לנציג טכני';
+      waStatus.textContent = 'מחובר לנציג טכני';
       addLead(step.handoff);
     }
   }

@@ -1,54 +1,45 @@
 <title>סינרו · הדגמה חיה של המערכת</title>
 <style>
   :root{
-    --brand:#4f46e5; --brand-500:#6366f1; --brand-700:#4338ca;
-    --brand-50:#eef2ff; --brand-100:#e0e7ff;
-    --emerald:#10b981; --emerald-50:#ecfdf5;
-    --rose:#ef4444; --rose-50:#fef2f2;
-    --amber:#f59e0b; --cyan:#06b6d4;
-    --app-bg:#f6f7fb; --card:#fff; --line:#e7e9f1;
-    --ink:#0f172a; --muted:#64748b; --muted2:#97a1b4;
+    --brand:#00c9ae; --brand-500:#00c9ae; --brand-700:#009a85;
+    --brand-50:#e6faf8; --brand-100:#d0f7f1;
+    --emerald:#059669; --emerald-50:#d1fae5;
+    --rose:#dc2626; --rose-50:#fee2e2;
+    --amber:#d97706; --cyan:#00c9ae;
+    --app-bg:#f5f7fb; --card:#ffffff; --line:#e2e8f0;
+    --ink:#1e2535; --muted:#64748b; --muted2:#94a3b8;
     --font:"Assistant","Rubik",system-ui,-apple-system,"Segoe UI","Arial Hebrew","Noto Sans Hebrew",sans-serif;
 
-    /* player shell — theme aware */
-    --backdrop: radial-gradient(1200px 700px at 80% -10%, #e0e7ff 0%, transparent 55%),
-                radial-gradient(1000px 600px at 10% 110%, #dbeafe 0%, transparent 55%),
-                linear-gradient(135deg,#eef2ff 0%,#f8fafc 45%,#eef2ff 100%);
-    --shell-ink:#0f172a; --shell-muted:#5b6577;
-    --panel:rgba(255,255,255,.72); --panel-line:rgba(15,23,42,.08);
-    --ctrl:#fff; --ctrl-line:#e2e8f0; --ctrl-ink:#334155;
-    --dot:#c7cede; --dot-on:var(--brand);
-    --frame-line:#dfe3ec;
+    --backdrop: linear-gradient(135deg,#f0f4f8 0%,#e8f0f8 45%,#f0f4f8 100%);
+    --shell-ink:#1e2535; --shell-muted:#64748b;
+    --panel:rgba(255,255,255,.95); --panel-line:rgba(0,0,0,.08);
+    --ctrl:#f0f3f8; --ctrl-line:#e2e8f0; --ctrl-ink:#1e2535;
+    --dot:#e2e8f0; --dot-on:var(--brand);
+    --frame-line:#e2e8f0;
   }
   @media (prefers-color-scheme:dark){
     :root{
-      --backdrop: radial-gradient(1200px 700px at 80% -10%, #1e1b4b 0%, transparent 55%),
-                  radial-gradient(1000px 600px at 10% 110%, #0b213f 0%, transparent 55%),
-                  linear-gradient(135deg,#0b1020 0%,#0e1526 45%,#141034 100%);
-      --shell-ink:#eef2ff; --shell-muted:#a9b2c6;
-      --panel:rgba(17,24,39,.6); --panel-line:rgba(255,255,255,.10);
-      --ctrl:rgba(30,41,59,.7); --ctrl-line:rgba(255,255,255,.12); --ctrl-ink:#e2e8f0;
-      --dot:#3a4257; --dot-on:var(--brand-500);
-      --frame-line:#20283c;
+      --backdrop: linear-gradient(135deg,#f0f4f8 0%,#e8f0f8 45%,#f0f4f8 100%);
+      --shell-ink:#1e2535; --shell-muted:#64748b;
+      --panel:rgba(255,255,255,.95); --panel-line:rgba(0,0,0,.08);
+      --ctrl:#f0f3f8; --ctrl-line:#e2e8f0; --ctrl-ink:#1e2535;
+      --dot:#e2e8f0; --dot-on:var(--brand);
+      --frame-line:#e2e8f0;
     }
   }
   :root[data-theme="light"]{
-    --backdrop: radial-gradient(1200px 700px at 80% -10%, #e0e7ff 0%, transparent 55%),
-                radial-gradient(1000px 600px at 10% 110%, #dbeafe 0%, transparent 55%),
-                linear-gradient(135deg,#eef2ff 0%,#f8fafc 45%,#eef2ff 100%);
-    --shell-ink:#0f172a; --shell-muted:#5b6577;
-    --panel:rgba(255,255,255,.72); --panel-line:rgba(15,23,42,.08);
-    --ctrl:#fff; --ctrl-line:#e2e8f0; --ctrl-ink:#334155; --dot:#c7cede; --dot-on:var(--brand);
-    --frame-line:#dfe3ec;
+    --backdrop: linear-gradient(135deg,#f0f4f8 0%,#e8f0f8 45%,#f0f4f8 100%);
+    --shell-ink:#1e2535; --shell-muted:#64748b;
+    --panel:rgba(255,255,255,.95); --panel-line:rgba(0,0,0,.08);
+    --ctrl:#f0f3f8; --ctrl-line:#e2e8f0; --ctrl-ink:#1e2535; --dot:#e2e8f0; --dot-on:var(--brand);
+    --frame-line:#e2e8f0;
   }
   :root[data-theme="dark"]{
-    --backdrop: radial-gradient(1200px 700px at 80% -10%, #1e1b4b 0%, transparent 55%),
-                radial-gradient(1000px 600px at 10% 110%, #0b213f 0%, transparent 55%),
-                linear-gradient(135deg,#0b1020 0%,#0e1526 45%,#141034 100%);
-    --shell-ink:#eef2ff; --shell-muted:#a9b2c6;
-    --panel:rgba(17,24,39,.6); --panel-line:rgba(255,255,255,.10);
-    --ctrl:rgba(30,41,59,.7); --ctrl-line:rgba(255,255,255,.12); --ctrl-ink:#e2e8f0;
-    --dot:#3a4257; --dot-on:var(--brand-500); --frame-line:#20283c;
+    --backdrop: linear-gradient(135deg,#f0f4f8 0%,#e8f0f8 45%,#f0f4f8 100%);
+    --shell-ink:#1e2535; --shell-muted:#64748b;
+    --panel:rgba(255,255,255,.95); --panel-line:rgba(0,0,0,.08);
+    --ctrl:#f0f3f8; --ctrl-line:#e2e8f0; --ctrl-ink:#1e2535;
+    --dot:#e2e8f0; --dot-on:var(--brand); --frame-line:#e2e8f0;
   }
 
   *{box-sizing:border-box}
@@ -76,14 +67,14 @@
 
   .stage-wrap{position:relative;width:100%;border-radius:16px}
   .stage{position:absolute;top:0;right:0;width:1040px;height:648px;transform-origin:top right;
-    border-radius:16px;overflow:hidden;background:#fff;
+    border-radius:16px;overflow:hidden;background:#ffffff;
     box-shadow:0 30px 70px -25px rgba(15,23,42,.5), 0 0 0 1px var(--frame-line);}
   /* browser chrome */
-  .chrome{height:44px;background:#f1f3f8;border-bottom:1px solid #e4e7ef;display:flex;align-items:center;gap:14px;padding:0 16px}
+  .chrome{height:44px;background:#f0f3f8;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:14px;padding:0 16px}
   .lights{display:flex;gap:7px}
   .lights i{width:12px;height:12px;border-radius:50%}
   .lights i:nth-child(1){background:#f87171}.lights i:nth-child(2){background:#fbbf24}.lights i:nth-child(3){background:#34d399}
-  .addr{flex:1;height:26px;background:#fff;border:1px solid #e4e7ef;border-radius:8px;display:flex;align-items:center;
+  .addr{flex:1;height:26px;background:#ffffff;border:1px solid #e2e8f0;border-radius:8px;display:flex;align-items:center;
     padding:0 12px;gap:8px;color:#64748b;font-size:12px;direction:ltr;justify-content:flex-start}
   .addr svg{flex:none}
   .screen{position:absolute;inset:44px 0 0 0;background:var(--app-bg);color:var(--ink);overflow:hidden}
@@ -118,7 +109,7 @@
 
   /* ================= app mock components ================= */
   .app{display:flex;height:100%;font-size:13px}
-  .side{width:186px;flex:none;background:#fff;border-left:1px solid #eef0f5;display:flex;flex-direction:column;padding:14px 10px}
+  .side{width:186px;flex:none;background:#f0f3f8;border-left:1px solid #e2e8f0;display:flex;flex-direction:column;padding:14px 10px}
   .side .lg{display:flex;align-items:center;gap:9px;padding:6px 8px 14px}
   .side .lg .mk{width:32px;height:32px;border-radius:9px;background:var(--brand);color:#fff;font-weight:800;display:grid;place-items:center}
   .side .lg b{font-weight:800}.side .lg small{display:block;font-size:9.5px;color:var(--muted2);margin-top:-2px}
@@ -129,14 +120,14 @@
   .h1{font-size:20px;font-weight:800;letter-spacing:-.3px;margin:0 0 3px}
   .sub{color:var(--muted);font-size:12.5px;margin:0 0 16px}
   .grid6{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-  .tile{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;position:relative;overflow:hidden}
+  .tile{background:#ffffff;border:1px solid var(--line);border-radius:14px;padding:12px;position:relative;overflow:hidden}
   .tile::before{content:"";position:absolute;top:0;bottom:0;right:0;width:4px;background:var(--brand)}
   .tile.em::before{background:var(--emerald)} .tile.cy::before{background:var(--cyan)}
   .tile.am::before{background:var(--amber)} .tile.ro::before{background:var(--rose)} .tile.sl::before{background:#94a3b8}
   .tile .l{font-size:10.5px;color:var(--muted);font-weight:600}
   .tile .v{font-size:20px;font-weight:800;margin-top:3px;letter-spacing:-.4px;direction:ltr;text-align:right;font-variant-numeric:tabular-nums}
   .tile .s{font-size:10px;color:var(--muted2);margin-top:1px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}
+  .card{background:#131729;border:1px solid var(--line);border-radius:16px;padding:16px}
   .row{display:flex;gap:14px}
   .ins{border:1px solid;border-radius:12px;padding:11px 13px}
   .ins.g{background:var(--emerald-50);border-color:#bbf7d0}
@@ -157,14 +148,14 @@
   .btn-dn{background:var(--rose-50);color:#dc2626;border:none;border-radius:11px;padding:9px 14px;font-weight:700;font-size:12.5px;font-family:inherit}
   .field{margin-bottom:11px}
   .field label{display:block;font-size:11.5px;color:#475569;font-weight:600;margin-bottom:5px}
-  .input{width:100%;border:1px solid #cbd2e0;border-radius:10px;background:#fff;padding:9px 11px;font-size:12.5px;color:#334155;font-family:inherit}
+  .input{width:100%;border:1px solid #1a1d26;border-radius:10px;background:#131729;padding:9px 11px;font-size:12.5px;color:#e0e0e0;font-family:inherit}
   .input.ph{color:#9aa4b6}
   .modal-bg{position:absolute;inset:0;background:rgba(15,23,42,.42);backdrop-filter:blur(2px);display:flex;justify-content:center;padding-top:34px}
-  .modal{width:560px;max-width:92%;background:#fff;border-radius:18px;box-shadow:0 30px 60px -20px rgba(2,6,23,.5);padding:20px;max-height:560px;overflow:hidden}
+  .modal{width:560px;max-width:92%;background:#131729;border-radius:18px;box-shadow:0 30px 60px -20px rgba(2,6,23,.5);padding:20px;max-height:560px;overflow:hidden}
   .modal h3{margin:0 0 14px;font-size:16px;font-weight:800}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
   .note{border:1px solid #e2e8f0;background:#f8fafc;border-radius:12px;padding:11px;font-size:11.5px;color:#475569}
-  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:3px 7px;direction:ltr;display:inline-block;margin-top:5px;color:#334155}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;background:#0d1020;border:1px solid #1a1d26;border-radius:6px;padding:3px 7px;direction:ltr;display:inline-block;margin-top:5px;color:#aaaaaa}
   .kv{font-size:11px;color:#64748b;margin-top:2px}.kv b{color:#475569}
   .tbl{width:100%;border-collapse:collapse;font-size:11.5px}
   .tbl th{color:#94a3b8;font-weight:600;text-align:right;padding:6px 4px;border-bottom:1px solid #e8ebf2;font-size:10.5px}
@@ -178,15 +169,42 @@
     display:grid;place-items:center;box-shadow:0 20px 40px -12px rgba(79,70,229,.6)}
   .cover h2{margin:6px 0 0;font-size:34px;font-weight:800;letter-spacing:-.6px}
   .cover p{margin:0;color:#64748b;font-size:15px;max-width:44ch;line-height:1.55}
-  .pill{margin-top:6px;background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:8px 16px;font-size:12.5px;color:#475569;font-weight:700}
+  .pill{margin-top:6px;background:#131729;border:1px solid #1a1d26;border-radius:999px;padding:8px 16px;font-size:12.5px;color:#e0e0e0;font-weight:700}
   .feat{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:640px;max-width:90%;margin-top:6px;text-align:right}
-  .feat div{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px 14px;font-size:12.5px;color:#334155;display:flex;gap:9px;align-items:flex-start}
+  .feat div{background:#131729;border:1px solid var(--line);border-radius:13px;padding:12px 14px;font-size:12.5px;color:#e0e0e0;display:flex;gap:9px;align-items:flex-start}
   .feat b{font-weight:800}
 
   @media (max-width:560px){
     .caption p{font-size:12.5px}.caption h3{font-size:14.5px}
     .btn span.lbl{display:none}.btn.play span.lbl{display:inline}
   }
+
+  /* ── Animations ── */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes progressPulse {
+      0%,100% { opacity:.6; } 50% { opacity:1; }
+    }
+    .wrap { animation: fadeIn .4s ease both; }
+    .topbar { animation: fadeUp .45s cubic-bezier(.22,.61,.36,1) .05s both; }
+    .player { animation: fadeUp .5s cubic-bezier(.22,.61,.36,1) .15s both; }
+    .caption { animation: fadeUp .45s cubic-bezier(.22,.61,.36,1) .25s both; }
+    .controls { animation: fadeUp .4s cubic-bezier(.22,.61,.36,1) .35s both; }
+    .btn { transition: transform .15s cubic-bezier(.22,.61,.36,1), box-shadow .15s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px -6px rgba(0,0,0,.15); }
+    .btn.play:hover { box-shadow: 0 10px 24px -8px rgba(79,70,229,.5); }
+    .stage { transition: box-shadow .4s; }
+    .stage:hover { box-shadow: 0 40px 80px -30px rgba(15,23,42,.6), 0 0 0 1px var(--frame-line); }
+    .progress .seg { transition: opacity .2s; }
+    .progress .seg:hover { opacity: .8; }
+    .progress .seg i { transition: transform .8s cubic-bezier(.22,.61,.36,1); }
+    .caption { transition: transform .3s cubic-bezier(.22,.61,.36,1); }
+  }
+
   @media (prefers-reduced-motion:reduce){
     .screen,.cursor,.progress .seg i{transition:none !important}
     .cursor.click::after{animation:none}
@@ -196,7 +214,7 @@
 <div class="wrap">
   <div class="topbar">
     <div class="brand"><span class="mk">S</span><div><b>סינרו</b><small>Synero Marketing</small></div></div>
-    <span class="tag">🎬 הדגמה חיה של המערכת</span>
+    <span class="tag">הדגמה חיה של המערכת</span>
   </div>
 
   <div class="player">
@@ -234,7 +252,7 @@
 
   // ---------- reusable mock builders ----------
   function side(active){
-    var items=[["דאשבורד פילוחים","📈"],["הקמפיינים שלי","🎯"],["לקוחות","🤝"],["הגדרות","⚙️"]];
+    var items=[["דאשבורד פילוחים",""],["הקמפיינים שלי",""],["לקוחות",""],["הגדרות",""]];
     return '<div class="side"><div class="lg"><span class="mk">S</span><div><b>סינרו</b><small>Synero Marketing</small></div></div><div class="nav">'+
       items.map(function(it){return '<a class="'+(it[0]===active?'on':'')+'"><span>'+it[1]+'</span>'+it[0]+'</a>';}).join('')+
       '</div></div>';
@@ -284,7 +302,7 @@
       html:'<div class="app">'+side("דאשבורד פילוחים")+'<div class="main">'+
         '<div class="h1">דאשבורד פילוחים</div><div class="sub">הקמפיינים של סינרו יחד עם הלקוחות שאישרו שיתוף · 2 מתוך 3 לקוחות משתפים</div>'+
         '<div class="grid6">'+tile("הוצאה כוללת","₪144,384")+tile("הכנסה כוללת","₪676,531","em")+tile("ROAS","4.69x","em","רווחי")+tile("המרות","3,619","cy")+tile("עלות להמרה","₪40","am")+tile("CTR","2.36%","sl")+'</div>'+
-        '<div class="card" style="margin-top:14px;padding:14px"><div style="font-weight:800;font-size:13.5px;margin-bottom:9px">💡 מסקנות לשיפור השיווק</div><div class="two">'+
+        '<div class="card" style="margin-top:14px;padding:14px"><div style="font-weight:800;font-size:13.5px;margin-bottom:9px">מסקנות לשיפור השיווק</div><div class="two">'+
           ins("הערוץ הרווחי ביותר: גוגל","ROAS של 6.99x — שווה לשקול הגדלת תקציב.","g")+ins("העלות הנמוכה ביותר להמרה","גוגל — ₪31 בממוצע להמרה, ערוץ יעיל לגיוס.","g")+'</div></div>'+
         '<div class="row" style="margin-top:14px">'+
           '<div class="card" style="flex:1.5;padding:14px"><div style="font-weight:800;font-size:13.5px">מגמת הוצאה מול הכנסה</div><div style="font-size:11px;color:#94a3b8;margin-bottom:6px">לאורך זמן · הכנסה (ירוק) מול הוצאה (סגול)</div>'+trendSVG()+'</div>'+
@@ -301,7 +319,7 @@
           clientCard("בוטיק לה-מור","רועי לוי · אופנה",'<span class="badge b-gr">משתף/ת נתונים</span>',"synero.co.il/c/yqr3YC…")+
           clientCard("מסעדת באזיליקום","מיכל כהן · מסעדנות",'<span class="badge b-gr">משתף/ת נתונים</span>',"synero.co.il/c/DgoMB3…")+
         '</div>'+
-        '<div style="margin-top:13px">'+clientCard("סטודיו פילאטיס דנה","דנה אבידן · כושר",'<span class="badge b-sl">🔒 נתונים פרטיים</span>',"synero.co.il/c/OHBb70…",'<div class="note" style="margin-top:11px">🔒 לקוח זה לא אישר שיתוף — אין לך גישה לצפייה בנתונים שלו.</div>')+'</div>'+
+        '<div style="margin-top:13px">'+clientCard("סטודיו פילאטיס דנה","דנה אבידן · כושר",'<span class="badge b-sl">נתונים פרטיים</span>',"synero.co.il/c/OHBb70…",'<div class="note" style="margin-top:11px">לקוח זה לא אישר שיתוף — אין לך גישה לצפייה בנתונים שלו.</div>')+'</div>'+
         '</div></div>' },
 
     { addr:"synero.co.il/clients", num:"4", title:"הוספת לקוח חדש",
@@ -338,7 +356,7 @@
         '<div class="note" style="margin-bottom:11px"><div style="font-size:10.5px;font-weight:700;color:#64748b;margin-bottom:8px">פרטי שיווק</div>'+
           '<div class="field" style="margin-bottom:8px"><label>הכאב / הבעיה שהקמפיין פותר</label><div class="input">אין זמן לקנות מתנות לחג</div></div>'+
           '<div class="field" style="margin-bottom:0"><label>ההצעה / המסר · יעד הקמפיין</label><div class="input">משלוח חינם + 15% · יעד: ROAS 3.5</div></div></div>'+
-        '<div class="note" style="border-color:#c7d2fe;background:#eef2ff"><div style="font-size:11px;font-weight:800;color:#4338ca;margin-bottom:8px">📊 חיבור Google Analytics</div>'+
+        '<div class="note" style="border-color:#c7d2fe;background:#eef2ff"><div style="font-size:11px;font-weight:800;color:#4338ca;margin-bottom:8px">חיבור Google Analytics</div>'+
           '<div class="two"><div class="field" style="margin-bottom:6px"><label>מזהה נכס GA4</label><div class="input" style="direction:ltr">123456789</div></div><div class="field" style="margin-bottom:6px"><label>שם קמפיין ב-UTM</label><div class="input" style="direction:ltr">holidays_2026</div></div></div>'+
           '<div style="font-size:10.5px;color:#64748b">להוספה כ-Viewer ב-GA:<span class="mono">synero-ga@…iam.gserviceaccount.com</span></div></div>'+
         '<button class="btn-pri" style="width:100%;margin-top:13px">יצירת קמפיין</button></div></div></div>' },
@@ -347,7 +365,7 @@
       text:"לכל קמפיין מזינים נתונים יומיים, או לוחצים על כפתור אחד כדי לשלוף אותם ישירות מ-Google Analytics. ה-ROAS וכל המדדים מחושבים אוטומטית.", cursor:[760,150],
       html:'<div class="app">'+side("הקמפיינים שלי")+'<div class="main" style="filter:blur(1px)"><div class="h1">הקמפיינים שלי</div></div>'+
         '<div class="modal-bg"><div class="modal" style="width:720px"><h3>נתונים · מבצע קיץ · בוטיק לה-מור</h3>'+
-        '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:#eef2ff;border:1px solid #c7d2fe;border-radius:12px;padding:10px 12px;margin-bottom:12px"><div style="font-size:11.5px;color:#475569">📊 חיבור Google Analytics מוגדר (נכס 123456789) — שליפת צפיות, כניסות והמרות ישירות מ-GA.</div><button class="btn-pri" style="white-space:nowrap">סנכרון מ-Google Analytics</button></div>'+
+        '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:#eef2ff;border:1px solid #c7d2fe;border-radius:12px;padding:10px 12px;margin-bottom:12px"><div style="font-size:11.5px;color:#475569">חיבור Google Analytics מוגדר (נכס 123456789) — שליפת צפיות, כניסות והמרות ישירות מ-GA.</div><button class="btn-pri" style="white-space:nowrap">סנכרון מ-Google Analytics</button></div>'+
         '<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:12px">'+
           ['חשיפות|298,811','קליקים|8,353','המרות|531','הוצאה|₪19,825','CTR|2.80%','ROAS|4.56x'].map(function(s){var p=s.split('|');return '<div style="background:#fff;border:1px solid #eef1f6;border-radius:9px;padding:8px;text-align:center"><div style="font-size:10px;color:#94a3b8">'+p[0]+'</div><div style="font-weight:800;font-size:13px;direction:ltr;'+(p[0]==='ROAS'?'color:#059669':'')+'">'+p[1]+'</div></div>';}).join('')+'</div>'+
         '<div style="background:#f6f7fb;border-radius:11px;padding:10px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:10px">'+
@@ -358,19 +376,19 @@
 
     { addr:"synero.co.il/c/yqr3YC…", num:"8", title:"הפורטל של הלקוח — עם דאשבורד משלו",
       text:"כל לקoח נכנס דרך הקישור האישי שלו, מנהל את הקמפיינים שלו — ומקבל דאשבורד תובנות משלו על הנתונים שלו בלבד. שירות שנותן לו ערך אמיתי.",
-      html:'<div style="height:100%;background:var(--app-bg)"><div style="background:#fff;border-bottom:1px solid #eef0f5;padding:13px 22px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-weight:800;font-size:15px">בוטיק לה-מור</div><div style="font-size:11px;color:#94a3b8">פורטל ניהול קמפיינים · שלום רועי</div></div><div class="brand" style="opacity:.75"><span style="font-size:10.5px;color:#94a3b8">באמצעות</span> <span class="mk" style="width:26px;height:26px;border-radius:8px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px">S</span></div></div>'+
+      html:'<div style="height:100%;background:var(--app-bg)"><div style="background:#0d1020;border-bottom:1px solid #1a1d26;padding:13px 22px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-weight:800;font-size:15px">בוטיק לה-מור</div><div style="font-size:11px;color:#94a3b8">פורטל ניהול קמפיינים · שלום רועי</div></div><div class="brand" style="opacity:.75"><span style="font-size:10.5px;color:#94a3b8">באמצעות</span> <span class="mk" style="width:26px;height:26px;border-radius:8px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px">S</span></div></div>'+
         '<div style="padding:16px 22px">'+
-        '<div style="display:flex;gap:6px;border-bottom:1px solid #e6e8ef;margin-bottom:14px"><div style="padding:8px 14px;font-weight:800;font-size:12.5px;color:#4338ca;border-bottom:2px solid #4f46e5">📈 דאשבורד</div><div style="padding:8px 14px;font-weight:700;font-size:12.5px;color:#94a3b8">🎯 הקמפיינים שלי</div></div>'+
+        '<div style="display:flex;gap:6px;border-bottom:1px solid #e6e8ef;margin-bottom:14px"><div style="padding:8px 14px;font-weight:800;font-size:12.5px;color:#4338ca;border-bottom:2px solid #4f46e5">דאשבורד</div><div style="padding:8px 14px;font-weight:700;font-size:12.5px;color:#94a3b8">הקמפיינים שלי</div></div>'+
         '<div class="grid6" style="grid-template-columns:repeat(6,1fr)">'+tile("הוצאה","₪66,503")+tile("הכנסה","₪198,747","em")+tile("ROAS","2.99x","em","רווחי")+tile("המרות","1,354","cy")+tile("עלות להמרה","₪49","am")+tile("CTR","2.26%","sl")+'</div>'+
         '<div class="row" style="margin-top:13px">'+
           '<div class="card" style="flex:1.4;padding:13px"><div style="font-weight:800;font-size:13px;margin-bottom:4px">מגמת הוצאה מול הכנסה</div>'+trendSVG()+'</div>'+
-          '<div class="card" style="flex:1;padding:13px"><div style="font-weight:800;font-size:13px;margin-bottom:9px">💡 מסקנה מרכזית</div>'+ins("הערוץ הרווחי ביותר: אינסטגרם","ROAS 3.41x — שווה להגדיל תקציב בערוץ.","g")+'</div>'+
+          '<div class="card" style="flex:1;padding:13px"><div style="font-weight:800;font-size:13px;margin-bottom:9px">מסקנה מרכזית</div>'+ins("הערוץ הרווחי ביותר: אינסטגרם","ROAS 3.41x — שווה להגדיל תקציב בערוץ.","g")+'</div>'+
         '</div></div></div>' },
 
     { addr:"synero.co.il", num:"✓", title:"זהו — הכל במקום אחד",
       text:"ניהול קמפיינים, מדידה מדויקת, פורטל אישי לכל לקוח, שליטת פרטיות מלאה, וחיבור ל-Google Analytics. מוכן לעבודה.",
       html:'<div class="cover"><span class="mk">S</span><h2>מוכן להתחיל</h2><p>המערכת שתעזור לך למדוד, להסיק ולשפר — גם את השיווק שלך וגם של הלקוחות שלך.</p>'+
-        '<div class="feat"><div><span>🎯</span><div><b>קמפיינים חכמים</b> — כל פרטי השיווק והמדדים במקום אחד.</div></div><div><span>📈</span><div><b>דאשבורד תובנות</b> — מסקנות אוטומטיות לשיפור.</div></div><div><span>🤝</span><div><b>פורטל לכל לקוח</b> — קישור אישי ודאשבורד משלו.</div></div><div><span>🔒</span><div><b>פרטיות בשליטתך</b> — את קובעת מי משתף נתונים.</div></div></div></div>' }
+        '<div class="feat"><div><div><b>קמפיינים חכמים</b> — כל פרטי השיווק והמדדים במקום אחד.</div></div><div><div><b>דאשבורד תובנות</b> — מסקנות אוטומטיות לשיפור.</div></div><div><div><b>פורטל לכל לקוח</b> — קישור אישי ודאשבורד משלו.</div></div><div><div><b>פרטיות בשליטתך</b> — את קובעת מי משתף נתונים.</div></div></div></div>' }
   ];
 
   // ---------- player engine ----------

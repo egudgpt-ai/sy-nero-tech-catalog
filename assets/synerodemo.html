@@ -1,27 +1,27 @@
 <title>SYNERO CRM — סיור מוצר</title>
 <style>
   :root {
-    --bg: #eceaf4;
+    --bg: #f5f7fb;
     --app: #ffffff;
-    --side: #ffffff;
-    --ink: #17141f;
-    --muted: #6b6880;
-    --line: #ebe9f2;
-    --soft: #f6f5fb;
-    --purple: #7f77dd;
-    --purple-deep: #574fc0;
-    --purple-soft: #efeefb;
-    --teal: #1d9e75;
-    --teal-soft: #e9f6f1;
-    --amber: #e0912b;
-    --shadow: 0 40px 80px -40px rgba(40, 30, 90, .45);
+    --side: #f0f3f8;
+    --ink: #1e2535;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --soft: #f0f3f8;
+    --purple: #00c9ae;
+    --purple-deep: #009a85;
+    --purple-soft: #e6faf8;
+    --teal: #00c9ae;
+    --teal-soft: #e6faf8;
+    --amber: #d97706;
+    --shadow: 0 16px 48px -16px rgba(0, 0, 0, .12);
   }
   * { box-sizing: border-box; }
   body {
     margin: 0; direction: rtl;
     background:
-      radial-gradient(120% 100% at 100% 0%, #e5e2f4, transparent 60%),
-      radial-gradient(120% 100% at 0% 100%, #e4f2ec, transparent 60%),
+      radial-gradient(120% 100% at 100% 0%, #d4f7f2, transparent 60%),
+      radial-gradient(120% 100% at 0% 100%, #e8f5f2, transparent 60%),
       var(--bg);
     color: var(--ink);
     font-family: "Heebo","Assistant","Rubik",system-ui,"Segoe UI","Arial Hebrew",Arial,sans-serif;
@@ -52,11 +52,11 @@
   .side .brand { height: 72px; display: flex; align-items: center; gap: 10px; padding: 0 18px; border-bottom: 1px solid var(--line); }
   .side .brand img { height: 30px; width: auto; }
   .nav { padding: 12px; display: flex; flex-direction: column; gap: 3px; overflow: auto; }
-  .nav a { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 11px; font-size: .86rem; font-weight: 600; color: #55536a; text-decoration: none; }
+  .nav a { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 11px; font-size: .86rem; font-weight: 600; color: #aaaaaa; text-decoration: none; }
   .nav a .ic { width: 15px; height: 15px; border-radius: 4px; background: #cbc9da; flex: none; }
   .nav a.active { background: var(--purple-soft); color: var(--purple-deep); }
   .nav a.active .ic { background: var(--purple); }
-  .nav a.locked { color: #b9b7c8; }
+  .nav a.locked { color: #555566; }
   .nav a.locked .ic { background: #e3e1ec; }
   .nav a .lock { margin-inline-start: auto; font-size: .7rem; }
   .nav .tag { font-size: .62rem; font-weight: 800; letter-spacing: .1em; color: var(--muted); padding: 12px 12px 6px; text-transform: uppercase; }
@@ -107,7 +107,7 @@
   .mitem .snip { font-size: .72rem; color: var(--muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .mread { border: 1px solid var(--line); border-radius: 12px; padding: 16px; background: var(--soft); }
   .mread .mt { font-weight: 800; font-size: .95rem; }
-  .mread .mb { font-size: .82rem; color: #45435a; margin-top: 10px; line-height: 1.7; }
+  .mread .mb { font-size: .82rem; color: #e0e0e0; margin-top: 10px; line-height: 1.7; }
   .mread .mact { margin-top: 14px; display: flex; gap: 8px; }
   .mread .mact span { background: var(--purple); color: #fff; font-weight: 800; font-size: .76rem; padding: 7px 16px; border-radius: 9px; }
   .mread .mact span.g { background: var(--app); color: var(--muted); border: 1px solid var(--line); }
@@ -140,7 +140,7 @@
 
   .filters { display: flex; gap: 10px; margin-bottom: 14px; }
   .filters .f { flex: 1; border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; color: var(--muted); font-size: .8rem; background: var(--app); }
-  .sign { border: 2px dashed var(--line); border-radius: 12px; height: 90px; display: flex; align-items: center; justify-content: center; color: #b9b7c8; font-size: .85rem; margin-top: 12px; }
+  .sign { border: 2px dashed var(--line); border-radius: 12px; height: 90px; display: flex; align-items: center; justify-content: center; color: #555566; font-size: .85rem; margin-top: 12px; }
 
   .cards3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
   .empcard { border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
@@ -163,14 +163,52 @@
 
   .caption { width: 100%; max-width: 1080px; display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: .82rem; }
   .dots { display: flex; gap: 6px; }
-  .dots i { width: 7px; height: 7px; border-radius: 50%; background: #cdcbdb; transition: .2s; }
+  .dots i { width: 7px; height: 7px; border-radius: 50%; background: #1a1d26; transition: .2s; }
   .dots i.on { background: var(--purple); width: 20px; border-radius: 999px; }
-  .note { font-size: .74rem; color: #9a98ab; }
+  .note { font-size: .74rem; color: #aaaaaa; }
 
   @media (max-width: 720px) {
     .side { width: 64px; } .side .brand img { height: 22px; } .nav a span.lbl, .nav .tag, .nav a .lock { display: none; }
     .stats { grid-template-columns: repeat(2,1fr); } .cards3 { grid-template-columns: 1fr; }
     .frame { height: 74vh; } .main { padding: 18px; } .screen { inset: 18px; }
+  }
+
+  /* ── Animations ── */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes slideInLeft {
+      from { opacity:0; transform:translateX(-16px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+    @keyframes barFill {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+    body { animation: fadeIn .45s ease both; }
+    .bar { animation: fadeUp .45s cubic-bezier(.22,.61,.36,1) .05s both; }
+    .frame { animation: fadeUp .55s cubic-bezier(.22,.61,.36,1) .15s both; }
+    .caption { animation: fadeUp .45s cubic-bezier(.22,.61,.36,1) .25s both; }
+    .side { animation: slideInLeft .5s cubic-bezier(.22,.61,.36,1) .1s both; }
+    .kcard {
+      transition: transform .2s cubic-bezier(.22,.61,.36,1), box-shadow .2s;
+    }
+    .kcard:not(.demo-drag):hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 12px 28px -10px rgba(0,0,0,.18);
+    }
+    .lead-card, .mitem {
+      transition: background .15s, transform .15s;
+    }
+    .mitem:hover { background: var(--purple-soft); }
+    .toggle button { transition: background .2s, color .2s, transform .15s; }
+    .toggle button:hover { transform: scale(1.04); }
+    .frame { transition: box-shadow .3s; }
+    .frame:hover { box-shadow: 0 24px 60px -18px rgba(0,0,0,.18); }
+    .screen { transition: opacity .26s cubic-bezier(.22,.61,.36,1), transform .26s cubic-bezier(.22,.61,.36,1) !important; }
   }
 </style>
 
@@ -276,7 +314,7 @@
     <!-- Tasks (Kanban) -->
     <section class="screen" data-tier="pro" data-nav="tasks">
       <div class="h"><div><h2>משימות</h2><p>לוח מחולק לשלבים — גררו כרטיסים בין הסטטוסים</p></div><span class="btn">משימה חדשה</span></div>
-      <div class="khint">◱ גררו כרטיסים בין העמודות כדי לעדכן סטטוס</div>
+      <div class="khint">גררו כרטיסים בין העמודות כדי לעדכן סטטוס</div>
       <div class="kanban">
         <div class="kcol">
           <h4><span class="kdot" style="background:#94a3b8"></span>לביצוע <span class="cnt">2</span></h4>
@@ -392,12 +430,12 @@
       <a data-nav="mail"><span class="ic"></span><span class="lbl">מיילים</span></a>
       <a data-nav="cust"><span class="ic"></span><span class="lbl">לקוחות</span></a>
       <a data-nav="tasks"><span class="ic"></span><span class="lbl">משימות</span></a>
-      <a data-nav="pay" data-prem="1"><span class="ic"></span><span class="lbl">תשלומים</span><span class="lock">🔒</span></a>
-      <a data-nav="quotes" data-prem="1"><span class="ic"></span><span class="lbl">הצעות מחיר</span><span class="lock">🔒</span></a>
-      <a data-nav="reports" data-prem="1"><span class="ic"></span><span class="lbl">דוחות</span><span class="lock">🔒</span></a>
-      <a data-nav="gantt" data-prem="1"><span class="ic"></span><span class="lbl">לוח שיווק</span><span class="lock">🔒</span></a>
-      <a data-nav="news" data-prem="1"><span class="ic"></span><span class="lbl">ניוזלטר</span><span class="lock">🔒</span></a>
-      <a data-nav="mng" data-prem="1"><span class="ic"></span><span class="lbl">דשבורד ניהול</span><span class="lock">🔒</span></a>
+      <a data-nav="pay" data-prem="1"><span class="ic"></span><span class="lbl">תשלומים</span><span class="lock">נעול</span></a>
+      <a data-nav="quotes" data-prem="1"><span class="ic"></span><span class="lbl">הצעות מחיר</span><span class="lock">נעול</span></a>
+      <a data-nav="reports" data-prem="1"><span class="ic"></span><span class="lbl">דוחות</span><span class="lock">נעול</span></a>
+      <a data-nav="gantt" data-prem="1"><span class="ic"></span><span class="lbl">לוח שיווק</span><span class="lock">נעול</span></a>
+      <a data-nav="news" data-prem="1"><span class="ic"></span><span class="lbl">ניוזלטר</span><span class="lock">נעול</span></a>
+      <a data-nav="mng" data-prem="1"><span class="ic"></span><span class="lbl">דשבורד ניהול</span><span class="lock">נעול</span></a>
     </nav>
   </aside>
 </div>
