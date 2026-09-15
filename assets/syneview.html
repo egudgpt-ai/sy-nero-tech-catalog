@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הערכת עובדים חכמה | סינרו טק</title>
+<meta property="og:title" content="תעודת הוקרה - הערכת עובדים">
+<meta property="og:description" content="קיבלתם תעודת הוקרה אישית. לחצו לפתיחה.">
+<meta property="og:image" content="https://egud.org.il/uploads/content/1785236039317-3f9ad3319cb2.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://egud.org.il/uploads/content/1785236039317-3f9ad3319cb2.png">
+<link rel="icon" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* exact main-site tokens */
+  --black:#060913;--ink-d:#0d1020;--panel-d:#131729;--line-d:#1a1d26;
+  --accent:#00f5d4;--accent-dim:rgba(0,245,212,.1);--accent-glow:rgba(0,245,212,.28);
+  /* light body */
+  --bg:#f6f7fa;--panel:#ffffff;--line:#e4e6ed;--line-s:#f0f1f5;
+  --ink:#0f1118;--mute:#6c7184;--subtle:#f1f2f6;
+  --coral:#ff6b6b;--amber:#f59e0b;
+  --r:10px;--ease:cubic-bezier(.22,.61,.36,1);
+  --shadow:0 1px 3px rgba(15,17,24,.05),0 4px 14px rgba(15,17,24,.06);
+  --shadow-md:0 4px 20px rgba(15,17,24,.08),0 1px 4px rgba(15,17,24,.04);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;text-align:right}
+::selection{background:var(--accent);color:var(--black)}
+
+/* TOPBAR - dark like main site nav */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(6,9,19,.96);backdrop-filter:blur(20px) saturate(120%);border-bottom:1px solid var(--line-d);display:flex;align-items:center;gap:20px;padding:0 32px;height:64px}
+.topbar-logo img{height:24px;object-fit:contain;filter:brightness(0) invert(1);opacity:.9}
+.topbar-brand{display:flex;flex-direction:column;line-height:1.2;padding-right:20px;border-right:1px solid rgba(255,255,255,.1)}
+.topbar-brand b{font-size:12px;color:rgba(255,255,255,.7);font-weight:400;letter-spacing:.8px;text-transform:uppercase}
+.topbar-right{margin-right:auto;display:flex;align-items:center;gap:16px}
+.topbar-link{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s;font-weight:400;letter-spacing:.3px}
+.topbar-link:hover{color:var(--accent)}
+.saved-tag{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.5px}
+
+/* PAGES */
+.page{display:none;min-height:calc(100vh - 64px);padding:56px 24px}
+.page.active{display:flex;flex-direction:column;align-items:center}
+#page-welcome.active{display:block;padding:0;overflow:hidden}
+
+/* WELCOME - dark hero, full bleed */
+#page-welcome{background:var(--black);padding:0;overflow:hidden}
+.welcome-grid{width:100%;display:grid;grid-template-columns:1fr 34%;gap:0;align-items:stretch;height:calc(100vh - 64px);overflow:hidden}
+.welcome-text{padding:60px 56px 60px 40px;display:flex;flex-direction:column;justify-content:center}
+.welcome-kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);opacity:0;animation:wkFade .5s var(--ease) .1s forwards}
+.welcome-h1{font-size:clamp(2.6rem,4.5vw,3.8rem);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:22px;color:#fff}
+.welcome-h1 .line1{display:block;opacity:0;transform:translateY(20px);animation:wkLine .6s var(--ease) .25s forwards}
+.welcome-h1 .line2{display:block;opacity:0;transform:translateY(20px);animation:wkLine .6s var(--ease) .42s forwards}
+.welcome-h1 em{background:linear-gradient(135deg,var(--accent),#00d4b8 40%,#7fffd4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal;animation:shimmer 4s linear 1s infinite;background-size:200%}
+.welcome-sub{font-size:16px;color:rgba(255,255,255,.5);line-height:1.75;margin-bottom:28px;max-width:380px;font-weight:300;opacity:0;animation:wkFade .6s var(--ease) .6s forwards}
+.welcome-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;opacity:0;animation:wkFade .6s var(--ease) .75s forwards}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:rgba(255,255,255,.6);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:6px 16px;letter-spacing:.3px}
+.welcome-cta{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--black);font-size:15px;font-weight:800;letter-spacing:.3px;border:none;border-radius:100px;padding:15px 32px;cursor:pointer;font-family:inherit;transition:transform .2s var(--ease),box-shadow .2s,filter .2s;opacity:0;animation:wkFade .6s var(--ease) .9s forwards;width:fit-content}
+.welcome-cta:hover{transform:translateY(-3px);box-shadow:0 12px 40px var(--accent-glow);filter:brightness(1.08)}
+.welcome-visual{position:relative;overflow:hidden;opacity:0;animation:wkImg .8s var(--ease) .2s forwards}
+.tool-screenshot{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:0}
+
+@keyframes wkFade{to{opacity:1}}
+@keyframes wkLine{to{opacity:1;transform:none}}
+@keyframes wkImg{to{opacity:1}}
+@keyframes shimmer{0%,100%{background-position:0%}50%{background-position:100%}}
+.vis-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.vis-card::before{content:'';position:absolute;top:-30px;left:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(0,245,212,.08),transparent 70%);pointer-events:none}
+.vis-score-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.vis-score-ring{width:68px;height:68px;border-radius:50%;background:conic-gradient(var(--accent) 0% 88%,#eef0f4 88% 100%);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.vis-score-ring::after{content:'';position:absolute;inset:6px;border-radius:50%;background:#fff}
+.vis-score-inner{position:relative;z-index:1;text-align:center}
+.vis-score-inner strong{display:block;font-size:16px;font-weight:900;color:var(--ink);line-height:1}
+.vis-score-inner span{font-size:9px;color:var(--mute)}
+.vis-emp-name{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:2px}
+.vis-emp-role{font-size:12px;color:var(--mute);font-weight:300}
+.vis-bars{display:flex;flex-direction:column;gap:10px}
+.vis-bar-row{display:flex;align-items:center;gap:10px;font-size:12px}
+.vis-bar-label{width:80px;color:var(--mute);text-align:right;font-size:11px;font-weight:400}
+.vis-bar-outer{flex:1;height:5px;background:var(--subtle);border-radius:2px;overflow:hidden}
+.vis-bar-fill{height:100%;border-radius:2px}
+.vis-bar-num{width:18px;font-weight:700;color:var(--ink);font-size:11px}
+.vis-badges{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.vis-badge{background:var(--subtle);border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:3px}
+.vis-badge .vb-title{font-size:12px;font-weight:700;color:var(--ink)}
+.vis-badge .vb-sub{font-size:10px;color:var(--mute)}
+.float-b{position:absolute;background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 13px;box-shadow:var(--shadow-md);display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--accent);bottom:-12px;right:-12px}
+
+/* STEPS */
+.step-head{max-width:640px;width:100%;margin-bottom:28px;display:flex;align-items:flex-start;gap:14px}
+.step-badge{min-width:36px;height:36px;border-radius:50%;background:var(--accent);color:var(--black);font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-head h1{font-size:20px;font-weight:800;letter-spacing:-.3px;color:var(--ink);margin-bottom:3px}
+.step-head p{font-size:13px;color:var(--mute);font-weight:300}
+
+/* CARD */
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;max-width:640px;width:100%;margin-bottom:18px;box-shadow:var(--shadow)}
+.card-title{font-size:13px;font-weight:700;letter-spacing:.3px;color:var(--ink);margin-bottom:16px;text-transform:uppercase;letter-spacing:1px;font-size:11px;color:var(--mute)}
+.form-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label.fld{display:flex;flex-direction:column;gap:5px;font-size:10px;font-weight:700;color:var(--mute);letter-spacing:1.5px;text-transform:uppercase}
+label.fld input,label.fld select,label.fld textarea{background:var(--subtle);border:1px solid var(--line);border-radius:6px;color:var(--ink);font-size:14px;padding:10px 13px;outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit;font-weight:400}
+label.fld input:focus,label.fld select:focus,label.fld textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);background:#fff}
+label.fld select option{background:#fff}
+label.fld textarea{resize:vertical;min-height:80px}
+.upload-zone{border:1.5px dashed var(--line);border-radius:6px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;color:var(--mute);font-size:13px}
+.upload-zone:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.upload-zone input{display:none}
+.upload-zone img{max-height:48px;border-radius:4px;margin-bottom:6px}
+.nav-row{display:flex;gap:12px;max-width:640px;width:100%;margin-top:8px;justify-content:space-between}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:100px;padding:11px 24px;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:.3px;font-family:inherit;transition:all .18s var(--ease)}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover{background:var(--accent);color:var(--black);box-shadow:0 6px 24px var(--accent-glow)}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;transform:none}
+.btn-ghost{background:transparent;color:var(--mute);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
+.btn-secondary{background:transparent;color:var(--mute);border:1px solid var(--line)}
+.btn-secondary:hover{border-color:var(--ink);color:var(--ink)}
+.btn-danger{background:#fff0f0;color:var(--coral);border:1px solid #fecaca;padding:5px 14px;font-size:12px}
+.btn-danger:hover{background:#ffe4e4}
+.btn-sm{padding:5px 14px;font-size:12px}
+
+/* PEOPLE */
+.ppl-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:640px;width:100%;margin-bottom:16px}
+.roster{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;max-width:640px;width:100%;margin-bottom:14px;box-shadow:var(--shadow)}
+.roster-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.roster-head strong{font-size:11px;font-weight:700;color:var(--mute);letter-spacing:1px;text-transform:uppercase}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:5px;background:var(--subtle);border:1px solid var(--line);border-radius:4px;padding:5px 8px 5px 5px;font-size:13px;font-weight:500;color:var(--ink)}
+.chip-del{background:none;border:none;cursor:pointer;color:#9ca3af;font-size:14px;transition:color .2s;padding:0 2px}
+.chip-del:hover{color:var(--coral)}
+.crit-manage{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;max-width:640px;width:100%;margin-bottom:14px;box-shadow:var(--shadow)}
+.crit-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--subtle);border-radius:6px;margin-bottom:6px}
+.crit-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.crit-item span{flex:1;font-size:13px;font-weight:600;color:var(--ink)}
+.crit-item small{font-size:11px;color:var(--mute);flex:2;font-weight:300}
+.crit-add{display:flex;gap:8px;margin-top:10px}
+.crit-add input{flex:1;background:var(--subtle);border:1px solid var(--line);border-radius:6px;color:var(--ink);padding:8px 12px;font-size:13px;outline:none;font-family:inherit}
+.crit-add input:focus{border-color:var(--accent)}
+.crit-add input::placeholder{color:var(--mute)}
+
+/* REVIEW */
+.review-grid{display:grid;grid-template-columns:200px 1fr;gap:18px;max-width:900px;width:100%;align-items:start}
+.review-side{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px;position:sticky;top:82px;box-shadow:var(--shadow)}
+.rv-emp-name{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.rv-emp-meta{font-size:11px;color:var(--mute);margin-bottom:14px;font-weight:300}
+.prog-bar{height:3px;background:var(--subtle);border-radius:2px;margin-bottom:16px;overflow:hidden}
+.prog-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+.rv-nav{display:flex;flex-direction:column;gap:2px}
+.rv-nav-btn{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:500;font-family:inherit;text-align:right;background:none;color:var(--mute);transition:all .15s;width:100%}
+.rv-nav-btn:hover{background:var(--subtle);color:var(--ink)}
+.rv-nav-btn.active{background:var(--accent-dim);color:var(--accent);font-weight:700}
+.rv-nav-btn.done{color:var(--accent)}
+.rv-nav-btn.skipped{color:#c8cad0;opacity:.7}
+.rv-nav-num{width:20px;height:20px;border-radius:50%;border:1.5px solid currentColor;font-size:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rv-nav-btn.done .rv-nav-num{background:var(--accent);border-color:var(--accent);color:var(--black)}
+.review-main{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px;box-shadow:var(--shadow)}
+.cr-eyebrow{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.cr-name{font-size:22px;font-weight:900;letter-spacing:-.4px;color:var(--ink);margin-bottom:6px}
+.cr-desc{font-size:13px;color:var(--mute);margin-bottom:20px;font-weight:300;line-height:1.7}
+.cr-q{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:16px}
+.scale{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+.scale-btn{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;padding:11px 14px;background:var(--subtle);border:1.5px solid transparent;border-radius:8px;cursor:pointer;text-align:right;font-family:inherit;transition:all .18s}
+.scale-btn:hover{background:var(--accent-dim);border-color:rgba(0,245,212,.2)}
+.scale-btn.sel{background:var(--accent-dim);border-color:var(--accent)}
+.scale-num{width:34px;height:34px;border-radius:50%;background:#fff;border:1.5px solid var(--line);font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;color:var(--ink)}
+.scale-btn.sel .scale-num{background:var(--accent);border-color:var(--accent);color:var(--black)}
+.scale-label{font-size:14px;font-weight:600;color:var(--ink)}
+.scale-hint{font-size:11px;color:var(--mute);margin-top:1px;font-weight:300}
+.scale-score-badge{font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-dim);border-radius:4px;padding:2px 8px;opacity:0;transition:opacity .2s}
+.scale-btn.sel .scale-score-badge{opacity:1}
+.note-field{margin-bottom:20px}
+.note-field>label{display:block;font-size:10px;font-weight:700;color:var(--mute);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.note-field textarea{width:100%;background:var(--subtle);border:1px solid transparent;border-radius:6px;color:var(--ink);font-size:13px;padding:10px 13px;outline:none;resize:vertical;min-height:68px;font-family:inherit;transition:border-color .2s;font-weight:400}
+.note-field textarea:focus{border-color:var(--accent);background:#fff}
+.note-field textarea::placeholder{color:#9ca3af}
+.rv-actions{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.skip-btn{font-size:12px;color:#9ca3af;background:none;border:none;cursor:pointer;font-family:inherit;text-decoration:underline;text-underline-offset:2px;letter-spacing:.2px}
+.skip-btn:hover{color:var(--mute)}
+
+/* RESULTS */
+.results-wrap{max-width:860px;width:100%}
+.results-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding:28px 32px;background:var(--black);border-radius:14px;border:1px solid var(--line-d);box-shadow:0 8px 32px rgba(0,0,0,.18);position:relative;overflow:hidden}
+.results-head::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 0% 50%,rgba(0,245,212,.08) 0%,transparent 60%);pointer-events:none}
+.res-kicker{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.res-name{font-size:28px;font-weight:900;letter-spacing:-.5px;color:#fff;margin-bottom:5px}
+.res-co{font-size:12px;color:rgba(255,255,255,.45);font-weight:300}
+.score-pill-big{min-width:90px;background:var(--ink);border-radius:var(--r);padding:16px 24px;text-align:center}
+.score-pill-big strong{display:block;font-size:32px;font-weight:900;color:var(--accent);line-height:1;margin-bottom:4px}
+.score-pill-big span{font-size:10px;color:rgba(255,255,255,.4);font-weight:400;letter-spacing:1px;text-transform:uppercase}
+.tabs{display:flex;gap:2px;margin-bottom:24px;background:var(--subtle);border:1px solid var(--line);border-radius:100px;padding:4px;width:fit-content}
+.tab-btn{padding:8px 22px;border-radius:100px;border:none;background:none;font-size:13px;font-weight:600;color:var(--mute);cursor:pointer;font-family:inherit;transition:all .18s;letter-spacing:.3px}
+.tab-btn.active{background:var(--ink);color:var(--accent)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* REPORT */
+.report-doc{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-md)}
+.report-header{background:var(--black);padding:28px 32px;display:flex;justify-content:space-between;align-items:center}
+.rh-brand{display:flex;align-items:center;gap:12px}
+.rh-brand img{height:28px;object-fit:contain;filter:brightness(0) invert(1);opacity:.85}
+.rh-brand .rh-co{font-size:15px;font-weight:700;color:#fff;letter-spacing:.2px}
+.rh-brand .rh-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:1px;font-weight:300}
+.rh-score{background:rgba(0,245,212,.12);border:1px solid rgba(0,245,212,.25);border-radius:8px;padding:10px 18px;text-align:center}
+.rh-score strong{display:block;font-size:26px;font-weight:900;color:var(--accent);line-height:1}
+.rh-score span{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.5px}
+.report-meta{padding:20px 32px;border-bottom:1px solid var(--line-s);display:flex;gap:16px;flex-wrap:wrap}
+.report-meta-item{display:flex;flex-direction:column;gap:2px}
+.report-meta-item label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mute)}
+.report-meta-item span{font-size:14px;font-weight:600;color:var(--ink)}
+.report-body{padding:24px 32px}
+.section-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mute);margin-bottom:14px}
+.score-table{width:100%;border-collapse:collapse;margin-bottom:24px;font-size:13px}
+.score-table th{text-align:right;padding:9px 12px;color:var(--mute);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--line)}
+.score-table td{padding:11px 12px;border-bottom:1px solid var(--line-s);color:var(--ink);vertical-align:middle;font-weight:400}
+.score-table tr:last-child td{border-bottom:none}
+.score-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:7px;flex-shrink:0}
+.sbar-out{height:4px;background:var(--subtle);border-radius:2px;overflow:hidden;width:120px}
+.sbar-in{height:100%;border-radius:2px}
+.score-note-cell{font-size:11px;color:var(--mute);font-style:italic;max-width:180px;font-weight:300}
+.insights-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.insight-box{background:var(--subtle);border-radius:var(--r);padding:16px}
+.insight-box .ib-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+.insight-box h3{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.insight-box p{font-size:12px;color:var(--mute);line-height:1.6;font-weight:300}
+.manager-note-box{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);padding:14px 16px;margin-bottom:20px}
+.manager-note-box .mn-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#b45309;margin-bottom:5px}
+.manager-note-box p{font-size:13px;color:#78350f;font-weight:400}
+.report-footer-doc{border-top:1px solid var(--line);padding:14px 32px;display:flex;justify-content:space-between;align-items:center;background:var(--subtle);font-size:11px;color:var(--mute)}
+.report-footer-doc a{color:var(--accent);text-decoration:none;font-weight:600}
+
+/* CERT NOTE */
+.cert-note-box{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px;max-width:720px;width:100%;margin-bottom:16px;box-shadow:var(--shadow)}
+.cert-note-box h3{font-size:14px;font-weight:800;margin-bottom:4px;color:var(--ink)}
+.cert-note-box p{font-size:12px;color:var(--mute);margin-bottom:12px;font-weight:300}
+.cert-note-box textarea{width:100%;background:var(--subtle);border:1px solid var(--line);border-radius:6px;color:var(--ink);font-size:13px;padding:10px 13px;outline:none;resize:vertical;min-height:70px;font-family:inherit;transition:border-color .2s}
+.cert-note-box textarea:focus{border-color:var(--accent);background:#fff}
+.cert-note-box textarea::placeholder{color:#9ca3af}
+
+/* CERTIFICATE - FORMAL CLASSIC */
+.cert-outer{max-width:760px;width:100%}
+#cert-doc{
+  background:#fffef9;
+  border:3px solid #c8a96e;
+  border-radius:4px;
+  padding:6px;
+  box-shadow:0 8px 40px rgba(0,0,0,.14),0 2px 8px rgba(0,0,0,.08);
+  direction:rtl;
+  font-family:'Heebo',sans-serif;
+}
+.cert-frame{
+  border:1.5px solid #c8a96e;
+  border-radius:2px;
+  padding:44px 52px 36px;
+  position:relative;
+  background:#fffef9;
+}
+/* corner ornaments */
+.cert-frame::before,.cert-frame::after{content:'✦';position:absolute;font-size:18px;color:#c8a96e;line-height:1}
+.cert-frame::before{top:10px;right:14px}
+.cert-frame::after{top:10px;left:14px}
+.cert-corner-bl,.cert-corner-br{position:absolute;bottom:10px;font-size:18px;color:#c8a96e;line-height:1}
+.cert-corner-bl{right:14px}
+.cert-corner-br{left:14px}
+/* gold top strip */
+.cert-gold-bar{height:4px;background:linear-gradient(to left,#e8c97a,#c8a96e,#a07840,#c8a96e,#e8c97a);border-radius:2px 2px 0 0;margin:-44px -52px 32px;position:relative;top:-44px;left:-52px;width:calc(100% + 104px)}
+.cert-header-formal{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.cert-co-block{display:flex;align-items:center;gap:10px}
+.cert-co-block .co-logo{height:36px;border-radius:6px}
+.cert-co-block .co-name{font-size:15px;font-weight:800;color:#111827}
+.cert-period-formal{text-align:left;font-size:11px;color:#6b7280}
+.cert-period-formal strong{display:block;font-size:14px;font-weight:700;color:#111827;margin-top:2px}
+.cert-title-block{text-align:center;margin-bottom:22px}
+.cert-title-heb{font-size:28px;font-weight:900;letter-spacing:1px;color:#8b6914;margin-bottom:4px}
+.cert-title-line{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:0}
+.cert-title-line::before,.cert-title-line::after{content:'';flex:1;height:1px;background:linear-gradient(to left,transparent,#c8a96e)}
+.cert-title-line span{font-size:10px;letter-spacing:3px;color:#c8a96e;white-space:nowrap}
+.cert-body-formal{text-align:center;margin:24px 0 20px}
+.cert-for-label{font-size:11px;letter-spacing:3px;color:#9ca3af;margin-bottom:10px}
+.cert-emp-name{font-size:clamp(2.2rem,5vw,3rem);font-weight:900;color:#111827;letter-spacing:-.5px;margin-bottom:16px;line-height:1}
+.cert-desc-formal{font-size:14px;color:#374151;line-height:1.8;max-width:480px;margin:0 auto 12px}
+.cert-desc-formal strong{color:#8b6914}
+.cert-domain-badge{display:inline-block;border:1px solid #c8a96e;border-radius:100px;padding:6px 20px;font-size:12px;font-weight:700;color:#8b6914;background:rgba(200,169,110,.08);margin-bottom:14px;letter-spacing:.5px}
+.cert-personal-formal{font-size:13px;color:#374151;font-style:italic;margin:12px auto 0;max-width:440px;line-height:1.7;padding:10px 16px;border-right:2px solid #c8a96e;text-align:right}
+.cert-scores-formal{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:20px 0;padding:16px 0;border-top:1px solid #f0e8d4;border-bottom:1px solid #f0e8d4}
+.cert-sc-col{text-align:center;min-width:58px}
+.cert-sc-num{font-size:22px;font-weight:900;line-height:1;margin-bottom:3px}
+.cert-sc-label{font-size:9px;color:#9ca3af;line-height:1.3;max-width:58px}
+.cert-footer-formal{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;margin-top:24px}
+.cert-sig-area{text-align:center}
+.cert-sig-line{width:110px;height:1px;background:#c8a96e;margin:0 auto 8px}
+.cert-sig-name{font-size:13px;font-weight:700;color:#111827}
+.cert-sig-role{font-size:11px;color:#6b7280}
+.cert-seal-formal{width:70px;height:70px;border-radius:50%;border:2px solid #c8a96e;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto;background:rgba(200,169,110,.06)}
+.cert-seal-year{font-size:14px;font-weight:900;color:#8b6914}
+.cert-watermark-logo{display:flex;flex-direction:column;align-items:center;gap:4px}
+.cert-watermark-logo img{height:18px;opacity:.45;filter:grayscale(1)}
+
+/* SUMMARY */
+.summary-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;max-width:860px;width:100%;margin-top:20px;box-shadow:var(--shadow)}
+.summary-card h2{font-size:15px;font-weight:800;margin-bottom:16px;color:var(--ink)}
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* REMINDER */
+.reminder-card{background:var(--accent-dim);border:1px solid rgba(0,196,168,.2);border-radius:var(--r);padding:20px;max-width:640px;width:100%;margin-bottom:16px}
+.reminder-card h3{font-size:14px;font-weight:800;margin-bottom:4px;color:var(--ink)}
+.reminder-card p{font-size:12px;color:var(--mute);margin-bottom:14px}
+.reminder-grid{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end}
+
+/* FINISH */
+.finish-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:860px;width:100%;margin-top:20px;padding-bottom:48px}
+.action-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.fade-up{animation:fadeUp .4s var(--ease) both}
+
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .topbar,.tabs,.action-row,.summary-card,.finish-row,.cert-note-box,.nav-row,
+  .results-head,.cert-note-box{display:none!important}
+  body{background:#fff!important}
+  .page{display:none!important}
+  #page-results{display:block!important;padding:0!important}
+  .tab-panel{display:none!important}
+  #tab-report{display:block!important}
+  .report-doc{box-shadow:none!important;border:none!important}
+  .report-header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media(max-width:720px){
+  .welcome-grid{grid-template-columns:1fr;height:auto}
+  .welcome-text{padding:40px 24px}
+  .welcome-visual{display:none}
+  .review-side{position:static}
+}
+
+  /* ── Animations ── */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes scaleIn {
+      from { opacity:0; transform:scale(.96); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    body { animation: fadeIn .4s ease both; }
+    .header { animation: fadeUp .45s cubic-bezier(.22,.61,.36,1) .05s both; }
+    .form-section { animation: fadeUp .5s cubic-bezier(.22,.61,.36,1) .1s both; }
+    .cert-frame { animation: scaleIn .6s cubic-bezier(.22,.61,.36,1) .15s both; }
+    .report-section { animation: fadeUp .5s cubic-bezier(.22,.61,.36,1) .2s both; }
+    .btn { transition: transform .15s cubic-bezier(.22,.61,.36,1), box-shadow .15s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -6px rgba(0,0,0,.15); }
+    .score-bar, .bar-fill {
+      animation: barFillAnim .8s cubic-bezier(.22,.61,.36,1) .5s both;
+      transform-origin: right center;
+    }
+    @keyframes barFillAnim {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+    .domain-card { transition: transform .2s cubic-bezier(.22,.61,.36,1), box-shadow .2s; }
+    .domain-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px -8px rgba(0,0,0,.12); }
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-logo">
+    <a href="https://tech.sy-nero.com" target="_blank">
+      <img src="/assets/logo.png" alt="SYNERO TECH" onerror="this.style.display='none';document.getElementById('topbar-fallback').style.display='block'">
+      <span id="topbar-fallback" style="display:none;font-size:14px;font-weight:800;color:#111827;letter-spacing:-.3px">SYNERO TECH</span>
+    </a>
+  </div>
+  <div class="topbar-brand">
+    <b>הערכת עובדים</b>
+  </div>
+  <div class="topbar-right">
+    <a href="https://tech.sy-nero.com/#products" class="topbar-link" target="_blank">כל מוצרי סינרו טק</a>
+    <span class="saved-tag" id="savedTag" style="display:none">נשמר ✓</span>
+  </div>
+</header>
+
+<!-- WELCOME -->
+<div class="page active" id="page-welcome">
+  <div class="welcome-grid">
+    <div class="welcome-text">
+      <div class="welcome-kicker">בחסות סינרו טק</div>
+      <h1 class="welcome-h1"><span class="line1">רואים את כל</span><em class="line2">התמונה של העובד.</em></h1>
+      <p class="welcome-sub">מעריכים כל עובד ב-6 תחומים החשובים ביותר ע"פ מחקר עומק מקצועי שנעשה במחלקת כח אדם בסינרו. ומקבלים:</p>
+      <div class="welcome-pills">
+        <span class="pill">דו"ח מקצועי למעסיק</span>
+        <span class="pill">תעודת הערכה עם כיתוב אישי</span>
+      </div>
+      <button class="welcome-cta" onclick="goTo('setup')">מתחילים להעריך</button>
+    </div>
+    <div class="welcome-visual">
+      <img src="syneview-screenshot.png" alt="תצוגת הכלי" class="tool-screenshot" />
+    </div>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div class="page" id="page-setup">
+  <div class="step-head">
+    <div class="step-badge">1</div>
+    <div><h1>מגדירים את ההערכה</h1><p>פרטים שיופיעו בדוחות ובתעודות.</p></div>
+  </div>
+  <div class="card">
+    <div class="form-grid2">
+      <label class="fld">שם החברה<input id="f-company" placeholder="לדוגמה: חברת אופק" oninput="proj.company=this.value;checkSetup()"></label>
+      <label class="fld">שנת ההערכה
+        <select id="f-year" onchange="proj.year=this.value">
+          <option>2024</option><option>2025</option><option selected>2026</option><option>2027</option>
+        </select>
+      </label>
+      <label class="fld">תקופת ההערכה
+        <select id="f-period" onchange="proj.period=this.value">
+          <option>הערכה שנתית</option><option>הערכה חצי-שנתית</option><option>הערכה רבעונית</option>
+        </select>
+      </label>
+      <label class="fld">שם המעריך<input id="f-manager" placeholder="שם מלא" oninput="proj.manager=this.value"></label>
+      <label class="fld" style="grid-column:1/-1">תפקיד המעריך<input id="f-role" placeholder='לדוגמה: מנכ"ל' oninput="proj.role=this.value"></label>
+    </div>
+    <div style="margin-top:16px">
+      <div class="upload-zone" onclick="document.getElementById('logo-file').click()">
+        <input type="file" id="logo-file" accept="image/*" onchange="loadLogo(this)">
+        <div id="logo-preview">לחצו להעלאת לוגו החברה (יופיע בתעודה)</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+        <input id="logo-url-input" type="url" placeholder="או הדביקו קישור לתמונת הלוגו (https://...)" style="flex:1;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:9px;color:#111827;font-size:13px;padding:9px 13px;outline:none;font-family:inherit;transition:border-color .2s" onfocus="this.style.borderColor='#00c4a8'" onblur="this.style.borderColor='#e5e7eb'">
+        <button class="btn btn-secondary btn-sm" onclick="loadLogoUrl()">טעינה</button>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="goTo('welcome')">חזרה</button>
+    <button class="btn btn-primary" id="btn-setup-next" onclick="goTo('people')" disabled>ממשיכים</button>
+  </div>
+</div>
+
+<!-- PEOPLE -->
+<div class="page" id="page-people">
+  <div class="step-head">
+    <div class="step-badge">2</div>
+    <div><h1>מי בצוות?</h1><p>הדביקו שמות (כל שם בשורה) או העלו קובץ.</p></div>
+  </div>
+  <div class="ppl-grid">
+    <div class="card" style="margin-bottom:0">
+      <textarea id="names-ta" rows="10" placeholder="ישראל ישראלי&#10;דנה כהן&#10;משה לוי" style="width:100%;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:9px;color:#111827;font-size:14px;padding:10px 13px;outline:none;resize:vertical;font-family:inherit;transition:border-color .2s" onfocus="this.style.borderColor='#00c4a8'" onblur="this.style.borderColor='#e5e7eb'"></textarea>
+      <button class="btn btn-primary" style="width:100%;margin-top:12px" onclick="loadNames()">קליטת הרשימה</button>
+    </div>
+    <div class="card" style="margin-bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;border-style:dashed" onclick="document.getElementById('emp-file').click()">
+      <input type="file" id="emp-file" accept=".xlsx,.csv,.txt" onchange="loadFile(this)" style="display:none">
+      <h3 style="font-size:14px;font-weight:800">Excel / CSV</h3>
+      <p style="font-size:12px;color:var(--mute);text-align:center">המערכת מזהה שמות אוטומטית</p>
+      <button class="btn btn-ghost btn-sm">בחירת קובץ</button>
+    </div>
+  </div>
+  <div class="roster" id="roster" style="display:none">
+    <div class="roster-head"><strong id="roster-count"></strong><span>בדקו שהרשימה נכונה</span></div>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div class="crit-manage">
+    <div class="card-title">תחומי ההערכה <span style="font-size:11px;font-weight:400;color:var(--mute)">(לחצו "מחיקה" להסרת תחום מכל ההערכות)</span></div>
+    <div id="crit-list"></div>
+    <div class="crit-add">
+      <input id="new-cr-name" placeholder="שם תחום חדש">
+      <input id="new-cr-desc" placeholder="מה נבחן?">
+      <button class="btn btn-secondary btn-sm" onclick="addCriterion()">+ הוספה</button>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="goTo('setup')">חזרה</button>
+    <button class="btn btn-primary" id="btn-ppl-next" onclick="startReview()" disabled>מתחילים להעריך</button>
+  </div>
+</div>
+
+<!-- REVIEW -->
+<div class="page" id="page-review">
+  <div class="review-grid">
+    <aside class="review-side">
+      <div class="rv-emp-name" id="rv-name"></div>
+      <div class="rv-emp-meta" id="rv-meta"></div>
+      <div class="prog-bar"><div class="prog-fill" id="rv-prog"></div></div>
+      <nav class="rv-nav" id="rv-nav"></nav>
+    </aside>
+    <div class="review-main">
+      <div class="cr-eyebrow" id="rv-eyebrow"></div>
+      <h1 class="cr-name" id="rv-cr-name"></h1>
+      <p class="cr-desc" id="rv-cr-desc"></p>
+      <p class="cr-q" id="rv-q"></p>
+      <div class="scale" id="rv-scale"></div>
+      <div class="note-field">
+        <label>הערה / דוגמה <span style="font-weight:400;color:var(--mute)">(תופיע בדו"ח המעסיק)</span></label>
+        <textarea id="rv-note" placeholder="מקרה, הישג או דוגמה שמסבירים את הציון" oninput="saveNote(this.value)"></textarea>
+      </div>
+      <div class="rv-actions">
+        <button class="skip-btn" onclick="skipCriterion()">דלג על תחום זה</button>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-ghost" onclick="reviewBack()">חזרה</button>
+          <button class="btn btn-primary" id="btn-rv-next" onclick="reviewNext()" disabled></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="page" id="page-results">
+  <div class="results-wrap">
+    <div class="results-head">
+      <div>
+        <div class="res-kicker">ההערכה מוכנה</div>
+        <div class="res-name" id="res-name"></div>
+        <div class="res-co" id="res-co"></div>
+      </div>
+      <div class="score-pill-big"><strong id="res-score"></strong><span>מתוך 5</span></div>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('report',this)">דו"ח מעסיק</button>
+      <button class="tab-btn" onclick="switchTab('cert',this)">תעודת עובד</button>
+      <button class="tab-btn" onclick="switchTab('compare',this);renderCompare()">השוואת עובדים</button>
+    </div>
+    <div class="tab-panel active" id="tab-report">
+      <div class="action-row"><button class="btn btn-secondary" onclick="window.print()">PDF</button></div>
+      <div class="report-doc" id="report-doc"></div>
+    </div>
+    <div class="tab-panel" id="tab-compare"><div id="compare-content" style="padding:8px 0"></div></div>
+    <div class="tab-panel" id="tab-cert">
+      <div class="cert-note-box">
+        <h3>כיתוב אישי לתעודה</h3>
+        <p>מסר אישי שיופיע בתעודת ההערכה של העובד (לא חובה)</p>
+        <textarea id="cert-note-ta" placeholder='לדוגמה: "ישראל, אנחנו גאים בך על התרומה המיוחדת השנה"' oninput="updateCertNote(this.value)"></textarea>
+      </div>
+      <div class="action-row" style="margin-bottom:16px"><button class="btn btn-primary" onclick="downloadCert()">הורדת תעודה כתמונה</button></div>
+      <div class="cert-outer"><div id="cert-doc"></div></div>
+    </div>
+    <div class="summary-card">
+      <h2>תמונה מלאה - פרטים נוספים</h2>
+      <div class="sum-grid">
+        <label class="fld">הישג מרכזי<textarea id="sf-achievement" placeholder="הישג, פרויקט או תרומה משמעותית" oninput="saveField('achievement',this.value)"></textarea></label>
+        <label class="fld">מיקוד לתקופה הבאה<textarea id="sf-focus" placeholder="תחום שיכול לקדם את העובד" oninput="saveField('focus',this.value)"></textarea></label>
+        <label class="fld">יעד מרכזי<textarea id="sf-goal" placeholder="יעד ברור ומעשי" oninput="saveField('goal',this.value)"></textarea></label>
+        <label class="fld">הערה פרטית למעסיק<textarea id="sf-note" placeholder="לא תופיע בתעודת העובד" oninput="saveField('managerNote',this.value)"></textarea></label>
+      </div>
+    </div>
+    <div class="finish-row">
+      <button class="btn btn-ghost" onclick="goTo('review');curCr=0;renderReview()">עריכת ציונים</button>
+      <button class="btn btn-primary" id="btn-next-emp" onclick="nextEmp()">עובד הבא</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEFAULT_CRITERIA=[
+  {id:'results',    name:'תוצאות ועמידה ביעדים',  desc:'השלמת משימות, תפוקה ויכולת להביא תהליכים לידי סיום'},
+  {id:'reliability',name:'אחריות ואמינות',          desc:'בעלות על משימות, עמידה בהתחייבויות ועדכון בזמן'},
+  {id:'quality',    name:'מקצועיות ואיכות',          desc:'דיוק, ידע מקצועי ורמת התוצרים'},
+  {id:'initiative', name:'יוזמה ופתרון בעיות',       desc:'עצמאות, חשיבה קדימה ושיפור תהליכים'},
+  {id:'teamwork',   name:'עבודת צוות ושירות',        desc:'תקשורת, שיתוף פעולה וחוויית השירות'},
+  {id:'growth',     name:'למידה והתפתחות',            desc:'קבלת משוב, יישום והרחבת אחריות'}
+];
+const SCALE=[
+  {n:1,label:'מתחת לציפיות',hint:'קיים פער משמעותי'},
+  {n:2,label:'עומד חלקית',  hint:'ביצוע לא עקבי'},
+  {n:3,label:'עומד בציפיות',hint:'רמה טובה ויציבה'},
+  {n:4,label:'מעל הציפיות',hint:'תרומה מעבר לנדרש'},
+  {n:5,label:'מצטיין',      hint:'רמה יוצאת דופן'}
+];
+const COLORS=['#00c4a8','#6c5ce7','#ff6b6b','#ffa941','#3b9eff','#a29bfe','#00b894','#e17055'];
+let proj={company:'',year:'2026',period:'הערכה שנתית',manager:'',role:'',logo:'',
+  employees:[],criteria:JSON.parse(JSON.stringify(DEFAULT_CRITERIA)),reminderEmail:'',reminderFreq:'quarterly'};
+let curEmp=0,curCr=0;
+
+const FEMALE=new Set(['אביגיל','אביטל','אדוה','אורה','אורית','אורלי','אפרת','אילנה','איריס','אלה','אלינה','אסנת','אסתר','בתיה','גאולה','גילה','גלית','דבורה','דגנית','דורית','דינה','דנה','הדסה','הילה','הדר','ורד','זהבה','זיוה','חגית','חנה','טובה','טל','יהודית','יעל','יפה','ירדנה','כרמית','לאה','לילך','לימור','לינה','מאיה','מיה','מיכל','מירי','מירה','מלי','מרגלית','מרים','נאוה','נועה','נורית','נחמה','נילי','ניצן','נירה','עדי','עדינה','עינת','ענת','פנינה','צופיה','צילה','ציפי','קרן','רבקה','רוית','רונה','רוני','רות','ריבה','רינה','רחל','שולה','שושנה','שחר','שירה','שרה','תמי','תמר','תמרה','שני','ליאל','גל','שמרית','יפית','רומי','נוי','מלכה','שרית','ליאור','נגה','צליל','טלי']);
+function female(n){if(!n)return false;const f=n.trim().split(/\s+/)[0];if(FEMALE.has(f))return true;if(f.length>2&&f.endsWith('ה'))return true;return['ית','ינה','נה','יה'].some(s=>f.endsWith(s))}
+function g(n,m,f){return female(n)?f:m}
+function uid(){return Math.random().toString(36).slice(2,9)}
+function newEmp(n){return{id:uid(),name:n,scores:{},notes:{},skipped:[],achievement:'',focus:'',goal:'',managerNote:'',certNote:''}}
+function empAvg(e){const v=proj.criteria.filter(c=>!e.skipped?.includes(c.id)).map(c=>e.scores[c.id]).filter(Boolean);return v.length?v.reduce((a,b)=>a+b,0)/v.length:0}
+function topCrit(e){return[...proj.criteria].sort((a,b)=>(e.scores[b.id]||0)-(e.scores[a.id]||0))[0]?.name||'תרומה מקצועית'}
+function scoreLabel(n){return SCALE.find(s=>s.n===n)?.label||'-'}
+
+function goTo(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');window.scrollTo(0,0);if(p==='people')renderCritList()}
+function checkSetup(){document.getElementById('btn-setup-next').disabled=!proj.company.trim()}
+function setLogo(src){proj.logo=src;document.getElementById('logo-preview').innerHTML=`<img src="${src}" style="max-height:48px" onerror="this.style.display='none'"><br><small style="color:#6b7280">לחצו להחלפה</small>`;if(document.getElementById('page-results').classList.contains('active')){renderReport();renderCert()}}
+function loadLogo(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>setLogo(e.target.result);r.readAsDataURL(f)}
+function loadLogoUrl(){const url=document.getElementById('logo-url-input').value.trim();if(!url)return;setLogo(url)}
+function loadNames(){const raw=document.getElementById('names-ta').value;proj.employees=[...new Set(raw.split('\n').map(n=>n.trim()).filter(Boolean))].map(newEmp);renderRoster()}
+async function loadFile(inp){const f=inp.files[0];if(!f)return;const t=await f.text();const names=t.split(/[\n,;]/).map(n=>n.replace(/^"|"$/g,'').trim()).filter(Boolean);proj.employees=[...new Set(names)].map(newEmp);document.getElementById('names-ta').value=names.join('\n');renderRoster()}
+function renderRoster(){const r=document.getElementById('roster');if(!proj.employees.length){r.style.display='none';document.getElementById('btn-ppl-next').disabled=true;return}r.style.display='block';document.getElementById('roster-count').textContent=`מצאנו ${proj.employees.length} עובדים`;document.getElementById('chips').innerHTML=proj.employees.map(e=>`<span class="chip">${e.name}<button class="chip-del" onclick="removeEmp('${e.id}')">x</button></span>`).join('');document.getElementById('btn-ppl-next').disabled=false}
+function removeEmp(id){proj.employees=proj.employees.filter(e=>e.id!==id);renderRoster()}
+function renderCritList(){document.getElementById('crit-list').innerHTML=proj.criteria.map((c,i)=>`<div class="crit-item"><span class="crit-dot" style="background:${COLORS[i%COLORS.length]}"></span><span>${c.name}</span><small>${c.desc}</small><button class="btn btn-danger" onclick="deleteCrit('${c.id}')">מחיקה</button></div>`).join('')}
+function deleteCrit(id){if(!confirm('למחוק תחום זה מכל ההערכות?'))return;proj.criteria=proj.criteria.filter(c=>c.id!==id);proj.employees.forEach(e=>{delete e.scores[id];delete e.notes[id]});renderCritList()}
+function addCriterion(){const n=document.getElementById('new-cr-name').value.trim();if(!n)return;proj.criteria.push({id:'c_'+uid(),name:n,desc:document.getElementById('new-cr-desc').value.trim()||'תחום הערכה מותאם',custom:true});document.getElementById('new-cr-name').value='';document.getElementById('new-cr-desc').value='';renderCritList()}
+function startReview(){curEmp=0;curCr=0;renderReview();goTo('review')}
+function renderReview(){
+  const emp=proj.employees[curEmp],cr=proj.criteria[curCr];
+  if(!emp||!cr)return;
+  document.getElementById('rv-name').textContent=emp.name;
+  document.getElementById('rv-meta').textContent=`עובד ${curEmp+1} מתוך ${proj.employees.length}`;
+  document.getElementById('rv-prog').style.width=((curCr+1)/proj.criteria.length*100)+'%';
+  document.getElementById('rv-eyebrow').textContent=`תחום ${curCr+1} מתוך ${proj.criteria.length}`;
+  document.getElementById('rv-cr-name').textContent=cr.name;
+  document.getElementById('rv-cr-desc').textContent=cr.desc;
+  document.getElementById('rv-q').textContent=`באיזו מידה ${emp.name} ${g(emp.name,'עומד','עומדת')} בציפיות בתחום זה?`;
+  document.getElementById('rv-note').value=emp.notes[cr.id]||'';
+  document.getElementById('rv-scale').innerHTML=SCALE.map(s=>`<button class="scale-btn${emp.scores[cr.id]===s.n?' sel':''}" onclick="selectScore(${s.n})"><div class="scale-num">${s.n}</div><div><div class="scale-label">${s.label}</div><div class="scale-hint">${s.hint}</div></div><span class="scale-score-badge">${s.n}/5</span></button>`).join('');
+  document.getElementById('rv-nav').innerHTML=proj.criteria.map((c,i)=>`<button class="rv-nav-btn${i===curCr?' active':emp.scores[c.id]?' done':emp.skipped?.includes(c.id)?' skipped':''}" onclick="jumpCr(${i})"><div class="rv-nav-num">${emp.scores[c.id]?'v':emp.skipped?.includes(c.id)?'-':i+1}</div>${c.name}</button>`).join('');
+  const isLast=curCr===proj.criteria.length-1;
+  document.getElementById('btn-rv-next').textContent=isLast?'לסיכום':'לתחום הבא';
+  updateNextBtn();
+}
+function selectScore(n){const emp=proj.employees[curEmp],cr=proj.criteria[curCr];emp.skipped=emp.skipped.filter(s=>s!==cr.id);emp.scores[cr.id]=n;document.querySelectorAll('.scale-btn').forEach((b,i)=>b.classList.toggle('sel',i===n-1));updateNextBtn();autoSave();}
+function saveNote(v){const emp=proj.employees[curEmp],cr=proj.criteria[curCr];if(emp&&cr){emp.notes[cr.id]=v;autoSave();}}
+function updateNextBtn(){const emp=proj.employees[curEmp],cr=proj.criteria[curCr];document.getElementById('btn-rv-next').disabled=!emp?.scores[cr?.id]&&!emp?.skipped?.includes(cr?.id)}
+function skipCriterion(){const emp=proj.employees[curEmp],cr=proj.criteria[curCr];if(!emp.skipped.includes(cr.id))emp.skipped.push(cr.id);delete emp.scores[cr.id];document.getElementById('btn-rv-next').disabled=false;reviewNext()}
+function jumpCr(i){curCr=i;renderReview()}
+function reviewBack(){if(curCr>0){curCr--;renderReview();}else if(curEmp>0){curEmp--;curCr=proj.criteria.length-1;renderReview();}else goTo('people')}
+function reviewNext(){if(curCr<proj.criteria.length-1){curCr++;renderReview();}else showResults()}
+function showResults(){
+  const emp=proj.employees[curEmp];
+  document.getElementById('res-name').textContent=emp.name;
+  document.getElementById('res-co').textContent=`${proj.company} · ${proj.year}`;
+  document.getElementById('res-score').textContent=empAvg(emp).toFixed(1);
+  document.getElementById('sf-achievement').value=emp.achievement;
+  document.getElementById('sf-focus').value=emp.focus;
+  document.getElementById('sf-goal').value=emp.goal;
+  document.getElementById('sf-note').value=emp.managerNote;
+  document.getElementById('cert-note-ta').value=emp.certNote||'';
+  const isLast=curEmp===proj.employees.length-1;
+  document.getElementById('btn-next-emp').textContent=isLast?'סיימנו':`עובד הבא: ${proj.employees[curEmp+1]?.name}`;
+  renderReport();renderCert();
+  switchTab('report',document.querySelector('.tab-btn'));
+  goTo('results');
+}
+function saveField(k,v){proj.employees[curEmp][k]=v;renderReport();autoSave();}
+function updateCertNote(v){proj.employees[curEmp].certNote=v;renderCert()}
+function renderCompare(){
+  const el=document.getElementById('compare-content');
+  if(!el)return;
+  const emps=proj.employees;
+  if(!emps||emps.length<2){el.innerHTML='<p style="color:var(--mute);padding:24px;text-align:center">יש להוסיף לפחות שני עובדים להשוואה.</p>';return;}
+  const crit=proj.criteria||[];
+  const avg=e=>crit.length?crit.reduce((s,c)=>(s+(+e.scores[c.id]||0)),0)/crit.length:0;
+  // Sort by avg desc
+  const sorted=[...emps].sort((a,b)=>avg(b)-avg(a));
+  // Find top score per criterion
+  const topPer={};
+  crit.forEach(c=>{let mx=0,ti=-1;emps.forEach((e,i)=>{const v=+e.scores[c.id]||0;if(v>mx){mx=v;ti=i;}});topPer[c.id]=ti;});
+
+  let html=`<div style="background:var(--black);border-radius:14px;padding:28px 32px;margin-bottom:24px;border:1px solid var(--line-d)">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:18px">השוואת כל העובדים</div>
+    <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;direction:rtl">
+    <thead><tr>
+      <th style="text-align:right;padding:10px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:.5px;border-bottom:1px solid var(--line-d)">עובד</th>
+      <th style="text-align:center;padding:10px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.4);border-bottom:1px solid var(--line-d)">ציון כולל</th>
+      ${crit.map(c=>`<th style="text-align:center;padding:10px 8px;font-size:11px;font-weight:600;color:rgba(255,255,255,.4);border-bottom:1px solid var(--line-d);white-space:nowrap">${c.name}</th>`).join('')}
+    </tr></thead><tbody>`;
+
+  sorted.forEach((e,ri)=>{
+    const sc=avg(e);
+    const isFirst=ri===0;
+    html+=`<tr style="${isFirst?'background:rgba(0,245,212,.04)':''}">
+      <td style="padding:13px 12px;border-bottom:1px solid rgba(255,255,255,.05)">
+        <div style="display:flex;align-items:center;gap:10px">
+          ${isFirst?'<span style="font-size:10px;background:var(--accent);color:var(--black);border-radius:4px;padding:2px 7px;font-weight:800">מוביל</span>':''}
+          <span style="font-weight:700;color:#fff;font-size:14px">${e.name}</span>
+          <span style="font-size:11px;color:rgba(255,255,255,.35)">${e.role||''}</span>
+        </div>
+      </td>
+      <td style="text-align:center;padding:13px 12px;border-bottom:1px solid rgba(255,255,255,.05)">
+        <span style="font-size:20px;font-weight:900;color:var(--accent)">${sc.toFixed(1)}</span>
+      </td>
+      ${crit.map(c=>{
+        const v=+e.scores[c.id]||0;
+        const isTop=topPer[c.id]===emps.indexOf(e)&&v>0;
+        return `<td style="text-align:center;padding:13px 8px;border-bottom:1px solid rgba(255,255,255,.05)">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <span style="font-size:16px;font-weight:800;color:${isTop?'var(--accent)':'rgba(255,255,255,.7)'}">${v||'-'}</span>
+            ${isTop&&v?'<span style="font-size:8px;background:rgba(0,245,212,.15);color:var(--accent);border-radius:3px;padding:1px 5px">מוביל</span>':''}
+          </div>
+        </td>`;
+      }).join('')}
+    </tr>`;
+  });
+
+  html+=`</tbody></table></div></div>`;
+
+  // Bar chart per criterion
+  html+=`<div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px 32px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mute);margin-bottom:20px">ביצועים לפי תחום</div>`;
+  crit.forEach((c,ci)=>{
+    html+=`<div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px">${c.name}</div>`;
+    const maxV=Math.max(...emps.map(e=>+e.scores[c.id]||0),1);
+    sorted.forEach((e,i)=>{
+      const v=+e.scores[c.id]||0;
+      const pct=Math.round((v/5)*100);
+      const isTop=topPer[c.id]===emps.indexOf(e)&&v>0;
+      html+=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:7px">
+        <span style="width:90px;font-size:12px;text-align:right;color:var(--ink);font-weight:${isTop?700:400}">${e.name}</span>
+        <div style="flex:1;height:8px;background:var(--subtle);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${isTop?'var(--accent)':COLORS[i%COLORS.length]||'var(--ink)'};border-radius:4px;transition:width .6s var(--ease)"></div>
+        </div>
+        <span style="width:24px;font-size:12px;font-weight:700;color:${isTop?'var(--accent)':'var(--ink)'}">${v||'-'}</span>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  html+='</div>';
+
+  el.innerHTML=html;
+}
+function switchTab(n,btn){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active')}
+function nextEmp(){if(curEmp===proj.employees.length-1){alert('סיימתם לעריך את כל העובדים!');return}curEmp++;curCr=0;renderReview();goTo('review')}
+
+function renderReport(){
+  const emp=proj.employees[curEmp];
+  const sc=empAvg(emp).toFixed(1);
+  const sorted=[...proj.criteria].sort((a,b)=>(emp.scores[b.id]||0)-(emp.scores[a.id]||0));
+  const rows=proj.criteria.map((c,i)=>{
+    const s=emp.scores[c.id],sk=emp.skipped?.includes(c.id),note=emp.notes[c.id]||'';
+    return`<tr><td><span class="score-dot" style="background:${COLORS[i%COLORS.length]}"></span>${c.name}</td><td style="font-weight:800;font-size:16px;color:${COLORS[i%COLORS.length]}">${s||'-'}</td><td><div class="sbar-out"><div class="sbar-in" style="width:${s?s/5*100:0}%;background:${COLORS[i%COLORS.length]}"></div></div></td><td style="color:var(--mute)">${sk?'<i style="color:var(--mute)">דולג</i>':scoreLabel(s)}</td><td class="score-note-cell">${note}</td></tr>`;
+  }).join('');
+  const noteHtml=emp.managerNote?`<div class="manager-note-box"><div class="mn-label">הערה פרטית למעסיק</div><p>${emp.managerNote}</p></div>`:'';
+  const extraHtml=(emp.achievement||emp.focus)?`<p class="section-title">ממצאים נוספים</p><div class="insights-grid">${emp.achievement?`<div class="insight-box"><div class="ib-label">הישג מרכזי</div><h3>${emp.achievement}</h3></div>`:''}${emp.focus?`<div class="insight-box"><div class="ib-label">מיקוד לתקופה הבאה</div><h3>${emp.focus}</h3>${emp.goal?`<p>יעד: ${emp.goal}</p>`:''}</div>`:''}</div>`:'';
+  document.getElementById('report-doc').innerHTML=`
+    <div class="report-header">
+      <div class="rh-brand">
+        ${proj.logo?`<img src="${proj.logo}" alt="לוגו">`:''}
+        <div><div class="rh-co">${proj.company||'שם החברה'}</div><div class="rh-sub">דו"ח הערכת עובד · ${proj.year}</div></div>
+      </div>
+      <div class="rh-score"><strong>${sc}</strong><span>מתוך 5</span></div>
+    </div>
+    <div class="report-meta">
+      <div class="report-meta-item"><label>עובד</label><span>${emp.name}</span></div>
+      <div class="report-meta-item"><label>תקופה</label><span>${proj.period}</span></div>
+      <div class="report-meta-item"><label>מעריך</label><span>${proj.manager||'-'}${proj.role?' · '+proj.role:''}</span></div>
+      <div class="report-meta-item"><label>שנה</label><span>${proj.year}</span></div>
+    </div>
+    <div class="report-body">
+      <p class="section-title">ציונים לפי תחום</p>
+      <table class="score-table"><thead><tr><th>תחום</th><th>ציון</th><th>רמה</th><th>תיאור</th><th>הערת מנהל</th></tr></thead><tbody>${rows}</tbody></table>
+      <div class="insights-grid">
+        <div class="insight-box"><div class="ib-label">חוזקה מובילה</div><h3>${sorted[0]?.name||'-'}</h3><p>${emp.notes[sorted[0]?.id]||`${g(emp.name,'קיבל','קיבלה')} את הציון הגבוה ביותר בתחום זה.`}</p></div>
+        <div class="insight-box"><div class="ib-label">מוקד להתפתחות</div><h3>${emp.focus||sorted.at(-1)?.name||'-'}</h3><p>${emp.goal?'יעד: '+emp.goal:'מומלץ להגדיר יעד ברור ומדיד.'}</p></div>
+      </div>
+      ${extraHtml}${noteHtml}
+    </div>
+    <div class="report-footer-doc">
+      <a href="https://tech.sy-nero.com" target="_blank"><img src="/assets/logo.png" style="height:16px;opacity:.4;filter:grayscale(1)" alt=""></a>
+      <span>${proj.company} · ${proj.year}</span>
+    </div>`;
+}
+
+function renderCert(){
+  const emp=proj.employees[curEmp];
+  const sc=empAvg(emp),top=topCrit(emp);
+  const note=emp.certNote||'';
+  const scoreItems=proj.criteria.filter(c=>emp.scores[c.id]).slice(0,6).map((c,i)=>`
+    <div class="cert-sc-col">
+      <div class="cert-sc-num" style="color:#8b6914">${emp.scores[c.id]}</div>
+      <div class="cert-sc-label">${c.name.split(' ').slice(0,2).join(' ')}</div>
+    </div>`).join('');
+  const personalHtml=note?`<div class="cert-personal-formal">${note}</div>`:'';
+  const companyLogoHtml=proj.logo
+    ?`<img src="${proj.logo}" class="co-logo" alt="לוגו">`
+    :`<span class="co-name">${proj.company}</span>`;
+
+  document.getElementById('cert-doc').innerHTML=`
+    <div class="cert-frame">
+      <div class="cert-corner-bl">✦</div>
+      <div class="cert-corner-br">✦</div>
+
+      <div class="cert-header-formal">
+        <div class="cert-co-block">${companyLogoHtml}</div>
+        <div class="cert-period-formal">
+          ${proj.period}<strong>${proj.year}</strong>
+        </div>
+      </div>
+
+      <div class="cert-title-block">
+        <div class="cert-title-heb">תעודת הוקרה</div>
+        <div class="cert-title-line"><span>CERTIFICATE OF APPRECIATION</span></div>
+      </div>
+
+      <div class="cert-body-formal">
+        <div class="cert-for-label">מוענקת בגאווה ל${female(emp.name)?'':''}:</div>
+        <div class="cert-emp-name">${emp.name}</div>
+        <div class="cert-domain-badge">${top}</div>
+        <div class="cert-desc-formal">
+          על ${g(emp.name,'תרומתו','תרומתה')} המיוחדת, ${g(emp.name,'מסירותו','מסירותה')} ועשיית${g(emp.name,'ו','ה')} המצוינת<br>
+          לאורך ${proj.period} ${proj.year} &nbsp;|&nbsp; ציון ממוצע: <strong>${sc.toFixed(1)} / 5</strong>
+        </div>
+        ${personalHtml}
+      </div>
+
+      ${scoreItems?`<div class="cert-scores-formal">${scoreItems}</div>`:''}
+
+      <div class="cert-footer-formal">
+        <div class="cert-sig-area">
+          <div class="cert-sig-line"></div>
+          <div class="cert-sig-name">${proj.manager||proj.company}</div>
+          <div class="cert-sig-role">${proj.role||''}</div>
+        </div>
+        <div class="cert-seal-formal">
+          ${proj.logo
+            ?`<img src="${proj.logo}" style="width:52px;height:52px;object-fit:contain;border-radius:50%">`
+            :`<div class="cert-seal-year">${proj.year}</div>`}
+        </div>
+        <div class="cert-watermark-logo">
+          <img src="/assets/logo.png" alt="">
+        </div>
+      </div>
+    </div>`;
+}
+
+function printCert(){
+  const t=document.querySelectorAll('.tab-btn')[1];
+  switchTab('cert',t);
+  setTimeout(()=>{window.print();switchTab('report',document.querySelector('.tab-btn'))},100);
+}
+
+function downloadCert(){
+  const emp=proj.employees[curEmp];
+  const el=document.getElementById('cert-doc');
+  if(!el||typeof html2canvas==='undefined'){return;}
+  const btn=document.querySelector('[onclick="downloadCert()"]');
+  if(btn){btn.textContent='מכין...';btn.disabled=true;}
+  html2canvas(el,{scale:2,useCORS:true,backgroundColor:'#fffef9',logging:false}).then(canvas=>{
+    const a=document.createElement('a');
+    a.href=canvas.toDataURL('image/png');
+    a.download=`תעודת-הערכה-${emp.name}-${proj.year}.png`;
+    a.click();
+    if(btn){btn.textContent='הורדת תעודה כתמונה';btn.disabled=false;}
+  }).catch(()=>{if(btn){btn.textContent='הורדת תעודה כתמונה';btn.disabled=false;}});
+}
+
+function saveProject(){
+  try{localStorage.setItem('synero-eval-v1',JSON.stringify(proj))}catch{}
+  const t=document.getElementById('savedTag');
+  if(t){t.style.display='inline';setTimeout(()=>t.style.display='none',1800);}
+}
+let _saveTimer=null;
+function autoSave(){clearTimeout(_saveTimer);_saveTimer=setTimeout(()=>{try{localStorage.setItem('synero-eval-v1',JSON.stringify(proj))}catch{}},800);}
+(function init(){
+  try{const s=localStorage.getItem('synero-eval-v1');if(s)Object.assign(proj,JSON.parse(s))}catch{}
+  // backward compat
+  try{const s=localStorage.getItem('syneview-v2');if(s&&!localStorage.getItem('synero-eval-v1'))Object.assign(proj,JSON.parse(s))}catch{}
+  try{const r=localStorage.getItem('synero-eval-reminder')||localStorage.getItem('syneview-reminder');if(r){const x=JSON.parse(r);proj.reminderEmail=x.email;proj.reminderFreq=x.freq;document.getElementById('f-email').value=x.email;document.getElementById('f-freq').value=x.freq}}catch{}
+  renderCritList();
+})();
+</script>
+</body>
+</html>

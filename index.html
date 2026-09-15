@@ -516,139 +516,136 @@
 
     /* ── Products head ── */
     .products-head{ margin-bottom:40px; }
-    .search-row{ display:none; } /* hide search - carousel handles navigation */
+    .search-row{ display:none; }
 
-    /* ── Demo Carousel ── */
-    .demo-carousel{
-      position:relative; border-radius:20px; overflow:hidden;
-      border:1px solid #1f2937; margin-bottom:24px;
-      background:#060913;
-      box-shadow:0 24px 80px rgba(0,0,0,.5);
+    /* ── Full-viewport product showcase ── */
+    .pshow-wrap{
+      position:relative; width:100vw;
+      margin-right:calc(50% - 50vw); margin-left:calc(50% - 50vw);
     }
-    .carousel-viewport{
-      overflow:hidden; position:relative; width:100%;
+    .pshow-sidenav{
+      position:fixed; left:24px; top:50%; transform:translateY(-50%);
+      z-index:80; display:flex; flex-direction:column; gap:12px;
+      opacity:0; transition:opacity .4s; pointer-events:none;
     }
-    .carousel-track{
-      display:flex; width:100%;
-      transition:transform .65s cubic-bezier(.4,0,.2,1);
+    .pshow-sidenav.visible{ opacity:1; pointer-events:auto; }
+    .pshow-dot{
+      width:8px; height:8px; border-radius:50%;
+      background:rgba(255,255,255,.2); border:1.5px solid rgba(255,255,255,.15);
+      padding:0; cursor:pointer; transition:background .3s, transform .3s, border-color .3s;
     }
-    .carousel-slide{
-      flex-shrink:0; width:100%;
-      position:relative; cursor:pointer;
+    .pshow-dot.active{
+      background:#00f5d4; border-color:#00f5d4; transform:scale(1.5);
+      box-shadow:0 0 10px rgba(0,245,212,.6);
     }
-    .carousel-iframe-wrap{
-      position:relative; width:100%;
-      height:400px; /* overridden by JS */
-      background:#060913; overflow:hidden;
+    .pshow-section{
+      min-height:100vh; display:grid;
+      grid-template-columns:42% 58%;
+      align-items:center; position:relative;
+      padding:80px 80px 80px 60px;
     }
-    .carousel-iframe-wrap iframe{
-      position:absolute; top:0; left:0;
-      width:1300px; height:702px; border:0; pointer-events:none;
-      transform-origin:top left;
-      display:block;
+    .pshow-section:nth-child(odd){
+      background:linear-gradient(135deg,#080e1a 0%,#0d1525 60%,#091222 100%);
     }
-    /* gradient overlay */
-    .carousel-grad{
-      position:absolute; inset:0;
-      background:linear-gradient(
-        to bottom,
-        transparent 30%,
-        rgba(6,9,19,.7) 70%,
-        rgba(6,9,19,.97) 100%
-      );
-      pointer-events:none;
+    .pshow-section:nth-child(even){
+      background:linear-gradient(135deg,#060b16 0%,#0a1020 60%,#060d1a 100%);
     }
-    .carousel-logo{ height:28px; width:auto; filter:invert(1) brightness(2); opacity:.75; margin-bottom:10px; display:block; }
-    /* info panel inside the slide, bottom-aligned */
-    .carousel-info{
-      position:absolute; bottom:0; right:0; left:0;
-      padding:28px 32px 24px;
-      display:flex; align-items:flex-end; justify-content:space-between; gap:20px;
+    .pshow-section-info{
+      padding:20px 60px 20px 0;
+      display:flex; flex-direction:column; gap:28px;
     }
-    .carousel-text{ flex:1; }
-    .carousel-cat{
-      font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase;
-      color:#00f5d4; font-family:monospace; display:block; margin-bottom:7px;
-    }
-    .carousel-name{
-      font-size:22px; font-weight:800; color:#fff; line-height:1.25;
-      letter-spacing:-.4px; margin:0 0 10px;
-    }
-    .carousel-tags{ display:flex; gap:6px; flex-wrap:wrap; }
-    .carousel-tag{
-      font-size:10px; padding:3px 10px; border-radius:20px;
-      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
-      color:#d1d5db; font-weight:500;
-    }
-    .carousel-cta{
+    .pshow-badge{
       display:inline-flex; align-items:center; gap:8px;
+      font-size:10px; font-weight:700; letter-spacing:3px;
+      text-transform:uppercase; font-family:monospace; color:#00f5d4;
+    }
+    .pshow-badge::before{
+      content:''; display:inline-block; width:6px; height:6px; border-radius:50%;
+      background:#00f5d4; flex-shrink:0;
+      box-shadow:0 0 8px #00f5d4;
+    }
+    .pshow-title{
+      font-size:clamp(26px,3vw,44px); font-weight:900; line-height:1.2;
+      color:#fff; letter-spacing:-.5px; margin:0;
+    }
+    .pshow-desc{
+      font-size:16px; line-height:1.75; color:#94a3b8; max-width:400px; margin:0;
+    }
+    .pshow-feats{
+      list-style:none; margin:0; padding:0;
+      display:flex; flex-direction:column; gap:12px;
+    }
+    .pshow-feat{
+      display:flex; align-items:flex-start; gap:12px;
+      font-size:14px; color:#cbd5e1; line-height:1.55;
+      opacity:0; transform:translateY(14px);
+      transition:opacity .5s, transform .5s;
+    }
+    .pshow-section.in-view .pshow-feat{ opacity:1; transform:none; }
+    .pshow-feat:nth-child(1){ transition-delay:.05s; }
+    .pshow-feat:nth-child(2){ transition-delay:.13s; }
+    .pshow-feat:nth-child(3){ transition-delay:.21s; }
+    .pshow-feat:nth-child(4){ transition-delay:.29s; }
+    .pshow-feat:nth-child(5){ transition-delay:.37s; }
+    .pshow-feat-dot{
+      width:18px; height:18px; border-radius:50%; flex-shrink:0;
+      background:rgba(0,245,212,.12); border:1px solid rgba(0,245,212,.3);
+      display:flex; align-items:center; justify-content:center; margin-top:2px;
+    }
+    .pshow-feat-dot::after{
+      content:''; width:6px; height:6px; border-radius:50%; background:#00f5d4;
+    }
+    .pshow-cta{
+      display:inline-flex; align-items:center; gap:8px; width:fit-content;
       font-size:14px; font-weight:700; color:#060913;
-      background:#00f5d4; border:none; border-radius:10px;
-      padding:13px 22px; cursor:pointer; font-family:inherit;
-      white-space:nowrap; flex-shrink:0;
+      background:#00f5d4; border:none; border-radius:100px;
+      padding:14px 28px; cursor:pointer; font-family:inherit;
       transition:background .2s, transform .2s, box-shadow .2s;
       box-shadow:0 4px 20px rgba(0,245,212,.35);
     }
-    .carousel-cta:hover{
-      background:#00dfc0; transform:translateY(-2px);
-      box-shadow:0 8px 28px rgba(0,245,212,.45);
+    .pshow-cta:hover{ background:#00dfc0; transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,245,212,.45); }
+    .pshow-section-demo{
+      position:relative; border-radius:14px; overflow:hidden;
+      box-shadow:0 40px 100px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.07);
     }
-    .carousel-cta .arr{ transition:transform .2s; }
-    .carousel-cta:hover .arr{ transform:translateX(-3px); }
-
-    /* Nav arrows */
-    .carousel-arrow{
-      position:absolute; top:50%; transform:translateY(-50%);
-      width:40px; height:40px; border-radius:50%;
-      background:rgba(0,0,0,.5); backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,.12); color:#fff;
-      font-size:18px; cursor:pointer; z-index:10;
-      display:flex; align-items:center; justify-content:center;
-      transition:background .2s, border-color .2s;
+    .pshow-free-badge{
+      position:absolute; top:50px; right:16px; z-index:10;
+      background:#22c55e; color:#fff; font-size:12px; font-weight:800;
+      padding:5px 14px; border-radius:20px; letter-spacing:.5px;
+      box-shadow:0 4px 16px rgba(34,197,94,.45);
     }
-    .carousel-arrow:hover{ background:rgba(0,245,212,.2); border-color:rgba(0,245,212,.5); }
-    .carousel-prev{ right:16px; }
-    .carousel-next{ left:16px; }
-
-    /* Dots + product tabs below */
-    .carousel-controls{
-      display:flex; align-items:center; justify-content:center;
-      gap:0; padding:0; border-top:1px solid #1a2030;
-      overflow-x:auto; scrollbar-width:none;
+    .pshow-chrome{
+      background:linear-gradient(180deg,#1c2438 0%,#151d30 100%);
+      padding:11px 16px; display:flex; align-items:center; gap:10px;
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
-    .carousel-controls::-webkit-scrollbar{ display:none; }
-    .carousel-tab{
-      flex:1; min-width:0; padding:14px 16px;
-      display:flex; align-items:center; gap:10px;
-      border-left:1px solid #1a2030; cursor:pointer;
-      transition:background .2s; background:transparent;
-      text-align:right; border-top:none; border-bottom:none; border-right:none;
-      font-family:inherit;
+    .pshow-chrome-dots{ display:flex; gap:6px; }
+    .pshow-chrome-dot{ width:10px; height:10px; border-radius:50%; }
+    .pshow-chrome-dot:nth-child(1){ background:#ff5f57; }
+    .pshow-chrome-dot:nth-child(2){ background:#febc2e; }
+    .pshow-chrome-dot:nth-child(3){ background:#28c840; }
+    .pshow-chrome-addr{
+      flex:1; background:rgba(255,255,255,.06); border-radius:6px;
+      padding:5px 12px; font-size:11px; color:#4b5c74;
+      font-family:monospace; text-align:center; direction:ltr;
     }
-    .carousel-tab:first-child{ border-left:none; }
-    .carousel-tab.active{ background:rgba(0,245,212,.06); }
-    .carousel-tab:hover:not(.active){ background:rgba(255,255,255,.03); }
-    .tab-dot{
-      width:6px; height:6px; border-radius:50%; background:#2d3748; flex-shrink:0;
-      transition:background .25s, box-shadow .25s;
+    .pshow-iframe-wrap{
+      position:relative; width:100%; overflow:hidden; background:#080e1a;
     }
-    .carousel-tab.active .tab-dot{
-      background:#00f5d4; box-shadow:0 0 8px rgba(0,245,212,.6);
+    .pshow-iframe-wrap iframe{
+      position:absolute; top:0; right:0;
+      width:1300px; height:702px; border:0; pointer-events:none;
+      transform-origin:top right;
     }
-    .tab-name{
-      font-size:11px; font-weight:600; color:#6b7280;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-      transition:color .2s;
+    .pshow-iframe-wrap video{
+      width:100%; height:100%; object-fit:cover; display:block;
     }
-    .carousel-tab.active .tab-name{ color:#e0e0e0; }
-
-    /* Progress bar */
-    .carousel-progress{
-      height:2px; background:#1a2030; position:relative; overflow:hidden;
-    }
-    .carousel-progress-bar{
-      height:100%; background:#00f5d4; width:0%;
-      transition:width linear;
+    @media(max-width:960px){
+      .pshow-section{
+        grid-template-columns:1fr; padding:60px 24px 48px; min-height:auto;
+      }
+      .pshow-section-info{ padding:0 0 36px; }
+      .pshow-sidenav{ display:none; }
     }
 
     /* ── Service cards (non-demo) ── */
@@ -1718,11 +1715,11 @@
       <img class="hero-logo"
         src="/assets/logo.png"
         alt="SYNERO TECH">
-      <h1 class="hero-h1" id="heroH1" aria-label="אנחנו לא מתאימים את העסק שלך לתוכנה. אנחנו בונים את התוכנה סביב העסק שלך."></h1>
+      <h1 class="hero-h1" id="heroH1" aria-label="תשתית השליטה והאוטומציה המלאה: מניעת בריחת הכנסות ואפס מאמץ תפעולי למנהלים."></h1>
       <br>
 
       <div class="hero-actions">
-        <button class="btn-primary" id="contactBtnHero" type="button">שיחת היכרות חינם ← 30 דקות</button>
+        <a class="btn-primary" href="https://wa.me/972534244687" target="_blank" rel="noopener">קבל אבחון ארכיטקטוני-תפעולי ב-60 שניות ←</a>
         <a class="btn-secondary" href="#products">השירותים שלנו</a>
       </div>
     </div>
@@ -2813,8 +2810,27 @@
         icon: iconMic(),
         demo: "/assets/recapdemo.html"
       },
- 
     ];
+
+    products.push({
+      id: "syneview",
+      type: "shelf",
+      fit: "לכל מנהל שמעריך עובדים ורוצה להגיע לשיחה עם תמונה מקצועית - לא רק 'תחושת בטן'. מיועד לעסקים קטנים עד בינוניים שרוצים תהליך מסודר ותעודה מכובדת.",
+      roi: "הערכה שמניעה שיחות אמיתיות. כל עובד מקבל תעודת הוקרה מעוצבת, המנהל מקבל דו\"ח עם ניתוח לפי תחומים.",
+      name: "SYNEVIEW - הערכת עובדים חכמה",
+      short: "מעריכים כל עובד ב-6 תחומים מקצועיים, מקבלים דו\"ח מפורט ותעודת הוקרה עם כיתוב אישי - מוכן להדפסה. חינם לחלוטין, ללא הרשמה.",
+      price: "חינם לחלוטין",
+      tags: ["6 תחומי הערכה", "דו\"ח מעסיק", "תעודת הוקרה", "זיהוי מגדר אוטומטי", "ללא הרשמה"],
+      includes: [
+        "הערכה מדויקת ב-6 תחומים: תוצאות, אמינות, מקצועיות, יוזמה, צוות ולמידה",
+        "דו\"ח מקצועי למעסיק עם ציונים, גרפים, הערות לפי תחום וניתוח חוזקות",
+        "תעודת הוקרה מעוצבת לעובד עם כיתוב אישי - מוכנה להדפסה ולהורדה",
+        "זיהוי מגדר אוטומטי לפי שם - פנייה נכונה בזכר/נקבה בכל הטקסטים"
+      ],
+      icon: '',
+      demo: "/assets/syneview-demo.mp4",
+      free: true
+    });
 
     /* ── Render cards ── */
     const servicesContainer = document.getElementById('servicesContainer');
@@ -2828,163 +2844,126 @@
       custom:      'CUSTOM BUILD',
       recap:       'RECAP AI',
       dashboard:   'DASHBOARD BI',
+      syneview:    'SYNEVIEW · חינם',
     };
 
-    function buildCarousel(demoProducts, allProducts) {
-      const carousel = document.createElement('div');
-      carousel.className = 'demo-carousel';
+    function buildShowcase(demoProducts) {
+      const wrap = document.createElement('div');
+      wrap.className = 'pshow-wrap';
 
-      // Progress bar
-      const prog = document.createElement('div');
-      prog.className = 'carousel-progress';
-      const progBar = document.createElement('div');
-      progBar.className = 'carousel-progress-bar';
-      prog.appendChild(progBar);
-      carousel.appendChild(prog);
-
-      // Viewport + track
-      const vp = document.createElement('div');
-      vp.className = 'carousel-viewport';
-      const track = document.createElement('div');
-      track.className = 'carousel-track';
-
-      demoProducts.forEach(p => {
-        const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
-        slide.dataset.open = p.id;
-        const tagsHtml = (p.tags||[]).map(t=>`<span class="carousel-tag">${escapeHtml(t)}</span>`).join('');
-        slide.innerHTML = `
-          <div class="carousel-iframe-wrap" id="wrap-${p.id}">
-            <iframe src="${escapeHtml(p.demo)}" loading="eager" tabindex="-1"></iframe>
-          </div>
-          <div class="carousel-grad"></div>
-          <div class="carousel-info">
-            <img src="/assets/logo.png" alt="SYNERO TECH" class="carousel-logo">
-            <div class="carousel-text">
-              <span class="carousel-cat">${cats[p.id]||'PRODUCT'}</span>
-              <h3 class="carousel-name">${escapeHtml(p.name)}</h3>
-              <div class="carousel-tags">${tagsHtml}</div>
-            </div>
-            <button class="carousel-cta" data-open="${p.id}">
-              פרטים מלאים <span class="arr">←</span>
-            </button>
-          </div>`;
-        track.appendChild(slide);
-      });
-
-      vp.appendChild(track);
-      carousel.appendChild(vp);
-
-      // Arrows
-      const prev = document.createElement('button');
-      prev.className = 'carousel-arrow carousel-prev';
-      prev.setAttribute('aria-label','הבא');
-      prev.innerHTML = '→';
-      const next = document.createElement('button');
-      next.className = 'carousel-arrow carousel-next';
-      next.setAttribute('aria-label','הקודם');
-      next.innerHTML = '←';
-      carousel.appendChild(prev);
-      carousel.appendChild(next);
-
-      // Tabs
-      const controls = document.createElement('div');
-      controls.className = 'carousel-controls';
+      // Side nav dots
+      const sidenav = document.createElement('nav');
+      sidenav.className = 'pshow-sidenav';
+      const dots = [];
       demoProducts.forEach((p, i) => {
-        const tab = document.createElement('button');
-        tab.className = 'carousel-tab' + (i===0?' active':'');
-        tab.dataset.idx = i;
-        tab.innerHTML = `<span class="tab-dot"></span><span class="tab-name">${escapeHtml(p.name.split('-')[0].trim())}</span>`;
-        controls.appendChild(tab);
+        const dot = document.createElement('button');
+        dot.className = 'pshow-dot' + (i===0 ? ' active' : '');
+        dot.setAttribute('aria-label', p.name);
+        sidenav.appendChild(dot);
+        dots.push(dot);
       });
-      carousel.appendChild(controls);
+      document.body.appendChild(sidenav);
 
-      servicesContainer.appendChild(carousel);
+      const sections = [];
 
-      // Carousel logic
-      let cur = 0;
-      const n = demoProducts.length;
-      const INTERVAL = 6000;
-      let timer, progTimer, paused = false;
-      const tabs = controls.querySelectorAll('.carousel-tab');
+      demoProducts.forEach((p, i) => {
+        const isVideo = /\.(mp4|webm|ogg)$/i.test(p.demo);
+        const featsHtml = (p.includes||[]).slice(0,5).map(f =>
+          `<li class="pshow-feat"><span class="pshow-feat-dot"></span><span>${escapeHtml(f)}</span></li>`
+        ).join('');
+        const addrLabel = 'synero.app/' + p.id;
+        const freeBadge = p.free ? `<span class="pshow-free-badge">לשימוש חינם</span>` : '';
 
-      function goTo(idx, resetProgress=true){
-        cur = (idx + n) % n;
-        track.style.transform = 'translateX('+(-cur * (100/n))+'%)';
-        tabs.forEach((t,i) => t.classList.toggle('active', i===cur));
-        if(resetProgress) startProgress();
-      }
+        const section = document.createElement('section');
+        section.className = 'pshow-section';
+        section.id = 'section-' + p.id;
+        section.dataset.idx = i;
+        section.innerHTML = `
+          <div class="pshow-section-info">
+            <span class="pshow-badge">${escapeHtml(cats[p.id]||'PRODUCT')}</span>
+            <h3 class="pshow-title">${escapeHtml(p.name)}</h3>
+            <p class="pshow-desc">${escapeHtml(p.short||'')}</p>
+            <ul class="pshow-feats">${featsHtml}</ul>
+            <button class="pshow-cta" data-open="${p.id}">פרטים מלאים ←</button>
+          </div>
+          <div class="pshow-section-demo" style="position:relative">
+            ${freeBadge}
+            <div class="pshow-chrome">
+              <div class="pshow-chrome-dots">
+                <div class="pshow-chrome-dot"></div>
+                <div class="pshow-chrome-dot"></div>
+                <div class="pshow-chrome-dot"></div>
+              </div>
+              <div class="pshow-chrome-addr">${addrLabel}</div>
+            </div>
+            <div class="pshow-iframe-wrap" id="pdemo-${p.id}">
+              ${isVideo
+                ? `<video src="${escapeHtml(p.demo)}" muted loop playsinline></video>`
+                : `<iframe src="${escapeHtml(p.demo)}" loading="eager" tabindex="-1"></iframe>`}
+            </div>
+          </div>`;
 
-      function startProgress(){
-        progBar.style.transition = 'none';
-        progBar.style.width = '0%';
-        clearTimeout(progTimer);
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            progBar.style.transition = 'width '+INTERVAL+'ms linear';
-            progBar.style.width = '100%';
-          });
+        wrap.appendChild(section);
+        sections.push(section);
+
+        dots[i].addEventListener('click', () => {
+          section.scrollIntoView({behavior:'smooth', block:'center'});
         });
-        clearTimeout(timer);
-        if(!paused) timer = setTimeout(() => goTo(cur+1), INTERVAL);
+      });
+
+      servicesContainer.appendChild(wrap);
+
+      // Scroll to hash after render
+      if(location.hash){
+        const target=document.querySelector(location.hash);
+        if(target) setTimeout(()=>target.scrollIntoView({behavior:'smooth',block:'start'}),300);
       }
 
-      goTo(0);
-
-      prev.addEventListener('click', () => goTo(cur-1));
-      next.addEventListener('click', () => goTo(cur+1));
-      tabs.forEach((t,i) => t.addEventListener('click', () => goTo(i)));
-      carousel.addEventListener('mouseenter', () => { paused=true; clearTimeout(timer); progBar.style.animationPlayState='paused'; });
-      carousel.addEventListener('mouseleave', () => { paused=false; startProgress(); });
-
-      // Touch swipe
-      let tx0 = 0;
-      vp.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, {passive:true});
-      vp.addEventListener('touchend', e => {
-        const dx = e.changedTouches[0].clientX - tx0;
-        if(Math.abs(dx) > 40) goTo(dx < 0 ? cur+1 : cur-1);
-      }, {passive:true});
-
-      function getVpW(){
-        // Match .wrap: max-width:1180px, padding:0 40px → content max = 1100px
-        const pageW = document.documentElement.clientWidth || window.innerWidth || 1000;
-        return Math.min(pageW - 80, 1100); // 40px padding each side
-      }
-
-      function scaleIframes(vpW){
-        if(!vpW) vpW = getVpW();
-        const scale = vpW / 1300;
-        const wrapH = Math.round(702 * scale);
+      // Scale iframes to fill container
+      function sizeIframes(){
         demoProducts.forEach(p => {
-          const wrap = document.getElementById('wrap-'+p.id);
-          if(!wrap) return;
-          wrap.style.height = wrapH + 'px';
-          const iframe = wrap.querySelector('iframe');
-          if(iframe){
-            // zoom changes the element's layout box (unlike transform) — reliable for clipping
-            iframe.style.zoom = scale;
-            iframe.style.transform = '';
-            iframe.style.width = '1300px';
-            iframe.style.height = '702px';
+          const container = document.getElementById('pdemo-'+p.id);
+          if(!container) return;
+          const w = container.clientWidth || 600;
+          const scale = w / 1300;
+          const h = Math.round(702 * scale);
+          container.style.height = h + 'px';
+          const iframe = container.querySelector('iframe');
+          if(iframe){ iframe.style.zoom = scale; iframe.style.width='1300px'; iframe.style.height='702px'; }
+        });
+      }
+      sizeIframes();
+      window.addEventListener('resize', sizeIframes);
+      wrap.querySelectorAll('iframe').forEach(f => f.addEventListener('load', sizeIframes));
+
+      // IntersectionObserver: active section → dots + animate features + autoplay
+      let visibleCount = 0;
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          const idx = +entry.target.dataset.idx;
+          if(entry.isIntersecting){
+            visibleCount++;
+            entry.target.classList.add('in-view');
+            dots.forEach((d,i) => d.classList.toggle('active', i===idx));
+            sidenav.classList.add('visible');
+            const vid = entry.target.querySelector('video');
+            if(vid && vid.paused) vid.play().catch(()=>{});
+          } else {
+            visibleCount = Math.max(0, visibleCount - 1);
+            if(visibleCount === 0) sidenav.classList.remove('visible');
           }
         });
-      }
+      }, {threshold: 0.35});
 
-      function initSizes(){
-        const vpW = getVpW();
-        track.style.width = (n * vpW) + 'px';
-        track.querySelectorAll('.carousel-slide').forEach(s => { s.style.width = vpW + 'px'; });
-        goTo(cur, false);
-        scaleIframes(vpW);
-      }
+      sections.forEach(s => observer.observe(s));
 
-      setTimeout(initSizes, 0);
-      setTimeout(initSizes, 400);
-      window.addEventListener('resize', initSizes);
-      new IntersectionObserver(entries => {
-        if(entries[0].isIntersecting) initSizes();
-      }, {threshold:0.05}).observe(carousel);
-      carousel.querySelectorAll('iframe').forEach(f => f.addEventListener('load', () => scaleIframes()));
+      // CTA → product page
+      wrap.querySelectorAll('.pshow-cta[data-open]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          window.location.href = '/product?id='+btn.dataset.open;
+        });
+      });
     }
 
     function render(list){
@@ -2992,7 +2971,7 @@
       const demoProds = list.filter(p => p.demo);
       const serviceProds = list.filter(p => !p.demo);
 
-      if(demoProds.length) buildCarousel(demoProds, list);
+      if(demoProds.length) buildShowcase(demoProds);
 
       // Non-demo products as cards
       if(serviceProds.length){
@@ -3485,8 +3464,8 @@
   (function(){
     const el = document.getElementById('heroH1');
     if(!el) return;
-    const L1 = 'אנחנו לא מתאימים את העסק שלך לתוכנה.';
-    const L2 = 'אנחנו בונים את התוכנה סביב העסק שלך.';
+    const L1 = 'תשתית השליטה והאוטומציה המלאה:';
+    const L2 = 'מניעת בריחת הכנסות ואפס מאמץ תפעולי למנהלים.';
     const CHAR = 90, ERASE = 35, PAUSE = 500, END = 2500;
     const cur = '<span class="tw-cursor">|</span>';
 
