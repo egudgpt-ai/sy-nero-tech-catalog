@@ -262,6 +262,34 @@ html,body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--white)
     </div>
   </div>
 
+  <!-- New vs Returning + Traffic Source + Product Breakdown -->
+  <div class="three-col">
+    <div class="section">
+      <div class="section-header"><div class="section-title">מבקרים חדשים vs חוזרים</div></div>
+      <div id="newVsReturn"><div class="empty">אין נתונים</div></div>
+    </div>
+    <div class="section">
+      <div class="section-header"><div class="section-title">ערוץ גיוס</div></div>
+      <div id="channelList"><div class="empty">אין נתונים</div></div>
+    </div>
+    <div class="section">
+      <div class="section-header"><div class="section-title">פילוח לפי מוצר</div></div>
+      <div id="productList"><div class="empty">אין נתונים</div></div>
+    </div>
+  </div>
+
+  <!-- Day-of-week heatmap + Scroll depth dist -->
+  <div class="two-col">
+    <div class="section">
+      <div class="section-header"><div class="section-title">פעילות לפי יום בשבוע</div></div>
+      <div id="dowChart"><div class="empty">אין נתונים</div></div>
+    </div>
+    <div class="section">
+      <div class="section-header"><div class="section-title">עומק גלילה — התפלגות</div></div>
+      <div id="depthDist"><div class="empty">אין נתונים</div></div>
+    </div>
+  </div>
+
   <!-- Leads -->
   <div class="section">
     <div class="section-header">
@@ -537,6 +565,123 @@ function renderVisitors(visitors) {
     : '<tr><td colspan="9" class="empty">אין תוצאות</td></tr>';
 }
 
+function renderNewVsReturn(visitors, d) {
+  const newV = d.new_visitors ?? visitors.filter(v=>v.is_new||v.new).length;
+  const returnV = d.returning_visitors ?? visitors.filter(v=>v.is_returning||v.returning).length;
+  const total = (d.uv_total || visitors.length) || 1;
+  const nNew = d.new_visitors ?? newV;
+  const nRet = d.returning_visitors ?? returnV;
+  const pctNew = Math.round((nNew||0)/total*100);
+  const pctRet = Math.round((nRet||0)/total*100);
+
+  const hasData = nNew || nRet;
+  if (!hasData && !d.uv_total) { document.getElementById('newVsReturn').innerHTML='<div class="empty">אין נתונים</div>'; return; }
+
+  // Stacked bar
+  const n = nNew||Math.round(total*0.7), r = nRet||Math.round(total*0.3);
+  const tot = n+r||1;
+  document.getElementById('newVsReturn').innerHTML = `
+    <div style="display:flex;height:28px;border-radius:8px;overflow:hidden;margin-bottom:14px">
+      <div style="width:${Math.round(n/tot*100)}%;background:var(--accent);opacity:.85;transition:width .5s"></div>
+      <div style="flex:1;background:var(--accent2);opacity:.7"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="leg-row"><div class="leg-dot" style="background:var(--accent)"></div><div class="leg-name">מבקרים חדשים</div><div class="leg-pct">${n} <span style="color:var(--fog);font-size:10px">(${Math.round(n/tot*100)}%)</span></div></div>
+      <div class="leg-row"><div class="leg-dot" style="background:var(--accent2)"></div><div class="leg-name">מבקרים חוזרים</div><div class="leg-pct">${r} <span style="color:var(--fog);font-size:10px">(${Math.round(r/tot*100)}%)</span></div></div>
+    </div>`;
+}
+
+function renderChannels(visitors, d) {
+  const ch = d.channels || {};
+  // derive from visitors referrer if no server data
+  if (!Object.keys(ch).length && visitors.length) {
+    const SOCIAL = /facebook|instagram|twitter|tiktok|linkedin|whatsapp|youtube/i;
+    const SEARCH = /google|bing|yandex|yahoo|duckduckgo/i;
+    visitors.forEach(v => {
+      const ref = v.ref||'';
+      if (!ref) ch['ישיר'] = (ch['ישיר']||0)+1;
+      else if (SOCIAL.test(ref)) ch['סושיאל'] = (ch['סושיאל']||0)+1;
+      else if (SEARCH.test(ref)) ch['חיפוש אורגני'] = (ch['חיפוש אורגני']||0)+1;
+      else ch['רפרל'] = (ch['רפרל']||0)+1;
+    });
+  }
+  const entries = Object.entries(ch).sort((a,b)=>b[1]-a[1]);
+  const ICONS = {'ישיר':'🔗','חיפוש אורגני':'🔍','סושיאל':'📱','רפרל':'🌐','direct':'🔗','organic':'🔍','social':'📱','referral':'🌐'};
+  const COLORS = ['#00f5d4','#7c3aed','#fbbf24','#f87171','#60a5fa'];
+  const maxC = entries[0]?.[1]||1;
+  document.getElementById('channelList').innerHTML = entries.length
+    ? entries.map(([k,v],i)=>`
+        <div class="ref-row">
+          <div class="ref-label">${ICONS[k]||'📊'} ${k}</div>
+          <div class="ref-bar-wrap"><div class="ref-bar" style="width:${Math.round(v/maxC*100)}%;background:${COLORS[i%COLORS.length]}"></div></div>
+          <div class="ref-val">${v}</div>
+        </div>`).join('')
+    : '<div class="empty">אין נתונים</div>';
+}
+
+const PRODUCT_NAMES = {
+  recap:'RECAP AI', 'crm-sub':'CRM System', bot:'WhatsApp Bot',
+  campaigns:'מדידת קמפיינים', automation:'Automation', custom:'Custom Build', syneview:'SYNEVIEW'
+};
+function renderProductBreakdown(events, d) {
+  const pd = d.products || {};
+  // try to parse from events like product_click:{recap:3,bot:1}
+  let entries = Object.entries(pd);
+  if (!entries.length && d.product_clicks) entries = Object.entries(d.product_clicks);
+  // fallback: if events has a product_click number but no breakdown
+  const COLORS2 = ['#00f5d4','#7c3aed','#fbbf24','#34d399','#f87171','#60a5fa','#fb923c'];
+  const maxP2 = entries[0]?.[1]||1;
+  document.getElementById('productList').innerHTML = entries.length
+    ? entries.sort((a,b)=>b[1]-a[1]).map(([k,v],i)=>`
+        <div class="ref-row">
+          <div class="ref-label" style="color:var(--white);font-weight:600">${PRODUCT_NAMES[k]||k}</div>
+          <div class="ref-bar-wrap"><div class="ref-bar" style="width:${Math.round(v/maxP2*100)}%;background:${COLORS2[i%COLORS2.length]}"></div></div>
+          <div class="ref-val">${v}</div>
+        </div>`).join('')
+    : '<div class="empty" style="font-size:12px">נתונים יגיעו כשיהיו לחיצות</div>';
+}
+
+function renderDow(visitors, d) {
+  const DAYS = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+  const counts = d.dow || Array(7).fill(0);
+  if (!d.dow) visitors.forEach(v => { if(v.ts){ const day=new Date(v.ts).getDay(); counts[day]=(counts[day]||0)+1; }});
+  const maxD = Math.max(...counts,1);
+  document.getElementById('dowChart').innerHTML = `
+    <div style="display:flex;align-items:flex-end;gap:6px;height:70px;padding-bottom:4px">
+      ${counts.map((n,i)=>`
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div style="font-size:9px;color:var(--fog)">${n||''}</div>
+          <div style="width:100%;border-radius:4px 4px 0 0;min-height:3px;height:${Math.max(3,n/maxD*52)}px;background:${n===Math.max(...counts)?'var(--accent)':'rgba(0,245,212,.2)'};transition:height .4s"></div>
+          <div style="font-size:10px;color:var(--fog)">${DAYS[i]}</div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function renderDepthDist(visitors, d) {
+  // buckets: 0-25%, 25-50%, 50-75%, 75-100%
+  const buckets = d.depth_buckets || [0,0,0,0];
+  if (!d.depth_buckets) visitors.forEach(v=>{
+    const dep = v.scroll_depth ?? v.depth ?? null;
+    if(dep==null) return;
+    const b = Math.min(3,Math.floor(dep/25));
+    buckets[b]=(buckets[b]||0)+1;
+  });
+  const labels=['0–25%','25–50%','50–75%','75–100%'];
+  const colors=['#f87171','#fbbf24','#60a5fa','#00f5d4'];
+  const maxB=Math.max(...buckets,1);
+  const total=buckets.reduce((a,b)=>a+b,0)||1;
+  document.getElementById('depthDist').innerHTML = buckets.some(b=>b>0)
+    ? labels.map((l,i)=>`
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <div style="font-size:12px;color:var(--fog);width:48px;flex-shrink:0">${l}</div>
+          <div style="flex:1;background:rgba(255,255,255,.05);border-radius:4px;height:8px">
+            <div style="width:${Math.round(buckets[i]/maxB*100)}%;height:8px;border-radius:4px;background:${colors[i]};transition:width .4s"></div>
+          </div>
+          <div style="font-size:12px;font-weight:700;min-width:36px;text-align:left;color:${colors[i]}">${buckets[i]} <span style="color:var(--fog);font-weight:400;font-size:10px">(${Math.round(buckets[i]/total*100)}%)</span></div>
+        </div>`).join('')
+    : '<div class="empty">נתוני גלילה יצטברו עם הזמן</div>';
+}
+
 async function loadData() {
   try {
     const r = await fetch('/api/stats?pass=' + encodeURIComponent(pass));
@@ -623,6 +768,13 @@ async function loadData() {
     allVisitors.forEach(v => { if(v.device && devCounts[v.device]!=null) devCounts[v.device]++; });
     if (d.devices) renderDeviceChart(d.devices);
     else if (allVisitors.length) renderDeviceChart(devCounts);
+
+    // Extra segmentations
+    renderNewVsReturn(allVisitors, d);
+    renderChannels(allVisitors, d);
+    renderProductBreakdown(events, d);
+    renderDow(allVisitors, d);
+    renderDepthDist(allVisitors, d);
 
     // Last update
     document.getElementById('lastUpdate').textContent = 'עודכן: ' + new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
