@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ניהול | SYNERO.TECH</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d1020;--panel:#131729;--line:#1a1d2e;--accent:#00f5d4;--white:#fff;--fog:#aaa}
+html,body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
+
+/* ── Login ── */
+#login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.login-box{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:40px 32px;width:100%;max-width:340px;text-align:center}
+.login-logo{font-size:12px;letter-spacing:3px;color:var(--accent);margin-bottom:6px}
+.login-title{font-size:20px;font-weight:800;margin-bottom:28px}
+.login-box input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--white);font-family:inherit;font-size:16px;padding:13px 16px;outline:none;margin-bottom:12px;direction:rtl;transition:border-color .2s;-webkit-appearance:none}
+.login-box input:focus{border-color:var(--accent)}
+.login-box button{width:100%;background:var(--accent);color:#060913;border:none;border-radius:10px;font-family:inherit;font-size:16px;font-weight:700;padding:13px;cursor:pointer;touch-action:manipulation}
+.login-err{color:#f87171;font-size:13px;margin-top:10px;display:none}
+
+/* ── Dashboard ── */
+#dashboard{display:none;padding:24px 16px;max-width:1100px;margin:0 auto}
+
+/* Top bar */
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:12px}
+.top-logo{font-size:11px;letter-spacing:3px;color:var(--accent)}
+.top-title{font-size:20px;font-weight:800;line-height:1.1}
+.logout-btn{background:none;border:1px solid var(--line);color:var(--fog);border-radius:8px;padding:8px 14px;cursor:pointer;font-family:inherit;font-size:13px;white-space:nowrap;touch-action:manipulation}
+
+/* Stat grid — 2 col mobile, 4 col desktop */
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 14px}
+.stat-n{font-size:30px;font-weight:800;color:var(--accent);letter-spacing:-1px;line-height:1}
+.stat-l{font-size:12px;color:var(--fog);margin-top:5px}
+
+/* Section card */
+.section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 16px;margin-bottom:12px}
+.section-title{font-size:13px;font-weight:700;letter-spacing:.5px;margin-bottom:16px;color:var(--fog);text-transform:uppercase}
+
+/* Chart */
+.chart{display:flex;align-items:flex-end;gap:3px;height:70px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar{width:100%;background:rgba(0,245,212,.18);border-radius:2px 2px 0 0;min-height:2px}
+.bar:hover,.bar:active{background:var(--accent)}
+.bar-label{font-size:8px;color:var(--fog)}
+
+/* Events */
+.ev-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.ev-row:last-child{border-bottom:none}
+.ev-name{font-size:13px;flex:1;padding-left:8px}
+.ev-count{font-size:22px;font-weight:800;color:var(--accent);min-width:36px;text-align:left}
+
+/* Referrers */
+.ref-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ref-row:last-child{margin-bottom:0}
+.ref-label{font-size:12px;color:var(--fog);width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}
+.ref-bar-wrap{flex:1;background:rgba(255,255,255,.06);border-radius:4px;height:6px}
+.ref-bar{background:var(--accent);height:6px;border-radius:4px}
+.ref-val{font-size:12px;font-weight:700;min-width:24px;text-align:left}
+
+/* Leads — cards on mobile */
+.lead-card{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:8px}
+.lead-card:last-child{margin-bottom:0}
+.lead-name{font-size:15px;font-weight:700;margin-bottom:6px}
+.lead-row{display:flex;justify-content:space-between;font-size:12px;color:var(--fog);margin-bottom:3px}
+.lead-val{color:var(--white)}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-green{background:rgba(0,245,212,.12);color:var(--accent)}
+.badge-gray{background:rgba(255,255,255,.06);color:var(--fog)}
+
+/* Visitors */
+.visitor-card{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:8px}
+.visitor-card:last-child{margin-bottom:0}
+.visitor-ip{font-size:15px;font-weight:700;margin-bottom:6px;font-family:monospace;color:var(--accent)}
+.visitor-row{display:flex;justify-content:space-between;font-size:12px;color:var(--fog);margin-bottom:3px}
+.visitor-val{color:var(--white)}
+
+.empty{color:var(--fog);font-size:13px;text-align:center;padding:20px 0}
+.refresh-note{font-size:11px;color:rgba(170,170,170,.5);text-align:center;margin-top:16px;padding-bottom:24px}
+
+/* Visitors desktop table */
+@media(min-width:600px){
+  .visitor-card{display:none}
+  .visitors-tbl{display:table;width:100%;border-collapse:collapse;font-size:13px}
+  .visitors-tbl th{text-align:right;color:var(--fog);font-weight:600;padding:8px 0;border-bottom:1px solid var(--line)}
+  .visitors-tbl td{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px}
+  .visitors-tbl tr:last-child td{border-bottom:none}
+}
+@media(max-width:599px){
+  .visitors-tbl{display:none}
+}
+
+/* Desktop overrides */
+@media(min-width:600px){
+  #dashboard{padding:32px 32px}
+  .stats-row{grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+  .stat{padding:22px 18px}
+  .stat-n{font-size:36px}
+  .stat-l{font-size:13px}
+  .section{padding:24px}
+  .section-title{font-size:14px}
+  .chart{height:80px}
+  .bar-label{font-size:9px}
+  .top-title{font-size:24px}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  /* Table view for leads on desktop */
+  .lead-card{display:none}
+  .leads-tbl{display:table;width:100%;border-collapse:collapse;font-size:13px}
+  .leads-tbl th{text-align:right;color:var(--fog);font-weight:600;padding:8px 0;border-bottom:1px solid var(--line)}
+  .leads-tbl td{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+  .leads-tbl tr:last-child td{border-bottom:none}
+}
+@media(max-width:599px){
+  .two-col{display:flex;flex-direction:column}
+  .leads-tbl{display:none}
+  .ref-label{width:90px}
+}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="login-box">
+    <div class="login-logo">SYNERO.TECH</div>
+    <h2 class="login-title">כניסת מנהל</h2>
+    <input type="password" id="passInput" placeholder="סיסמה" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button onclick="doLogin()">כניסה</button>
+    <div class="login-err" id="loginErr">סיסמה שגויה</div>
+  </div>
+</div>
+
+<div id="dashboard">
+  <div class="top-bar">
+    <div>
+      <div class="top-logo">SYNERO.TECH</div>
+      <div class="top-title">לוח בקרה</div>
+    </div>
+    <button class="logout-btn" onclick="logout()">יציאה</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n" id="uvToday">-</div><div class="stat-l">מבקרים ייחודיים היום</div></div>
+    <div class="stat"><div class="stat-n" id="uvTotal">-</div><div class="stat-l">מבקרים ייחודיים סה"כ</div></div>
+    <div class="stat"><div class="stat-n" id="pvWeek">-</div><div class="stat-l">צפיות השבוע</div></div>
+    <div class="stat"><div class="stat-n" id="leadsTotal">-</div><div class="stat-l">פניות שנשלחו</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">צפיות לפי שעה — 24 שעות אחרונות</div>
+    <div class="chart" id="chart"></div>
+  </div>
+
+  <div class="two-col">
+    <div class="section">
+      <div class="section-title">אירועים</div>
+      <div id="evList"><div class="empty">אין נתונים עדיין</div></div>
+    </div>
+    <div class="section">
+      <div class="section-title">מאיפה הגיעו</div>
+      <div id="refList"><div class="empty">אין נתונים עדיין</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">פניות אחרונות</div>
+    <!-- Mobile cards -->
+    <div id="leadsCards"></div>
+    <!-- Desktop table -->
+    <table class="leads-tbl">
+      <thead><tr><th>שם</th><th>מייל</th><th>טלפון</th><th>סוג</th><th>שעה</th></tr></thead>
+      <tbody id="leadsBody"><tr><td colspan="5" class="empty">אין פניות עדיין</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">מבקרים אחרונים</div>
+    <!-- Mobile cards -->
+    <div id="visitorsCards"></div>
+    <!-- Desktop table -->
+    <table class="visitors-tbl">
+      <thead><tr><th>זמן</th><th>IP</th><th>מדינה/עיר</th><th>דפדפן</th><th>מערכת הפעלה</th><th>מכשיר</th><th>ממה הגיע</th></tr></thead>
+      <tbody id="visitorsBody"><tr><td colspan="7" class="empty">אין מבקרים עדיין</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="refresh-note">מתעדכן כל 60 שניות</div>
+</div>
+
+<script>
+let pass = '';
+
+function doLogin() {
+  pass = document.getElementById('passInput').value;
+  loadData();
+}
+function logout() {
+  pass = '';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login').style.display = 'flex';
+  document.getElementById('passInput').value = '';
+}
+
+const DEVICE = { mobile: '📱 מובייל', tablet: '📋 טאבלט', desktop: '💻 מחשב' };
+
+const EVN = {
+  product_click:  'פתיחת מוצר',
+  cta_click:      'לחיצה על כפתור פגישה',
+  contact_submit: 'שליחת טופס',
+  diag_complete:  'השלמת אבחון',
+  section_view:   'צפייה בחלק בעמוד',
+  scroll_depth:   'עומק גלילה',
+};
+
+function fmt(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString('he-IL') + ' ' + d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+}
+function esc(s){ return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]) }
+
+async function loadData() {
+  try {
+    const r = await fetch('/api/stats?pass=' + encodeURIComponent(pass));
+    if (r.status === 401) { document.getElementById('loginErr').style.display='block'; return; }
+    document.getElementById('loginErr').style.display = 'none';
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+
+    const d = await r.json();
+
+    document.getElementById('uvToday').textContent   = d.uv_today;
+    document.getElementById('uvTotal').textContent   = d.uv_total;
+    document.getElementById('pvWeek').textContent    = d.pv_week;
+    document.getElementById('leadsTotal').textContent = d.leads_total;
+
+    // Chart
+    const chart = document.getElementById('chart');
+    const max = Math.max(...d.hours.map(h=>h.v), 1);
+    chart.innerHTML = d.hours.map(h =>
+      `<div class="bar-wrap"><div class="bar" style="height:${Math.max(2,(h.v/max)*66)}px" title="${h.v}"></div><div class="bar-label">${h.h}</div></div>`
+    ).join('');
+
+    // Events
+    const evEntries = Object.entries(d.events||{});
+    document.getElementById('evList').innerHTML = evEntries.length
+      ? evEntries.sort((a,b)=>b[1]-a[1]).map(([k,v])=>
+          `<div class="ev-row"><span class="ev-name">${EVN[k]||k}</span><span class="ev-count">${v}</span></div>`
+        ).join('')
+      : '<div class="empty">אין אירועים עדיין</div>';
+
+    // Referrers
+    const refs = (d.top_ref||[]).filter(r=>r.k);
+    const maxR = refs[0]?.v||1;
+    document.getElementById('refList').innerHTML = refs.length
+      ? refs.map(r => {
+          let label = r.k;
+          try { label = new URL(r.k).hostname || r.k; } catch{}
+          return `<div class="ref-row">
+            <div class="ref-label" title="${esc(r.k)}">${esc(label)}</div>
+            <div class="ref-bar-wrap"><div class="ref-bar" style="width:${Math.round(r.v/maxR*100)}%"></div></div>
+            <div class="ref-val">${r.v}</div>
+          </div>`;
+        }).join('')
+      : '<div class="empty">אין נתונים</div>';
+
+    // Leads
+    const leads = d.recent_leads || [];
+    const badgeCls = l => l.id==='contact' ? 'badge-gray' : 'badge-green';
+    const badgeTxt = l => l.id==='contact' ? 'צור קשר' : 'מוצר';
+
+    // Mobile cards
+    document.getElementById('leadsCards').innerHTML = leads.length
+      ? leads.map(l => `
+          <div class="lead-card">
+            <div class="lead-name">${esc(l.name||'-')}</div>
+            <div class="lead-row"><span>מייל</span><span class="lead-val">${esc(l.email||'-')}</span></div>
+            ${l.phone ? `<div class="lead-row"><span>טלפון</span><span class="lead-val">${esc(l.phone)}</span></div>` : ''}
+            <div class="lead-row"><span>סוג</span><span class="badge ${badgeCls(l)}">${badgeTxt(l)}</span></div>
+            <div class="lead-row"><span>שעה</span><span class="lead-val">${fmt(l.ts)}</span></div>
+          </div>`).join('')
+      : '<div class="empty">אין פניות עדיין</div>';
+
+    // Desktop table
+    document.getElementById('leadsBody').innerHTML = leads.length
+      ? leads.map(l => `<tr>
+          <td>${esc(l.name||'-')}</td>
+          <td>${esc(l.email||'-')}</td>
+          <td>${esc(l.phone||'-')}</td>
+          <td><span class="badge ${badgeCls(l)}">${badgeTxt(l)}</span></td>
+          <td>${fmt(l.ts)}</td>
+        </tr>`).join('')
+      : '<tr><td colspan="5" class="empty">אין פניות עדיין</td></tr>';
+
+    // Visitors
+    const visitors = d.recent_visitors || [];
+    function refHost(ref) {
+      if (!ref) return 'ישיר';
+      try { return new URL(ref).hostname || 'ישיר'; } catch { return ref.slice(0,30) || 'ישיר'; }
+    }
+    function geoStr(v) {
+      const parts = [v.country, v.city].filter(Boolean);
+      return parts.join(' / ') || '-';
+    }
+
+    // Mobile cards
+    document.getElementById('visitorsCards').innerHTML = visitors.length
+      ? visitors.map(v => `
+          <div class="visitor-card">
+            <div class="visitor-ip">${esc(v.ip||'-')} ${DEVICE[v.device]||v.device||''}</div>
+            <div class="visitor-row"><span>דפדפן / OS</span><span class="visitor-val">${esc(v.browser||'-')} / ${esc(v.os||'-')}</span></div>
+            ${geoStr(v)!=='-' ? `<div class="visitor-row"><span>מדינה / עיר</span><span class="visitor-val">${esc(geoStr(v))}</span></div>` : ''}
+            <div class="visitor-row"><span>ממה הגיע</span><span class="visitor-val">${esc(refHost(v.ref))}</span></div>
+            <div class="visitor-row"><span>שעה</span><span class="visitor-val">${fmt(v.ts)}</span></div>
+          </div>`).join('')
+      : '<div class="empty">אין מבקרים עדיין</div>';
+
+    // Desktop table
+    document.getElementById('visitorsBody').innerHTML = visitors.length
+      ? visitors.map(v => `<tr>
+          <td>${fmt(v.ts)}</td>
+          <td style="font-family:monospace;font-size:12px;color:var(--accent)">${esc(v.ip||'-')}</td>
+          <td>${esc(geoStr(v))}</td>
+          <td>${esc(v.browser||'-')}</td>
+          <td>${esc(v.os||'-')}</td>
+          <td>${DEVICE[v.device]||esc(v.device||'-')}</td>
+          <td>${esc(refHost(v.ref))}</td>
+        </tr>`).join('')
+      : '<tr><td colspan="7" class="empty">אין מבקרים עדיין</td></tr>';
+
+  } catch(e) { console.error(e); }
+}
+
+setInterval(() => { if(pass) loadData(); }, 60000);
+</script>
+</body>
+</html>
