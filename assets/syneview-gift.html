@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תעודת הוקרה</title>
+<meta property="og:title" content="תעודת הוקרה — לחצו לפתיחה">
+<meta property="og:description" content="קיבלתם תעודת הוקרה אישית. לחצו לפתיחה.">
+<meta property="og:image" content="/assets/egud-logo.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/assets/egud-logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Heebo',sans-serif;
+  background:#f8fafc;
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.logo-btn{
+  background:none;border:none;cursor:pointer;
+  border-radius:50%;
+  padding:0;
+  display:block;
+  outline:none;
+  -webkit-tap-highlight-color:transparent;
+  animation:float 3s ease-in-out infinite;
+  position:relative;z-index:1;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+.logo-btn:active{transform:scale(.95)}
+.logo-glow{
+  position:absolute;inset:-24px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(0,196,168,.2) 0%,transparent 70%);
+  animation:pulse 2.5s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes pulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+.logo-img{
+  width:200px;height:200px;
+  border-radius:50%;
+  object-fit:contain;
+  background:#fff;
+  border:3px solid rgba(0,196,168,.2);
+  box-shadow:0 16px 48px rgba(0,0,0,.1),0 0 0 10px rgba(0,196,168,.06);
+  display:block;
+  position:relative;z-index:1;
+}
+.hint{
+  margin-top:20px;
+  font-size:13px;color:#9ca3af;
+  text-align:center;
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+
+.confetti-wrap{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:10;display:none}
+.c{position:absolute;width:8px;height:8px;border-radius:2px;animation:fall linear forwards;top:-20px}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+<div class="confetti-wrap" id="confetti"></div>
+
+<div style="display:flex;flex-direction:column;align-items:center">
+  <button class="logo-btn" ondblclick="open_()" onclick="tap()" aria-label="לחצו פעמיים לפתיחה">
+    <div class="logo-glow"></div>
+    <img class="logo-img" id="logoImg"
+      src="/assets/egud-logo.png"
+      alt="לוגו">
+  </button>
+  <div class="hint" id="hint">לחצו פעמיים לפתיחה</div>
+</div>
+
+<script>
+const p=new URLSearchParams(location.search);
+const logo=p.get('logo');
+if(logo){const img=document.getElementById('logoImg');img.src=decodeURIComponent(logo)}
+
+let clicks=0,timer=null;
+function tap(){
+  clicks++;
+  if(clicks===1){
+    document.getElementById('hint').textContent='עוד פעם...';
+    timer=setTimeout(()=>{clicks=0;document.getElementById('hint').textContent='לחצו פעמיים לפתיחה'},800);
+  } else if(clicks>=2){
+    clearTimeout(timer);
+    open_();
+  }
+}
+function open_(){
+  burst();
+  setTimeout(()=>location.href='/assets/syneview.html',500);
+}
+function burst(){
+  const wrap=document.getElementById('confetti');
+  wrap.style.display='block';
+  const colors=['#00c4a8','#6c5ce7','#ffa941','#ff6b6b','#3b9eff','#c8a96e'];
+  for(let i=0;i<70;i++){
+    const el=document.createElement('div');
+    el.className='c';
+    el.style.cssText=`left:${Math.random()*100}%;background:${colors[i%colors.length]};animation-duration:${.7+Math.random()*.9}s;animation-delay:${Math.random()*.25}s;border-radius:${Math.random()>.5?'50%':'2px'}`;
+    wrap.appendChild(el);
+  }
+  setTimeout(()=>{wrap.style.display='none';wrap.innerHTML=''},2000);
+}
+</script>
+</body>
+</html>
